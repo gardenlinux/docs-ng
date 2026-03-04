@@ -1,0 +1,39 @@
+---
+name: Bug Report
+description: Found a bug? Let us know!
+title: "[BUG]"
+labels: ["bug", "pending"]
+body:
+  - type: dropdown
+    attributes:
+      label: Affected Module
+      description: >
+        Which are does this bug affect?
+      multiple: true
+      options:
+        - CI/CD
+        - Tooling
+        - Dependnecies
+        - Template/Styling
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Bug Description
+      description: >
+        Please describe in detail what issue you face.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected Behaviour
+      description: >
+        Please describe what you exepected to happen.
+  - type: textarea
+    attributes:
+      label: Steps to Reproduce
+      description: >
+        Please describe what steps we need to take to reproduce this issue.
+    validations:
+      required: true
