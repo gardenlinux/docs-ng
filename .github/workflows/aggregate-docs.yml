@@ -1,0 +1,97 @@
+name: Aggregate Documentation
+
+on:
+  # Run on schedule (daily at 2 AM UTC)
+  schedule:
+    - cron: "0 2 * * *"
+
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: "Specific repository to aggregate (optional)"
+        required: false
+        type: string
+
+  # Trigger from other repos via webhook
+  repository_dispatch:
+    types: [docs-updated]
+
+permissions:
+  contents: write
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout docs-ng repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Run documentation aggregation
+        run: |
+          chmod +x scripts/*.sh scripts/*.py
+
+          if [ -n "${{ github.event.inputs.repo }}" ]; then
+            echo "Aggregating docs for specific repo: ${{ github.event.inputs.repo }}"
+            ./scripts/aggregate-docs.sh --repo "${{ github.event.inputs.repo }}"
+          else
+            echo "Aggregating docs for all repositories"
+            ./scripts/aggregate-docs.sh
+          fi
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet docs/projects/; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected"
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          git add docs/projects/
+          git add docs/.vitepress/config.generated.json || true
+
+          # Create commit message
+          if [ -n "${{ github.event.inputs.repo }}" ]; then
+            COMMIT_MSG="docs: update aggregated docs for ${{ github.event.inputs.repo }}"
+          else
+            COMMIT_MSG="docs: update aggregated documentation from source repos"
+          fi
+
+          git commit -m "$COMMIT_MSG" -m "Automated documentation aggregation"
+          git push
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Documentation Aggregation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ steps.check_changes.outputs.has_changes }}" == "true" ]; then
+            echo "Documentation updated and committed" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "No changes detected - documentation is up to date" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Aggregated Repositories" >> $GITHUB_STEP_SUMMARY
+          echo "- gardenlinux/gardenlinux" >> $GITHUB_STEP_SUMMARY
+          echo "- gardenlinux/builder" >> $GITHUB_STEP_SUMMARY
+          echo "- gardenlinux/python-gardenlinux-lib" >> $GITHUB_STEP_SUMMARY
