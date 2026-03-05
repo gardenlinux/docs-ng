@@ -3,22 +3,22 @@
 layout: home
 
 hero:
-  name: "Gardenlinux Documentation Hub"
-  text: "All your documentation needs - in one place"
+  name: "Gardenlinux Docs"
+  text: "All Docs - In one place!"
   tagline: Gardenlinux - The best choice for Gardener nodes!
   actions:
     - theme: brand
-      text: Markdown Examples
-      link: /markdown-examples
+      text: Quick Start Guide
+      link: /quickstart
     - theme: alt
-      text: API Examples
-      link: /api-examples
+      text: Installation Guide
+      link: /usage/installation
 
 features:
-  - title: Feature A
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature B
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  - title: Feature C
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  - title: Quick Start Guide
+    details: Get started with Garden Linux quickly
+  - title: Installation Guide
+    details: Learn how to install Garden Linux
+  - title: Build an Image
+    details: Learn how to build a Garden Linux image
 ---
