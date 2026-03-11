@@ -1,0 +1,47 @@
+{
+  "section_priorities": {
+    "gardenlinux": -1,
+    "readme": -1,
+    "index": -1,
+    "introduction": 0,
+    "overview": 0,
+    "developers": 1,
+    "operators": 2,
+    "contributing": 3
+  },
+  "repos": [
+    {
+      "name": "gardenlinux",
+      "url": "https://github.com/gardenlinux/gardenlinux",
+      "docs_path": "docs",
+      "target_path": "projects/gardenlinux",
+      "branch": "main",
+      "structure": {
+        "00_introduction": "introduction",
+        "01_developers": "developers",
+        "02_operators": "operators"
+      },
+      "special_files": {
+        "boot_modes.md": "introduction",
+        "architecture": "introduction"
+      },
+      "media_directories": [".media"]
+    },
+    {
+      "name": "builder",
+      "url": "https://github.com/gardenlinux/builder",
+      "docs_path": "docs",
+      "target_path": "projects/builder",
+      "branch": "main",
+      "structure": "flat"
+    },
+    {
+      "name": "python-gardenlinux-lib",
+      "url": "https://github.com/gardenlinux/python-gardenlinux-lib",
+      "docs_path": "docs",
+      "target_path": "projects/python-gardenlinux-lib",
+      "branch": "main",
+      "structure": "sphinx"
+    }
+  ]
+}

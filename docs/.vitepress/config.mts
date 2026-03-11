@@ -33,7 +33,6 @@ export default defineConfig({
           }
         ]
       },
-      { text: 'Examples', link: '/markdown-examples' }
     ],
 
     footer: {
@@ -63,13 +62,6 @@ export default defineConfig({
             { text: 'Garden Linux', link: '/projects/gardenlinux/introduction/index' },
             { text: 'Builder', link: '/projects/builder/getting_started' },
             { text: 'Python Library', link: '/projects/python-gardenlinux-lib/index' }
-          ]
-        },
-        {
-          text: 'Examples',
-          items: [
-            { text: 'Markdown Examples', link: '/markdown-examples' },
-            { text: 'Runtime API Examples', link: '/api-examples' }
           ]
         },
         {
