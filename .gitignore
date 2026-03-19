@@ -2,3 +2,8 @@ docs/.vitepress/dist
 docs/.vitepress/cache
 node_modules/
 **/__pycache__/
+shell.nix
+.envrc
+
+# added by aggregation
+docs/projects
