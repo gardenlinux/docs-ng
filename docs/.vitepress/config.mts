@@ -2,12 +2,16 @@ import { defineConfig } from "vitepress";
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "Gardenlinux Documentation",
-  description: "All your documentation need - in one place",
+  title: "Garden Linux",
+  // description: "Operating system built for cloud native workloads.",
   head: [
     [
       "link",
-      { rel: "icon", type: "image/svg+xml", href: "/gardenlinux-logo.svg" },
+      {
+        rel: "icon",
+        type: "image/svg+xml",
+        href: ".vitepress/theme/assets/gardenlinux-logo.svg",
+      },
     ],
     ["meta", { name: "theme-color", content: "#009f76" }],
     ["meta", { property: "og:type", content: "website" }],
@@ -25,8 +29,8 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: {
-      light: "/gardenlinux-logo.svg",
-      dark: "/gardenlinux-logo.svg",
+      light: ".vitepress/theme/assets/gardenlinux-logo.svg",
+      dark: ".vitepress/theme/assets/gardenlinux-logo.svg",
     },
     nav: [
       { text: "Home", link: "/" },
@@ -64,10 +68,10 @@ export default defineConfig({
       },
     ],
 
-    footer: {
-      message: "Built with 💚 by the Gardenlinux Team.",
-      copyright: "Copyright © 2026-present",
-    },
+    // footer: {
+    //   message: "Built with 💚 by the Gardenlinux Team.",
+    //   copyright: "Copyright © 2026-present",
+    // },
 
     sidebar: {
       // Default sidebar for root pages
