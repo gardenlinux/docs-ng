@@ -1,0 +1,337 @@
+import { defineConfig } from 'vitepress'
+import { fileURLToPath, URL } from 'node:url'
+
+// https://vitepress.dev/reference/site-config
+export default defineConfig({
+  title: "Gardenlinux Documentation",
+  description: "All your documentation need - in one place",
+  base: process.env.VITE_PUBLIC_BASE_PATH || '',
+  srcDir: 'docs',
+  cleanUrls: true,
+  head: [
+    ['link', { rel: 'icon', type: 'image/png', href: '/favicon-96x96.png', sizes: '96x96' }],
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+    ['link', { rel: 'shortcut icon', href: '/favicon.ico' }],
+    ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' }],
+    ['link', { rel: 'manifest', href: '/site.webmanifest' }],
+    ['meta', {name: 'theme-color', content: '#009f76'}],
+    ['meta', {property: 'og:type', content: 'website'}],
+    ['meta', {property: 'og:site_name', content: 'Garden Linux'}],
+    [
+      'meta',
+      {
+        property: 'og:image',
+        content: 'https://raw.githubusercontent.com/gardenlinux/gardenlinux/main/logo/gardenlinux-logo-black-text.svg'
+      }
+    ],
+    ['meta', {property: 'og:url', content: 'https://gardenlinux.io/'}],
+  ],
+  themeConfig: {
+    // https://vitepress.dev/reference/default-theme-config
+    logo: {
+      light: '/gardenlinux-logo.svg',
+      dark: '/gardenlinux-logo.svg',
+    },
+    nav: [
+      { text: 'Home', link: '/' },
+      { text: 'Quick Start', link: '/users/quickstart' },
+      {
+        text: 'Docs',
+        items: [
+          {
+            text: 'User Docs',
+            items: [
+              { text: 'Quickstart', link: '/users/quickstart' },
+              { text: 'Installation Guide', link: '/users/installation' },
+              { text: 'Build an Image', link: '/users/build-image' }
+            ]
+          },
+          {
+            text: 'Technical Documentation',
+            items: [
+              { text: 'Gardenlinux', link: '/projects/gardenlinux/' },
+              { text: 'Builder', link: '/projects/builder/features' },
+              { text: 'Python Gardenlinux Lib', link: '/projects/python-gardenlinux-lib/' },
+            ]
+          },
+          {
+            text: 'Contributing', link: '/contributing/',
+          }
+        ]
+      },
+    ],
+    socialLinks: [
+      {
+        icon: {
+          svg: '<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 24 24"><path fill="--vp-c-text-1" d="M18.901 1.153h3.68l-8.04 9.19L24 22.847h-7.406l-5.803-7.584l-6.64 7.584H.47l8.6-9.83L0 1.153h7.594l5.243 6.932zM17.61 20.644h2.039L6.486 3.24H4.298z"/></svg>'
+        },
+        link: 'https://x.com/GardenLinux'
+      },
+      {
+        icon: {
+          svg: '<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 24 24"><path fill="--vp-c-text-1" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.791-.261.791-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807
+                            { text: '2. Distributions Can Never Change Retroactively', link: '/projects/gardenlinux/introduction/architecture/decisions/0002-dists-can-never-change-retroactively' },
+                            { text: '3. Update the Builder using Dependabot', link: '/projects/gardenlinux/introduction/architecture/decisions/0003-builder-updates-dependabot' },
+                            { text: '4. Vendoring dependencies in Go Applications', link: '/projects/gardenlinux/introduction/architecture/decisions/0004-vendoring-go-dependencies' },
+                            { text: '5. How to handle Secure Boot Keys in glci', link: '/projects/gardenlinux/introduction/architecture/decisions/0005-secure-boot-keys-glci' },
+                            { text: '6. New Test Framework to enable In-Place, Self-Contained Test Execution', link: '/projects/gardenlinux/introduction/architecture/decisions/0006-new-test-framework-in-place-self-contained-test-execution' },
+                            { text: 'ADR 0007: Non-Invasive, Read-Only Testing', link: '/projects/gardenlinux/introduction/architecture/decisions/0007-non-invasive-read-only-testing' },
+                            { text: 'ADR 0008: Unified and Declarative Test Logic', link: '/projects/gardenlinux/introduction/architecture/decisions/0008-unified-and-declarative-test-logic' },
+                            { text: 'ADR 0009: Flexible Distribution and Reporting', link: '/projects/gardenlinux/introduction/architecture/decisions/0009-flexible-distribution-and-reporting' },
+                            { text: 'ADR 0010: Incremental Migration and Coexistence of Tests', link: '/projects/gardenlinux/introduction/architecture/decisions/0010-incremental-migration-and-coexistence-of-tests' },
+                            { text: '11. Garden Linux versioning', link: '/projects/gardenlinux/introduction/architecture/decisions/0011-garden-linux-versioning' },
+                            { text: '12. Remove the Firecracker Feature from Garden Linux', link: '/projects/gardenlinux/introduction/architecture/decisions/0012-remove-firecracker-feature' },
+                            { text: '13. Discontinue `packages_musthave` tests', link: '/projects/gardenlinux/introduction/architecture/decisions/0013-discontinue-packages-musthave-tests' },
+                            { text: '14. Enforce Pull Request References in git Commit History', link: '/projects/gardenlinux/introduction/architecture/decisions/0014-enforce-pr-references-in-commits' },
+                            { text: '15. No Backports from Debian Stable in Garden Linux', link: '/projects/gardenlinux/introduction/architecture/decisions/0015-no-backports-from-stable' },
+                            { text: '16. Avoid Host Dependency on `retry` Command in Makefile for tests-ng', link: '/projects/gardenlinux/introduction/architecture/decisions/0016-minimal-host-dependencies-for-test-ng' },
+                            { text: '17. Retain Shell-Based CIS Implementation for tests-ng (No Custom Python Rewrite)', link: '/projects/gardenlinux/introduction/architecture/decisions/0017-feature-cis-to-retain-shell-scripts' },
+                            { text: '18. Revert ADR 3 Update the Builder using Dependabot', link: '/projects/gardenlinux/introduction/architecture/decisions/0018-revert-0003-builder-updates-dependabot' },
+                            { text: '19. Standardize on systemd Timers', link: '/projects/gardenlinux/introduction/architecture/decisions/0019-standardize-on-systemd-timers' },
+                            { text: '20. Enforce Single Platform by Default in Garden Linux Builder', link: '/projects/gardenlinux/introduction/architecture/decisions/0020-enforce-single-platform-by-default-in-builder' },
+                            { text: '21. Use of tiger tool in tests-ng', link: '/projects/gardenlinux/introduction/architecture/decisions/0021-use-of-tiger-tool-in-tests-ng' },
+                            { text: 'ADR 0022: System State Diffing in tests-ng', link: '/projects/gardenlinux/introduction/architecture/decisions/0022-test-ng-system-state-diffing' },
+                            { text: '23. Providing Garden Linux Images for Lima-VM via Containerized YAML Generator', link: '/projects/gardenlinux/introduction/architecture/decisions/0023-lima-image-download' },
+                            { text: '24. Promote Lima Image to Official Garden Linux Product', link: '/projects/gardenlinux/introduction/architecture/decisions/0024-promote-lima-image-to-official' },
+                            { text: '25. Disable Debsums Tests entirely', link: '/projects/gardenlinux/introduction/architecture/decisions/0025-disable-debsums-tests' },
+                            { text: '26. Use Parser Plugins for Files and Command Output in Test Framework', link: '/projects/gardenlinux/introduction/architecture/decisions/0026-test-ng-when-to-parsers' },
+                            { text: '27. Do not use systemd release candidates', link: '/projects/gardenlinux/introduction/architecture/decisions/0027-no-systemd-rc' },
+                            { text: '28. Pinning All GitHub Actions in Garden Linux Workflows', link: '/projects/gardenlinux/introduction/architecture/decisions/0028-pin-actions-to-sha' },
+                            { text: '29. Build features/cis with SELINUX=permissive Instead of SELINUX=enforcing', link: '/projects/gardenlinux/introduction/architecture/decisions/0029-cis-selinux-permissive' },
+                            { text: '30. Defining python-gardenlinux-lib as an internal tool', link: '/projects/gardenlinux/introduction/architecture/decisions/0030-python-gardenlinux-lib' },
+                            { text: '31. S3 Artifact and Metadata Publishing Contract Between Builder and GLCI', link: '/projects/gardenlinux/introduction/architecture/decisions/0031-builder-glci-interface' },
+                            { text: 'ADR 0032: Static Feature/Test Coverage Analysis for Test Framework', link: '/projects/gardenlinux/introduction/architecture/decisions/0032-static-feature-test-coverage-analysis' },
+                          ]
+                        },
+                      ]
+                    },
+                    { text: 'GardenLinux Boot Modes :potted_plant::penguin:', link: '/projects/gardenlinux/introduction/boot_modes' },
+                    { text: 'Linux Kernel', link: '/projects/gardenlinux/introduction/kernel' },
+                    { text: 'Motivation Behind Garden Linux', link: '/projects/gardenlinux/introduction/motivation' },
+                    { text: 'The Garden Linux Package Pipeline', link: '/projects/gardenlinux/introduction/package-pipeline' },
+                    { text: 'Garden Linux Release Plan Overview', link: '/projects/gardenlinux/introduction/release' },
+                  ]
+                },
+                {
+                  text: 'Developers',
+                  collapsed: true,
+                  items: [
+                    { text: 'Developers Guide', link: '/projects/gardenlinux/developers/' },
+                    { text: 'Garden Linux Bare Container Documentation', link: '/projects/gardenlinux/developers/bare_container' },
+                    { text: 'Build Image', link: '/projects/gardenlinux/developers/build_image' },
+                    { text: 'Garden Linux OpenStack Images', link: '/projects/gardenlinux/developers/build_image_openstack' },
+                    { text: 'Build Packages', link: '/projects/gardenlinux/developers/build_packages' },
+                    { text: 'Contributing to Garden Linux', link: '/projects/gardenlinux/developers/contributing' },
+                    { text: 'Github Pipelines', link: '/projects/gardenlinux/developers/github_pipelines' },
+                    { text: 'Test Image', link: '/projects/gardenlinux/developers/test_image' },
+                    {
+                      text: 'Troubleshooting',
+                      collapsed: true,
+                      items: [
+                        { text: 'Troubleshooting docs', link: '/projects/gardenlinux/developers/troubleshooting/' },
+                        {
+                          text: 'Package Linux',
+                          collapsed: true,
+                          items: [
+                            { text: 'Troubleshooting docs for package-linux', link: '/projects/gardenlinux/developers/troubleshooting/package-linux/' },
+                            { text: 'Build fails in \"Binary\" phase, c header file is not found', link: '/projects/gardenlinux/developers/troubleshooting/package-linux/build-fails-in-binary-phase-c-header-not-found' },
+                            { text: 'Build fails in \"Source\" phase, patch is rejected', link: '/projects/gardenlinux/developers/troubleshooting/package-linux/build-fails-in-source-phase-patch-is-rejected' },
+                          ]
+                        },
+                      ]
+                    },
+                    { text: 'Vmware Ova', link: '/projects/gardenlinux/developers/vmware-ova' },
+                  ]
+                },
+                {
+                  text: 'Operators',
+                  collapsed: true,
+                  items: [
+                    { text: 'Operators Guide', link: '/projects/gardenlinux/operators/' },
+                    { text: 'Garden Linux Repositories', link: '/projects/gardenlinux/operators/apt_repo' },
+                    {
+                      text: 'Deployment',
+                      collapsed: true,
+                      items: [
+                        { text: 'Deployment', link: '/projects/gardenlinux/operators/deployment/' },
+                        { text: 'Enable secure boot for Garden Linux on AWS', link: '/projects/gardenlinux/operators/deployment/aws-secureboot' },
+                        { text: 'Enable trusted boot and subsequently secure boot for Garden Linux on GCP', link: '/projects/gardenlinux/operators/deployment/gcp-secureboot' },
+                        { text: 'Non-Default Install', link: '/projects/gardenlinux/operators/deployment/install-non-default' },
+                        { text: 'Ipxe Install', link: '/projects/gardenlinux/operators/deployment/ipxe-install' },
+                      ]
+                    },
+                    { text: 'Gardener Kernel restart', link: '/projects/gardenlinux/operators/gardener-kernel-restart' },
+                    { text: 'Run Garden Linux Virtual Machines Locally Using Lima (Linux Machines)', link: '/projects/gardenlinux/operators/lima-vm' },
+                    { text: 'Local Kubernetes Cluster with Garden Linux and Lima', link: '/projects/gardenlinux/operators/local-k8s-lima' },
+                    { text: 'SSH Hardening', link: '/projects/gardenlinux/operators/ssh-hardening' },
+                    { text: 'Time (NTP) configuration in Garden Linux', link: '/projects/gardenlinux/operators/time-configuration' },
+                  ]
+                },
+                { text: 'Gardenlinux', link: '/projects/gardenlinux/' },
+              ]
+            },
+            {
+              text: 'Builder',
+              collapsed: true,
+              items: [
+                { text: 'Features', link: '/projects/builder/features' },
+                { text: 'Getting Started: Creating a Custom Linux Image with Builder', link: '/projects/builder/getting_started' },
+              ]
+            },
+            { text: 'Python Gardenlinux Lib', link: '/projects/python-gardenlinux-lib/' },
+          ]
+        },
+        {
+          text: 'Contributing',
+          collapsed: true,
+          items: [
+            { text: 'Development Environment', link: '/contributing/dev-environment' },
+            { text: 'Building an Image', link: '/contributing/building-image' },
+            { text: 'Testing an Image', link: '/contributing/testing-image' },
+            { text: 'Contribution Workflow', link: '/contributing/workflow' },
+            { text: 'Code Style', link: '/contributing/code-style' },
+            { text: 'Dependency Policy', link: '/contributing/dependency-policy' },
+            { text: 'Documentation Guide', link: '/contributing/documentation-guide' }
+          ]
+        }
+      ],
+
+      // Garden Linux project docs
+      '/projects/gardenlinux/': [
+        { text: 'Gardenlinux', link: '/projects/gardenlinux/' },
+        {
+          text: 'Introduction',
+          collapsed: true,
+          items: [
+            { text: 'Introduction to Garden Linux', link: '/projects/gardenlinux/introduction/' },
+            {
+              text: 'Architecture',
+              collapsed: true,
+              items: [
+                {
+                  text: 'Decisions',
+                  collapsed: true,
+                  items: [
+                    { text: 'Architecture Decision Records (ADR) for Garden Linux', link: '/projects/gardenlinux/introduction/architecture/decisions/' },
+                    { text: '1. Adopting Architecture Decision Records (ADR) for Garden Linux', link: '/projects/gardenlinux/introduction/architecture/decisions/0001-record-architecture-decisions' },
+                    { text: '2. Distributions Can Never Change Retroactively', link: '/projects/gardenlinux/introduction/architecture/decisions/0002-dists-can-never-change-retroactively' },
+                    { text: '3. Update the Builder using Dependabot', link: '/projects/gardenlinux/introduction/architecture/decisions/0003-builder-updates-dependabot' },
+                    { text: '4. Vendoring dependencies in Go Applications', link: '/projects/gardenlinux/introduction/architecture/decisions/0004-vendoring-go-dependencies' },
+                    { text: '5. How to handle Secure Boot Keys in glci', link: '/projects/gardenlinux/introduction/architecture/decisions/0005-secure-boot-keys-glci' },
+                    { text: '6. New Test Framework to enable In-Place, Self-Contained Test Execution', link: '/projects/gardenlinux/introduction/architecture/decisions/0006-new-test-framework-in-place-self-contained-test-execution' },
+                    { text: 'ADR 0007: Non-Invasive, Read-Only Testing', link: '/projects/gardenlinux/introduction/architecture/decisions/0007-non-invasive-read-only-testing' },
+                    { text: 'ADR 0008: Unified and Declarative Test Logic', link: '/projects/gardenlinux/introduction/architecture/decisions/0008-unified-and-declarative-test-logic' },
+                    { text: 'ADR 0009: Flexible Distribution and Reporting', link: '/projects/gardenlinux/introduction/architecture/decisions/0009-flexible-distribution-and-reporting' },
+                    { text: 'ADR 0010: Incremental Migration and Coexistence of Tests', link: '/projects/gardenlinux/introduction/architecture/decisions/0010-incremental-migration-and-coexistence-of-tests' },
+                    { text: '11. Garden Linux versioning', link: '/projects/gardenlinux/introduction/architecture/decisions/0011-garden-linux-versioning' },
+                    { text: '12. Remove the Firecracker Feature from Garden Linux', link: '/projects/gardenlinux/introduction/architecture/decisions/0012-remove-firecracker-feature' },
+                    { text: '13. Discontinue `packages_musthave` tests', link: '/projects/gardenlinux/introduction/architecture/decisions/0013-discontinue-packages-musthave-tests' },
+                    { text: '14. Enforce Pull Request References in git Commit History', link: '/projects/gardenlinux/introduction/architecture/decisions/0014-enforce-pr-references-in-commits' },
+                    { text: '15. No Backports from Debian Stable in Garden Linux', link: '/projects/gardenlinux/introduction/architecture/decisions/0015-no-backports-from-stable' },
+                    { text: '16. Avoid Host Dependency on `retry` Command in Makefile for tests-ng', link: '/projects/gardenlinux/introduction/architecture/decisions/0016-minimal-host-dependencies-for-test-ng' },
+                    { text: '17. Retain Shell-Based CIS Implementation for tests-ng (No Custom Python Rewrite)', link: '/projects/gardenlinux/introduction/architecture/decisions/0017-feature-cis-to-retain-shell-scripts' },
+                    { text: '18. Revert ADR 3 Update the Builder using Dependabot', link: '/projects/gardenlinux/introduction/architecture/decisions/0018-revert-0003-builder-updates-dependabot' },
+                    { text: '19. Standardize on systemd Timers', link: '/projects/gardenlinux/introduction/architecture/decisions/0019-standardize-on-systemd-timers' },
+                    { text: '20. Enforce Single Platform by Default in Garden Linux Builder', link: '/projects/gardenlinux/introduction/architecture/decisions/0020-enforce-single-platform-by-default-in-builder' },
+                    { text: '21. Use of tiger tool in tests-ng', link: '/projects/gardenlinux/introduction/architecture/decisions/0021-use-of-tiger-tool-in-tests-ng' },
+                    { text: 'ADR 0022: System State Diffing in tests-ng', link: '/projects/gardenlinux/introduction/architecture/decisions/0022-test-ng-system-state-diffing' },
+                    { text: '23. Providing Garden Linux Images for Lima-VM via Containerized YAML Generator', link: '/projects/gardenlinux/introduction/architecture/decisions/0023-lima-image-download' },
+                    { text: '24. Promote Lima Image to Official Garden Linux Product', link: '/projects/gardenlinux/introduction/architecture/decisions/0024-promote-lima-image-to-official' },
+                    { text: '25. Disable Debsums Tests entirely', link: '/projects/gardenlinux/introduction/architecture/decisions/0025-disable-debsums-tests' },
+                    { text: '26. Use Parser Plugins for Files and Command Output in Test Framework', link: '/projects/gardenlinux/introduction/architecture/decisions/0026-test-ng-when-to-parsers' },
+                    { text: '27. Do not use systemd release candidates', link: '/projects/gardenlinux/introduction/architecture/decisions/0027-no-systemd-rc' },
+                    { text: '28. Pinning All GitHub Actions in Garden Linux Workflows', link: '/projects/gardenlinux/introduction/architecture/decisions/0028-pin-actions-to-sha' },
+                    { text: '29. Build features/cis with SELINUX=permissive Instead of SELINUX=enforcing', link: '/projects/gardenlinux/introduction/architecture/decisions/0029-cis-selinux-permissive' },
+                    { text: '30. Defining python-gardenlinux-lib as an internal tool', link: '/projects/gardenlinux/introduction/architecture/decisions/0030-python-gardenlinux-lib' },
+                    { text: '31. S3 Artifact and Metadata Publishing Contract Between Builder and GLCI', link: '/projects/gardenlinux/introduction/architecture/decisions/0031-builder-glci-interface' },
+                    { text: 'ADR 0032: Static Feature/Test Coverage Analysis for Test Framework', link: '/projects/gardenlinux/introduction/architecture/decisions/0032-static-feature-test-coverage-analysis' },
+                  ]
+                },
+              ]
+            },
+            { text: 'GardenLinux Boot Modes :potted_plant::penguin:', link: '/projects/gardenlinux/introduction/boot_modes' },
+            { text: 'Linux Kernel', link: '/projects/gardenlinux/introduction/kernel' },
+            { text: 'Motivation Behind Garden Linux', link: '/projects/gardenlinux/introduction/motivation' },
+            { text: 'The Garden Linux Package Pipeline', link: '/projects/gardenlinux/introduction/package-pipeline' },
+            { text: 'Garden Linux Release Plan Overview', link: '/projects/gardenlinux/introduction/release' },
+          ]
+        },
+        {
+          text: 'Developers',
+          collapsed: true,
+          items: [
+            { text: 'Developers Guide', link: '/projects/gardenlinux/developers/' },
+            { text: 'Garden Linux Bare Container Documentation', link: '/projects/gardenlinux/developers/bare_container' },
+            { text: 'Build Image', link: '/projects/gardenlinux/developers/build_image' },
+            { text: 'Garden Linux OpenStack Images', link: '/projects/gardenlinux/developers/build_image_openstack' },
+            { text: 'Build Packages', link: '/projects/gardenlinux/developers/build_packages' },
+            { text: 'Contributing to Garden Linux', link: '/projects/gardenlinux/developers/contributing' },
+            { text: 'Github Pipelines', link: '/projects/gardenlinux/developers/github_pipelines' },
+            { text: 'Test Image', link: '/projects/gardenlinux/developers/test_image' },
+            {
+              text: 'Troubleshooting',
+              collapsed: true,
+              items: [
+                { text: 'Troubleshooting docs', link: '/projects/gardenlinux/developers/troubleshooting/' },
+                {
+                  text: 'Package Linux',
+                  collapsed: true,
+                  items: [
+                    { text: 'Troubleshooting docs for package-linux', link: '/projects/gardenlinux/developers/troubleshooting/package-linux/' },
+                    { text: 'Build fails in \"Binary\" phase, c header file is not found', link: '/projects/gardenlinux/developers/troubleshooting/package-linux/build-fails-in-binary-phase-c-header-not-found' },
+                    { text: 'Build fails in \"Source\" phase, patch is rejected', link: '/projects/gardenlinux/developers/troubleshooting/package-linux/build-fails-in-source-phase-patch-is-rejected' },
+                  ]
+                },
+              ]
+            },
+            { text: 'Vmware Ova', link: '/projects/gardenlinux/developers/vmware-ova' },
+          ]
+        },
+        {
+          text: 'Operators',
+          collapsed: true,
+          items: [
+            { text: 'Operators Guide', link: '/projects/gardenlinux/operators/' },
+            { text: 'Garden Linux Repositories', link: '/projects/gardenlinux/operators/apt_repo' },
+            {
+              text: 'Deployment',
+              collapsed: true,
+              items: [
+                { text: 'Deployment', link: '/projects/gardenlinux/operators/deployment/' },
+                { text: 'Enable secure boot for Garden Linux on AWS', link: '/projects/gardenlinux/operators/deployment/aws-secureboot' },
+                { text: 'Enable trusted boot and subsequently secure boot for Garden Linux on GCP', link: '/projects/gardenlinux/operators/deployment/gcp-secureboot' },
+                { text: 'Non-Default Install', link: '/projects/gardenlinux/operators/deployment/install-non-default' },
+                { text: 'Ipxe Install', link: '/projects/gardenlinux/operators/deployment/ipxe-install' },
+              ]
+            },
+            { text: 'Gardener Kernel restart', link: '/projects/gardenlinux/operators/gardener-kernel-restart' },
+            { text: 'Run Garden Linux Virtual Machines Locally Using Lima (Linux Machines)', link: '/projects/gardenlinux/operators/lima-vm' },
+            { text: 'Local Kubernetes Cluster with Garden Linux and Lima', link: '/projects/gardenlinux/operators/local-k8s-lima' },
+            { text: 'SSH Hardening', link: '/projects/gardenlinux/operators/ssh-hardening' },
+            { text: 'Time (NTP) configuration in Garden Linux', link: '/projects/gardenlinux/operators/time-configuration' },
+          ]
+        },
+      ],
+
+      // Builder project docs
+      '/projects/builder/': [
+        { text: 'Features', link: '/projects/builder/features' },
+        { text: 'Getting Started: Creating a Custom Linux Image with Builder', link: '/projects/builder/getting_started' },
+      ],
+
+      // Python library project docs
+      '/projects/python-gardenlinux-lib/': [
+        {
+          text: 'Python Garden Linux Library',
+          items: [
+            { text: 'Overview', link: '/projects/python-gardenlinux-lib/' }
+          ]
+        }
+      ]
+    },
+
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/gardenlinux' },
+    ]
+  }
+})

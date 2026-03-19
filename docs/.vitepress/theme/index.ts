@@ -1,17 +1,27 @@
 // https://vitepress.dev/guide/custom-theme
-import { h } from 'vue'
-import type { Theme } from 'vitepress'
-import DefaultTheme from 'vitepress/theme'
-import './style.css'
+import { h } from "vue";
+import type { Theme } from "vitepress";
+import DefaultTheme from "vitepress/theme";
+import "./style.css";
+import VPFooter from "./components/VPFooter.vue";
+import TaxonomyIndex from "./components/TaxonomyIndex.vue";
 
 export default {
   extends: DefaultTheme,
-  Layout: () => {
+  Layout() {
     return h(DefaultTheme.Layout, null, {
-      // https://vitepress.dev/guide/extending-default-theme#layout-slots
-    })
+      "doc-before": () => h(TaxonomyIndex),
+      "layout-bottom": () => h(VPFooter),
+    });
   },
-  enhanceApp({ app, router, siteData }) {
-    // ...
-  }
-} satisfies Theme
+  enhanceApp({ app }) {
+    app.component(
+      "YouTubeVideo",
+      () => import("./components/YouTubeVideo.vue")
+    );
+    app.component(
+      "ThemedTeamMembers",
+      () => import("./components/ThemedTeamMembers.vue")
+    );
+  },
+} satisfies Theme;
