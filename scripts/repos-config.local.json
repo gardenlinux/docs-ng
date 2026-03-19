@@ -1,0 +1,32 @@
+{
+  "repos": [
+    {
+      "name": "gardenlinux",
+      "url": "file:///home/$USER/*/gardenlinux/gardenlinux",
+      "docs_path": "docs",
+      "target_path": "projects/gardenlinux",
+      "branch": "main",
+      "structure": {
+        "00_introduction": "introduction",
+        "01_developers": "developers",
+        "02_operators": "operators"
+      }
+    },
+    {
+      "name": "builder",
+      "url": "file:///home/$USER/*/gardenlinux/builder",
+      "docs_path": "docs",
+      "target_path": "projects/builder",
+      "branch": "main",
+      "structure": "flat"
+    },
+    {
+      "name": "python-gardenlinux-lib",
+      "url": "file:///home/$USER/*/gardenlinux/python-gardenlinux-lib",
+      "docs_path": "docs",
+      "target_path": "projects/python-gardenlinux-lib",
+      "branch": "main",
+      "structure": "sphinx"
+    }
+  ]
+}
