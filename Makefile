@@ -24,38 +24,42 @@ help:
 	@echo "    clean-aggregated-git   - Remove uncommitted aggregated docs"
 	@echo ""
 
-run:
+install:
+	@echo "Installing dependencies..."
+	pnpm install
+
+run: install
 	pnpm run docs:dev
 
-build:
+build: install
 	pnpm run docs:build
 
-preview:
+preview: install
 	pnpm run docs:preview
 
 # Testing
-test:
+test: install
 	@echo "Running full test suite..."
 	@cd scripts/tests && ./run_all.sh
 
-test-unit:
+test-unit: install
 	@echo "Running unit tests..."
 	@cd scripts/tests && python3 run_tests.py
 
 # Documentation Aggregation
-test-aggregate-local:
+test-aggregate-local: install
 	@echo "Testing aggregation with local repositories..."
 	./scripts/test-local.sh --dry-run
 
-aggregate:
+aggregate: install
 	@echo "Aggregating documentation from source repositories..."
 	./scripts/aggregate-docs.sh
 
-aggregate-dry:
+aggregate-dry: install
 	@echo "Dry run: Testing aggregation without modifying docs directory..."
 	./scripts/aggregate-docs.sh --dry-run
 
-aggregate-repo:
+aggregate-repo: install
 	@if [ -z "$(REPO)" ]; then \
 		echo "Error: REPO variable not set"; \
 		echo "Usage: make aggregate-repo REPO=gardenlinux"; \

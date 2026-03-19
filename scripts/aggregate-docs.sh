@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Main script to aggregate documentation from multiple repositories
 # This orchestrates the entire process: fetch -> transform -> update config
 

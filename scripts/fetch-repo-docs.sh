@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Script to fetch documentation from remote repositories using sparse checkout
 # Usage: ./fetch-repo-docs.sh <repo_url> <branch> <docs_path> <output_dir>
 

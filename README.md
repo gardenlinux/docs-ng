@@ -6,7 +6,7 @@ Master repo for public facing Garden Linux documentation.
 
 ```bash
 # Run development server
-make dev
+make run
 
 # Run tests
 make test

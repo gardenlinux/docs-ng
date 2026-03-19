@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Convenience script for testing aggregation with local repositories
 # This uses repos-config.local.json which points to local file:// paths
 
