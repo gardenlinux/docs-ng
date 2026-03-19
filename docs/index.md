@@ -3,16 +3,19 @@
 layout: home
 
 hero:
-  name: "Gardenlinux Docs"
-  text: "All Docs - In one place!"
-  tagline: Gardenlinux - The best choice for Gardener nodes!
+  name: "Garden Linux"
+  text: "the best Linux for Gardener nodes"
+  tagline: "small, auditable Linux images for cloud and bare-metal workloads"
   actions:
     - theme: brand
       text: Quick Start Guide
       link: /quickstart
     - theme: alt
-      text: Installation Guide
-      link: /usage/installation
+      text: Browse Documentation
+      link: /how-to/
+  image:
+    src: .vitepress/theme/assets/gardenlinux-logo.svg
+    alt: Garden Linux
 
 features:
   - title: Quick Start Guide
