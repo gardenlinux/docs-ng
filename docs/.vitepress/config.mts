@@ -131,7 +131,7 @@ export default defineConfig({
       {
         rel: "icon",
         type: "image/svg+xml",
-        href: ".vitepress/theme/assets/gardenlinux-logo.svg",
+        href: `${base}.vitepress/theme/assets/gardenlinux-logo.svg`,
       },
     ],
     ["meta", { name: "theme-color", content: "#009f76" }],
@@ -150,8 +150,8 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: {
-      light: ".vitepress/theme/assets/gardenlinux-logo.svg",
-      dark: ".vitepress/theme/assets/gardenlinux-logo.svg",
+      light: `${base}.vitepress/theme/assets/gardenlinux-logo.svg`,
+      dark: `${base}.vitepress/theme/assets/gardenlinux-logo.svg`,
     },
     nav: [
       { text: "Start Here", link: "/" },
