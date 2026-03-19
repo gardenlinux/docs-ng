@@ -5,12 +5,16 @@
       "url": "file:///home/$USER/*/gardenlinux/gardenlinux",
       "docs_path": "docs",
       "target_path": "projects/gardenlinux",
-      "branch": "main",
+      "branch": "docs-ng",
       "structure": {
-        "00_introduction": "introduction",
-        "01_developers": "developers",
-        "02_operators": "operators"
-      }
+        "tutorials": "tutorials",
+        "how-to": "how-to",
+        "explanation": "explanation",
+        "reference": "reference",
+        "contributing": "contributing"
+      },
+      "special_files": {},
+      "media_directories": [".media"]
     },
     {
       "name": "builder",
