@@ -413,6 +413,16 @@ def ensure_frontmatter(content, title=None):
 
 
 def quote_yaml_value(value):
+    """Quote YAML value if needed, handling already-quoted values."""
+    # If value is already properly quoted, return as-is
+    if value.startswith('"') and value.endswith('"'):
+        # Check if it's properly quoted (not escaped quotes)
+        if not value.startswith('"\\"'):
+            return value
+    
+    if value.startswith("'") and value.endswith("'"):
+        return value
+    
     special_chars = [
         ":",
         "#",
@@ -434,12 +444,20 @@ def quote_yaml_value(value):
 
     needs_quoting = any(char in value for char in special_chars)
 
-    if value and (value[0] in ['"', "'", " "] or value[-1] in ['"', "'", " "]):
+    if value and (value[0] in ['"', "'", " "] or value[-1] in [" "]):
         needs_quoting = True
 
     if needs_quoting:
-        escaped_value = value.replace('"', '\\"')
-        return f'"{escaped_value}"'
+        # Don't escape quotes that are already inside the value
+        # Just wrap in quotes
+        if '"' not in value:
+            return f'"{value}"'
+        elif "'" not in value:
+            return f"'{value}'"
+        else:
+            # If both quote types exist, escape double quotes and use them
+            escaped_value = value.replace('"', '\\"')
+            return f'"{escaped_value}"'
 
     return value
 
