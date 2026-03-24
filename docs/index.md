@@ -14,8 +14,8 @@ hero:
       text: Browse Documentation
       link: /how-to/
   image:
-    src: .vitepress/theme/assets/gardenlinux-logo.svg
-    alt: Garden Linux
+    src: /gardenlinux-logo.svg
+    alt: Garden Linux Logo
 
 features:
   - title: Tutorials
