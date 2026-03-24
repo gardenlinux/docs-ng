@@ -1,6 +1,6 @@
 # docs-ng
 
-Master repo for public facing Garden Linux documentation.
+Build the Garden Linux documentation.
 
 ## Quick Start
 
@@ -31,22 +31,6 @@ See `scripts/tests/README.md` for more details.
 
 See `scripts/README.md` for documentation aggregation details.
 
-## GitHub Pages Deployment
-
-The documentation site is automatically deployed to GitHub Pages:
-
-- **Production**: Automatically deployed when changes are merged to `main`
-  - URL: https://gardenlinux.github.io/docs-ng/
-- **PR Previews**: Each pull request gets its own preview deployment
-  - URL: https://gardenlinux.github.io/docs-ng/pr-{PR_NUMBER}/
-  - Automatically updated with each commit
-  - Cleaned up when PR is closed
-
-The workflow is configured in `.github/workflows/deploy-pages.yml`.
-
-For detailed information about the deployment system, see the [GitHub Pages Deployment Guide](docs/contributing/github-pages-deployment.md).
-
 ## Commands
 
 Run `make help` for all available commands.
-
