@@ -6,6 +6,10 @@ const base = process.env.BASE_URL || "/";
 // Shared sidebar for all documentation categories
 const documentationSidebar = [
   {
+    text: "Overview",
+    link: "/overview/",
+  },
+  {
     text: "Tutorials",
     collapsed: true,
     items: [
@@ -139,6 +143,25 @@ const documentationSidebar = [
       },
     ],
   },
+  {
+    text: "Contributing",
+    collapsed: true,
+    items: [
+      { text: "Overview", link: "/contributing/" },
+      {
+        text: "Documentation Guide",
+        link: "/contributing/documentation-guide",
+      },
+      { text: "Building an Image", link: "/contributing/building-image" },
+      { text: "Testing an Image", link: "/contributing/testing-image" },
+      { text: "Contribution Workflow", link: "/contributing/workflow" },
+      { text: "Code Style", link: "/contributing/code-style" },
+      {
+        text: "Dependency Policy",
+        link: "/contributing/dependency-policy",
+      },
+    ],
+  },
 ];
 
 // https://vitepress.dev/reference/site-config
@@ -186,6 +209,10 @@ export default defineConfig({
         text: "Documentation",
         items: [
           {
+            text: "Overview",
+            link: "/overview/",
+          },
+          {
             text: "Tutorials",
             link: "/tutorials/",
           },
@@ -201,23 +228,27 @@ export default defineConfig({
             text: "Reference",
             link: "/reference/",
           },
-        ],
-      },
-      {
-        text: "Legacy Docs",
-        items: [
           {
-            text: "Garden Linux",
-            link: "/projects/gardenlinux/introduction/index",
-          },
-          { text: "Builder", link: "/projects/builder/getting_started" },
-          {
-            text: "Python Library",
-            link: "/projects/python-gardenlinux-lib/index",
+            text: "Contributing",
+            link: "/contributing/",
           },
         ],
       },
-      { text: "Contributing", link: "/contributing/" },
+      // {
+      //   text: "Legacy Docs",
+      //   items: [
+      //     {
+      //       text: "Garden Linux",
+      //       link: "/projects/gardenlinux/introduction/index",
+      //     },
+      //     { text: "Builder", link: "/projects/builder/getting_started" },
+      //     {
+      //       text: "Python Library",
+      //       link: "/projects/python-gardenlinux-lib/index",
+      //     },
+      //   ],
+      // },
+      // { text: "Contributing", link: "/contributing/" },
     ],
 
     // footer: {
@@ -227,175 +258,12 @@ export default defineConfig({
 
     sidebar: {
       // Shared sidebar for all documentation categories
+      "/overview/": documentationSidebar,
       "/tutorials/": documentationSidebar,
       "/how-to/": documentationSidebar,
       "/explanation/": documentationSidebar,
       "/reference/": documentationSidebar,
-
-      // Contributing section
-      "/contributing/": [
-        {
-          text: "Contributing",
-          items: [
-            { text: "Overview", link: "/contributing/" },
-            {
-              text: "Documentation Guide",
-              link: "/contributing/documentation-guide",
-            },
-            { text: "Building an Image", link: "/contributing/building-image" },
-            { text: "Testing an Image", link: "/contributing/testing-image" },
-            { text: "Contribution Workflow", link: "/contributing/workflow" },
-            { text: "Code Style", link: "/contributing/code-style" },
-            {
-              text: "Dependency Policy",
-              link: "/contributing/dependency-policy",
-            },
-          ],
-        },
-      ],
-
-      // Legacy documentation (temporary, for backward compatibility)
-      "/projects/gardenlinux/": [
-        {
-          text: "Introduction",
-          collapsed: false,
-          items: [
-            {
-              text: "Overview",
-              link: "/projects/gardenlinux/introduction/index",
-            },
-            {
-              text: "Linux Kernel",
-              link: "/projects/gardenlinux/introduction/kernel",
-            },
-            {
-              text: "Motivation",
-              link: "/projects/gardenlinux/introduction/motivation",
-            },
-            {
-              text: "Package Pipeline",
-              link: "/projects/gardenlinux/introduction/package-pipeline",
-            },
-            {
-              text: "Release Plan",
-              link: "/projects/gardenlinux/introduction/release",
-            },
-          ],
-        },
-        {
-          text: "Developers",
-          collapsed: false,
-          items: [
-            {
-              text: "Overview",
-              link: "/projects/gardenlinux/developers/index",
-            },
-            {
-              text: "Build Image",
-              link: "/projects/gardenlinux/developers/build_image",
-            },
-            {
-              text: "Build OpenStack Image",
-              link: "/projects/gardenlinux/developers/build_image_openstack",
-            },
-            {
-              text: "Build Packages",
-              link: "/projects/gardenlinux/developers/build_packages",
-            },
-            {
-              text: "Test Image",
-              link: "/projects/gardenlinux/developers/test_image",
-            },
-            {
-              text: "Contributing",
-              link: "/projects/gardenlinux/developers/contributing",
-            },
-            {
-              text: "Bare Container",
-              link: "/projects/gardenlinux/developers/bare_container",
-            },
-            {
-              text: "GitHub Pipelines",
-              link: "/projects/gardenlinux/developers/github_pipelines",
-            },
-            {
-              text: "VMware OVA",
-              link: "/projects/gardenlinux/developers/vmware-ova",
-            },
-          ],
-        },
-        {
-          text: "Operators",
-          collapsed: false,
-          items: [
-            { text: "Overview", link: "/projects/gardenlinux/operators/index" },
-            {
-              text: "APT Repository",
-              link: "/projects/gardenlinux/operators/apt_repo",
-            },
-            {
-              text: "AWS Secure Boot",
-              link: "/projects/gardenlinux/operators/deployment/aws-secureboot",
-            },
-            {
-              text: "GCP Secure Boot",
-              link: "/projects/gardenlinux/operators/deployment/gcp-secureboot",
-            },
-            {
-              text: "Non-Default Install",
-              link: "/projects/gardenlinux/operators/deployment/install-non-default",
-            },
-            {
-              text: "iPXE Install",
-              link: "/projects/gardenlinux/operators/deployment/ipxe-install",
-            },
-            {
-              text: "Gardener Kernel Restart",
-              link: "/projects/gardenlinux/operators/gardener-kernel-restart",
-            },
-            {
-              text: "Lima VM",
-              link: "/projects/gardenlinux/operators/lima-vm",
-            },
-            {
-              text: "Local K8s with Lima",
-              link: "/projects/gardenlinux/operators/local-k8s-lima",
-            },
-            {
-              text: "SSH Hardening",
-              link: "/projects/gardenlinux/operators/ssh-hardening",
-            },
-            {
-              text: "Time Configuration",
-              link: "/projects/gardenlinux/operators/time-configuration",
-            },
-          ],
-        },
-      ],
-
-      // Builder project docs
-      "/projects/builder/": [
-        {
-          text: "Builder",
-          items: [
-            {
-              text: "Getting Started",
-              link: "/projects/builder/getting_started",
-            },
-            { text: "Features", link: "/projects/builder/features" },
-          ],
-        },
-      ],
-
-      // Python library project docs
-      "/projects/python-gardenlinux-lib/": [
-        {
-          text: "Python Garden Linux Library",
-          items: [
-            { text: "Overview", link: "/projects/python-gardenlinux-lib/" },
-          ],
-        },
-      ],
+      "/contributing/": documentationSidebar,
     },
 
     socialLinks: [{ icon: "github", link: "https://github.com/gardenlinux" }],

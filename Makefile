@@ -73,7 +73,7 @@ clean:
 	@echo "Cleaning build artifacts and aggregated docs..."
 	rm -rf docs/.vitepress/dist
 	rm -rf docs/.vitepress/cache
-	rm -rf docs/projects
+	rm -rf docs/projects docs/contributing docs/explanation docs/how-to docs/projects docs/reference docs/tutorials
 	rm -f docs/.vitepress/config.generated.json
 	@echo "Clean complete!"
 	@echo "Note: VitePress config.mts sidebar entries are not automatically removed."
@@ -81,6 +81,7 @@ clean:
 clean-projects:
 	@echo "Removing aggregated project documentation..."
 	rm -rf docs/projects
+	rm -rf docs/projects docs/contributing docs/explanation docs/how-to docs/projects docs/reference docs/tutorials
 	rm -f docs/.vitepress/config.generated.json
 	@echo "Project docs cleaned!"
 
@@ -88,7 +89,7 @@ clean-aggregated-git:
 	@echo "Removing uncommitted aggregated documentation..."
 	@if [ -d .git ]; then \
 		echo "Using git clean to remove untracked files in docs/projects/"; \
-		git clean -fd docs/projects/ 2>/dev/null || true; \
+		git clean -fd docs/projects/ docs/contributing/ docs/explanation/ docs/how-to/ docs/reference/ docs/tutorials/ 2>/dev/null || true; \
 		if [ -f docs/.vitepress/config.generated.json ]; then \
 			if ! git ls-files --error-unmatch docs/.vitepress/config.generated.json >/dev/null 2>&1; then \
 				rm -f docs/.vitepress/config.generated.json; \
@@ -98,6 +99,11 @@ clean-aggregated-git:
 	else \
 		echo "Not a git repository, using regular clean..."; \
 		rm -rf docs/projects; \
+    	rm -rf docs/contributing; \
+    	rm -rf docs/explanation; \
+    	rm -rf docs/how-to; \
+    	rm -rf docs/reference; \
+    	rm -rf docs/tutorials; \
 		rm -f docs/.vitepress/config.generated.json; \
 	fi
 	@echo "Uncommitted aggregated docs cleaned!"

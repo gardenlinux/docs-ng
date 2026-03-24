@@ -12,6 +12,7 @@ import json
 import os
 import re
 import shutil
+import yaml
 from pathlib import Path
 
 
@@ -591,6 +592,93 @@ def process_all_markdown(target_dir, repo_name):
     print(f"  [Success] Processed {success_count}/{len(md_files)} files successfully")
 
 
+def parse_frontmatter(content):
+    """
+    Parse YAML frontmatter from markdown content.
+    Returns (frontmatter_dict, content_without_frontmatter) or (None, original_content)
+    """
+    if not content.startswith("---\n"):
+        return None, content
+    
+    try:
+        end_match = re.search(r"\n---\n", content[4:])
+        if not end_match:
+            return None, content
+        
+        frontmatter_text = content[4 : 4 + end_match.start()]
+        rest_content = content[4 + end_match.end() :]
+        
+        frontmatter_dict = yaml.safe_load(frontmatter_text)
+        return frontmatter_dict, rest_content
+    except Exception as e:
+        print(f"  [Warning] Failed to parse frontmatter: {e}")
+        return None, content
+
+
+def copy_targeted_docs(source_dir, docs_dir, repo_name):
+    """
+    Copy markdown files with 'target:' frontmatter to their specified locations.
+    
+    Args:
+        source_dir: Source directory containing fetched docs (e.g., /tmp/xxx/gardenlinux)
+        docs_dir: Target docs directory (e.g., /path/to/docs-ng/docs)
+        repo_name: Name of the repository for logging
+    """
+    source_path = Path(source_dir)
+    docs_path = Path(docs_dir)
+    
+    if not source_path.exists():
+        print(f"  [Warning] Source directory not found: {source_dir}")
+        return
+    
+    # Find all markdown files
+    md_files = list(source_path.rglob("*.md"))
+    targeted_files = []
+    
+    print(f"  Scanning {len(md_files)} files for 'target:' frontmatter...")
+    
+    for md_file in md_files:
+        try:
+            with open(md_file, "r", encoding="utf-8") as f:
+                content = f.read()
+            
+            frontmatter, _ = parse_frontmatter(content)
+            
+            if frontmatter and "target" in frontmatter:
+                target_path = frontmatter["target"]
+                
+                # Strip leading 'docs/' if present
+                if target_path.startswith("docs/"):
+                    target_path = target_path[5:]
+                
+                target_file = docs_path / target_path
+                
+                # Create parent directories if needed
+                target_file.parent.mkdir(parents=True, exist_ok=True)
+                
+                # Copy the file
+                shutil.copy2(md_file, target_file)
+                
+                # Apply markdown processing (but not project-specific link rewriting)
+                # These files live in main docs tree, not under /projects/
+                content = escape_angle_brackets(content)
+                content = ensure_frontmatter(content)
+                
+                with open(target_file, "w", encoding="utf-8") as f:
+                    f.write(content)
+                
+                targeted_files.append((md_file.relative_to(source_path), target_path))
+                print(f"    ✓ Copied: {md_file.name} → {target_path}")
+                
+        except Exception as e:
+            print(f"  [Warning] Error processing {md_file.name}: {e}")
+    
+    if targeted_files:
+        print(f"  [Success] Copied {len(targeted_files)} targeted file(s)")
+    else:
+        print(f"  No files with 'target:' frontmatter found")
+
+
 def transform_repo_docs(repo_config, docs_dir, temp_dir):
     """
     Transform documentation for a single repository
@@ -605,6 +693,12 @@ def transform_repo_docs(repo_config, docs_dir, temp_dir):
     special_files = repo_config.get("special_files", {})
     media_dirs = repo_config.get("media_directories", [])
 
+    # First, copy files with 'target:' frontmatter to their specified locations
+    print(f"\n  Step 2a: Processing targeted files...")
+    copy_targeted_docs(source_dir, docs_dir, repo_name)
+    
+    # Then, do the standard structure transformation to projects/ directory
+    print(f"\n  Step 2b: Transforming project structure...")
     transform_directory_structure(
         source_dir, target_dir, structure, special_files, media_dirs
     )

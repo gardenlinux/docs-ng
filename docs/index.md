@@ -12,7 +12,7 @@ hero:
       link: /tutorials/
     - theme: alt
       text: Browse Documentation
-      link: /how-to/
+      link: /overview/
   image:
     src: /gardenlinux-logo.svg
     alt: Garden Linux Logo
@@ -33,7 +33,7 @@ features:
   - title: Contributing
     details: Guides for contributing to Garden Linux documentation and development
     link: /contributing/
-  - title: Legacy Documentation
-    details: Aggregated documentation from source repositories (being migrated)
-    link: /projects/gardenlinux/introduction/index
+  # - title: Legacy Documentation
+  #   details: Aggregated documentation from source repositories (being migrated)
+  #   link: /projects/gardenlinux/introduction/index
 ---

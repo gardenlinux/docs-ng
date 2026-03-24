@@ -8,3 +8,9 @@ shell.nix
 
 # added by aggregation
 docs/projects
+docs/contributing
+docs/explanation
+docs/how-to
+docs/projects
+docs/reference
+docs/tutorials
