@@ -92,9 +92,9 @@ const projectName = title || "Garden Linux";
             <strong>Copyright © Linux Foundation Europe.</strong>
           </p>
           <p>
-            {{ projectName }} is a project of the Open Component Model
-            Community. For applicable policies including privacy policy, terms
-            of use and trademark usage guidelines, please see
+            {{ projectName }} is a project of the NeoNephos Foundation. For
+            applicable policies including privacy policy, terms of use and
+            trademark usage guidelines, please see
             <a href="https://linuxfoundation.eu">https://linuxfoundation.eu</a>.
             Linux is a registered trademark of Linus Torvalds.
           </p>
