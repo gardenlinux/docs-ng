@@ -1,7 +1,7 @@
 import { defineConfig } from "vitepress";
 
 // Get base URL from environment variable (for GitHub Pages deployment)
-const base = process.env.BASE_URL || '/';
+const base = process.env.BASE_URL || "/";
 
 // Shared sidebar for all documentation categories
 const documentationSidebar = [
@@ -12,12 +12,18 @@ const documentationSidebar = [
       { text: "Overview", link: "/tutorials/" },
       { text: "First Boot - AWS", link: "/tutorials/first-boot-aws" },
       { text: "First Boot - Azure", link: "/tutorials/first-boot-azure" },
-      { text: "First Boot - Bare Metal", link: "/tutorials/first-boot-bare-metal" },
+      {
+        text: "First Boot - Bare Metal",
+        link: "/tutorials/first-boot-bare-metal",
+      },
       { text: "First Boot - GCP", link: "/tutorials/first-boot-gcp" },
       { text: "First Boot - KVM", link: "/tutorials/first-boot-kvm" },
       { text: "First Boot - Lima", link: "/tutorials/first-boot-lima" },
       { text: "First Boot - OCI", link: "/tutorials/first-boot-oci" },
-      { text: "First Boot - OpenStack", link: "/tutorials/first-boot-openstack" },
+      {
+        text: "First Boot - OpenStack",
+        link: "/tutorials/first-boot-openstack",
+      },
     ],
   },
   {
@@ -34,9 +40,18 @@ const documentationSidebar = [
         collapsed: true,
         items: [
           { text: "Overview", link: "/how-to/customization/" },
-          { text: "Building Features", link: "/how-to/customization/building-features" },
-          { text: "Building Flavors", link: "/how-to/customization/building-flavors" },
-          { text: "Testing Builds", link: "/how-to/customization/testing-builds" },
+          {
+            text: "Building Features",
+            link: "/how-to/customization/building-features",
+          },
+          {
+            text: "Building Flavors",
+            link: "/how-to/customization/building-flavors",
+          },
+          {
+            text: "Testing Builds",
+            link: "/how-to/customization/testing-builds",
+          },
         ],
       },
       {
@@ -63,7 +78,10 @@ const documentationSidebar = [
           { text: "Overview", link: "/how-to/security/" },
           { text: "Secure Boot", link: "/how-to/security/secure-boot" },
           { text: "SSH Hardening", link: "/how-to/security/ssh-hardening" },
-          { text: "Time Configuration", link: "/how-to/security/time-configuration" },
+          {
+            text: "Time Configuration",
+            link: "/how-to/security/time-configuration",
+          },
         ],
       },
     ],
@@ -75,7 +93,10 @@ const documentationSidebar = [
       { text: "Overview", link: "/explanation/" },
       { text: "Architecture", link: "/explanation/architecture" },
       { text: "Design Decisions", link: "/explanation/design-decisions" },
-      { text: "Flavors and Features", link: "/explanation/flavors-and-features" },
+      {
+        text: "Flavors and Features",
+        link: "/explanation/flavors-and-features",
+      },
       { text: "Image Types", link: "/explanation/image-types" },
       { text: "Release Cadence", link: "/explanation/release-cadence" },
       { text: "Security Posture", link: "/explanation/security-posture" },
@@ -91,7 +112,10 @@ const documentationSidebar = [
       { text: "Flavor Matrix", link: "/reference/flavor-matrix" },
       { text: "Image Formats", link: "/reference/image-formats" },
       { text: "Kernels & Modules", link: "/reference/kernels-and-modules" },
-      { text: "Platform Compatibility", link: "/reference/platform-compatibility" },
+      {
+        text: "Platform Compatibility",
+        link: "/reference/platform-compatibility",
+      },
       {
         text: "API",
         collapsed: true,
@@ -106,7 +130,10 @@ const documentationSidebar = [
         collapsed: true,
         items: [
           { text: "Overview", link: "/reference/releases/" },
-          { text: "Maintained Releases", link: "/reference/releases/maintained-releases" },
+          {
+            text: "Maintained Releases",
+            link: "/reference/releases/maintained-releases",
+          },
           { text: "Release Notes", link: "/reference/releases/release-notes" },
         ],
       },
@@ -131,7 +158,7 @@ export default defineConfig({
       {
         rel: "icon",
         type: "image/svg+xml",
-        href: `${base}.vitepress/theme/assets/gardenlinux-logo.svg`,
+        href: `/gardenlinux-logo.svg`,
       },
     ],
     ["meta", { name: "theme-color", content: "#009f76" }],
@@ -150,8 +177,8 @@ export default defineConfig({
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     logo: {
-      light: `${base}.vitepress/theme/assets/gardenlinux-logo.svg`,
-      dark: `${base}.vitepress/theme/assets/gardenlinux-logo.svg`,
+      light: `/gardenlinux-logo.svg`,
+      dark: `/gardenlinux-logo.svg`,
     },
     nav: [
       { text: "Start Here", link: "/" },
