@@ -1,5 +1,6 @@
 docs/.vitepress/dist
 docs/.vitepress/cache
+docs/.vitepress/config.generated.json
 node_modules/
 **/__pycache__/
 shell.nix
