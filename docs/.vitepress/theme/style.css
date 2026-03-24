@@ -91,6 +91,7 @@ img[src="/search.png"] {
 }
 
 /* Podrick button styling */
+/*
 .VPButton.alt[href*="podrick"]::after {
   content: "";
   display: inline-block;
@@ -109,6 +110,7 @@ img[src="/search.png"] {
   display: inline-flex;
   align-items: center;
 }
+*/
 
 @media (max-width: 640px) {
   .VPHome .VPTeamMembers.small .container {

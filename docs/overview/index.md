@@ -1,6 +1,7 @@
 ---
-title: "Documentation Overview"
+title: "Overview"
 description: "How Garden Linux documentation is organized"
+order: 1
 ---
 
 # How Our Documentation Is Organized
@@ -13,10 +14,11 @@ Our documentation follows a proven framework that organizes content by **what yo
 
 ### 🎓 Tutorials — "I want to learn"
 
-**Purpose**: Learn by doing with step-by-step guides  
+**Purpose**: Learn by doing with step-by-step guides
 **Best for**: Newcomers, those trying Garden Linux for the first time
 
 Tutorials are hands-on, learning-oriented guides that walk you through complete workflows from start to finish. Each tutorial:
+
 - Starts from zero knowledge
 - Provides complete, copy-pasteable commands
 - Guarantees success if followed exactly
@@ -25,6 +27,7 @@ Tutorials are hands-on, learning-oriented guides that walk you through complete 
 **Start here**: [First Boot Tutorials](/tutorials/)
 
 **Examples**:
+
 - First Boot on AWS, Azure, GCP, KVM, Lima, etc.
 - Complete walkthroughs for each platform
 
@@ -32,7 +35,7 @@ Tutorials are hands-on, learning-oriented guides that walk you through complete 
 
 ### 🛠️ How-to Guides — "I want to accomplish a task"
 
-**Purpose**: Step-by-step solutions for specific problems  
+**Purpose**: Step-by-step solutions for specific problems
 **Best for**: Users who know what they want to do
 
 How-to guides are goal-oriented instructions that help you accomplish specific tasks. They assume some familiarity with Garden Linux and focus on practical solutions.
@@ -40,6 +43,7 @@ How-to guides are goal-oriented instructions that help you accomplish specific t
 **Start here**: [How-to Guides](/how-to/)
 
 **Categories**:
+
 - **Getting Started**: Choosing flavors, getting images, initial configuration
 - **Platform-Specific**: AWS, Azure, GCP, KVM, OpenStack, Lima, OCI, VMware, Bare Metal
 - **Security**: SSH hardening, Secure Boot, time configuration
@@ -50,14 +54,15 @@ How-to guides are goal-oriented instructions that help you accomplish specific t
 
 ### 💡 Explanation — "I want to understand"
 
-**Purpose**: Background, concepts, and design philosophy  
-**Best for**: Users who want to understand *why* and *how* things work
+**Purpose**: Background, concepts, and design philosophy
+**Best for**: Users who want to understand _why_ and _how_ things work
 
 Explanations provide context and background to help you think about Garden Linux. They're discursive and conceptual rather than task-focused.
 
 **Start here**: [Explanation](/explanation/)
 
 **Topics**:
+
 - **Use Cases**: Why use Garden Linux? What problems does it solve?
 - **Flavors and Features**: How the build system works
 - **Image Types**: Different formats and boot modes
@@ -70,7 +75,7 @@ Explanations provide context and background to help you think about Garden Linux
 
 ### 📚 Reference — "I want to look something up"
 
-**Purpose**: Technical specifications and lookup tables  
+**Purpose**: Technical specifications and lookup tables
 **Best for**: Users who need accurate, detailed information
 
 Reference documentation provides concise, accurate technical details organized for quick lookup.
@@ -78,6 +83,7 @@ Reference documentation provides concise, accurate technical details organized f
 **Start here**: [Reference](/reference/)
 
 **Includes**:
+
 - **Flavor Matrix**: Complete table of all available flavors
 - **Feature Glossary**: All features documented
 - **Platform Compatibility**: Which platforms support which features
@@ -90,7 +96,7 @@ Reference documentation provides concise, accurate technical details organized f
 
 ### 🤝 Contributing
 
-**Purpose**: Guidelines for contributing to Garden Linux  
+**Purpose**: Guidelines for contributing to Garden Linux
 **Best for**: Contributors to code or documentation
 
 Contributing guides explain how to participate in Garden Linux development.
@@ -98,6 +104,7 @@ Contributing guides explain how to participate in Garden Linux development.
 **Start here**: [Contributing](/contributing/)
 
 **Topics**:
+
 - Documentation guide
 - Building and testing images
 - Contribution workflow
@@ -110,14 +117,14 @@ Contributing guides explain how to participate in Garden Linux development.
 
 Choose your path based on your situation:
 
-| Your Situation | Where to Go |
-|----------------|-------------|
-| **New to Garden Linux?** | Start with [Tutorials](/tutorials/) to learn the basics |
+| Your Situation                             | Where to Go                                                           |
+| ------------------------------------------ | --------------------------------------------------------------------- |
+| **New to Garden Linux?**                   | Start with [Tutorials](/tutorials/) to learn the basics               |
 | **Need to deploy on a specific platform?** | Go to [How-to Guides → Platform-Specific](/how-to/platform-specific/) |
-| **Want to customize Garden Linux?** | Check [How-to Guides → Customization](/how-to/customization/) |
-| **Need to understand concepts?** | Read [Explanation](/explanation/) for background |
-| **Looking for specific details?** | Search [Reference](/reference/) documentation |
-| **Want to contribute?** | See [Contributing](/contributing/) guidelines |
+| **Want to customize Garden Linux?**        | Check [How-to Guides → Customization](/how-to/customization/)         |
+| **Need to understand concepts?**           | Read [Explanation](/explanation/) for background                      |
+| **Looking for specific details?**          | Search [Reference](/reference/) documentation                         |
+| **Want to contribute?**                    | See [Contributing](/contributing/) guidelines                         |
 
 ## Documentation Principles
 

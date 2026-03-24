@@ -13,6 +13,8 @@
     {
       "name": "gardenlinux",
       "url": "https://github.com/gardenlinux/gardenlinux",
+      "github_org": "gardenlinux",
+      "github_repo": "gardenlinux",
       "docs_path": "docs",
       "target_path": "projects/gardenlinux",
       "branch": "docs-ng",
@@ -29,6 +31,8 @@
     {
       "name": "builder",
       "url": "https://github.com/gardenlinux/builder",
+      "github_org": "gardenlinux",
+      "github_repo": "builder",
       "docs_path": "docs",
       "target_path": "projects/builder",
       "branch": "main",
@@ -37,6 +41,8 @@
     {
       "name": "python-gardenlinux-lib",
       "url": "https://github.com/gardenlinux/python-gardenlinux-lib",
+      "github_org": "gardenlinux",
+      "github_repo": "python-gardenlinux-lib",
       "docs_path": "docs",
       "target_path": "projects/python-gardenlinux-lib",
       "branch": "main",

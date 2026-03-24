@@ -378,7 +378,14 @@ def escape_text_angle_brackets(text):
     return text
 
 
-def ensure_frontmatter(content, title=None):
+def ensure_frontmatter(content):
+    """
+    Ensure frontmatter exists and fix YAML formatting.
+    Only fixes existing frontmatter - does not inject new fields.
+    
+    Args:
+        content: The markdown content
+    """
     # Check if frontmatter already exists
     if content.startswith("---\n"):
         try:
@@ -389,28 +396,13 @@ def ensure_frontmatter(content, title=None):
 
                 # Parse and fix the frontmatter
                 fixed_frontmatter = fix_yaml_frontmatter(frontmatter_content)
+                
                 return f"---\n{fixed_frontmatter}\n---\n\n{rest_content}"
-        except Exception:  # FIXME: Clean this Error Handling
-            print(
-                f"[Warning] Frontmatter: Couldn't parse some existing frontmatter for content for file titled '{title}'!"
-            )
+        except Exception:
+            print(f"[Warning] Frontmatter: Couldn't parse existing frontmatter!")
             pass
-        return content
-
-    # Get title from first heading as fallback
-    if not title:
-        match = re.search(r"^#\s+(.+)$", content, re.MULTILINE)
-        if match:
-            title = match.group(1)
-
-    frontmatter = "---\n"
-    if title:
-        # Quote title if it contains special characters
-        quoted_title = quote_yaml_value(title)
-        frontmatter += f"title: {quoted_title}\n"
-    frontmatter += "---\n\n"
-
-    return frontmatter + content
+    
+    return content
 
 
 def quote_yaml_value(value):
@@ -538,7 +530,13 @@ def process_markdown_file(file_path, repo_name, target_dir, base_path="/projects
     - Escape angle brackets
     - Rewrite links
     - Fix broken project links
-    - Ensure frontmatter
+    - Fix frontmatter YAML formatting
+    
+    Args:
+        file_path: Path to the markdown file
+        repo_name: Name of the repository
+        target_dir: Target directory where files are being processed
+        base_path: Base path for projects (default: "/projects")
     """
     try:
         with open(file_path, "r", encoding="utf-8") as f:
@@ -569,6 +567,10 @@ def process_markdown_file(file_path, repo_name, target_dir, base_path="/projects
 def process_all_markdown(target_dir, repo_name):
     """
     Process all markdown files in target directory
+    
+    Args:
+        target_dir: Target directory containing markdown files
+        repo_name: Name of the repository
     """
     target_path = Path(target_dir)
 
@@ -617,7 +619,7 @@ def parse_frontmatter(content):
 
 def copy_targeted_docs(source_dir, docs_dir, repo_name):
     """
-    Copy markdown files with 'target:' frontmatter to their specified locations.
+    Copy markdown files with 'github_target_path:' frontmatter to their specified locations.
     
     Args:
         source_dir: Source directory containing fetched docs (e.g., /tmp/xxx/gardenlinux)
@@ -635,7 +637,7 @@ def copy_targeted_docs(source_dir, docs_dir, repo_name):
     md_files = list(source_path.rglob("*.md"))
     targeted_files = []
     
-    print(f"  Scanning {len(md_files)} files for 'target:' frontmatter...")
+    print(f"  Scanning {len(md_files)} files for 'github_target_path:' frontmatter...")
     
     for md_file in md_files:
         try:
@@ -644,8 +646,9 @@ def copy_targeted_docs(source_dir, docs_dir, repo_name):
             
             frontmatter, _ = parse_frontmatter(content)
             
-            if frontmatter and "target" in frontmatter:
-                target_path = frontmatter["target"]
+            # Check for 'github_target_path' in frontmatter
+            if frontmatter and ("github_target_path" in frontmatter):
+                target_path = frontmatter.get("github_target_path") or frontmatter.get("target")
                 
                 # Strip leading 'docs/' if present
                 if target_path.startswith("docs/"):
@@ -676,7 +679,7 @@ def copy_targeted_docs(source_dir, docs_dir, repo_name):
     if targeted_files:
         print(f"  [Success] Copied {len(targeted_files)} targeted file(s)")
     else:
-        print(f"  No files with 'target:' frontmatter found")
+        print(f"  No files with 'github_target_path:' frontmatter found")
 
 
 def transform_repo_docs(repo_config, docs_dir, temp_dir):
