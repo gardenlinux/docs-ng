@@ -27,11 +27,12 @@ help:
 install:
 	@echo "Installing dependencies..."
 	pnpm install
+	pip install -r requirements.txt
 
 run: install
 	pnpm run docs:dev
 
-build: install
+build: install clean aggregate
 	pnpm run docs:build
 
 preview: install
