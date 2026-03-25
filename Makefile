@@ -25,7 +25,6 @@ help:
 install:
 	@echo "Installing dependencies..."
 	pnpm install
-	pip install -r requirements.txt
 
 run: install
 	pnpm run docs:dev

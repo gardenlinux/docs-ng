@@ -6,6 +6,7 @@
       "github_org": "gardenlinux",
       "github_repo": "gardenlinux",
       "docs_path": "docs",
+      "root_files": ["CONTRIBUTING.md", "SECURITY.md"],
       "target_path": "projects/gardenlinux",
       "branch": "docs-ng",
       "structure": {

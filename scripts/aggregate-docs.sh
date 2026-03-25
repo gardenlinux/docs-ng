@@ -89,7 +89,9 @@ with open('$CONFIG_FILE') as f:
     for repo in config['repos']:
         if '$REPO_FILTER' and repo['name'] != '$REPO_FILTER':
             continue
-        print(f\"{repo['name']}|{repo['url']}|{repo['branch']}|{repo['docs_path']}\")
+        root_files = repo.get('root_files', [])
+        root_files_str = ' '.join(root_files) if root_files else ''
+        print(f\"{repo['name']}|{repo['url']}|{repo['branch']}|{repo['docs_path']}|{root_files_str}\")
 ")
 
 if [ -z "$repos" ]; then
@@ -97,7 +99,7 @@ if [ -z "$repos" ]; then
     exit 1
 fi
 
-while IFS='|' read -r name url branch docs_path; do
+while IFS='|' read -r name url branch docs_path root_files; do
     echo ""
     echo "Repository: $name"
 
@@ -105,7 +107,8 @@ while IFS='|' read -r name url branch docs_path; do
     mkdir -p "$repo_temp_dir"
 
     # Fetch docs using sparse checkout
-    if ! "$FETCH_SCRIPT" "$url" "$branch" "$docs_path" "$repo_temp_dir"; then
+    # shellcheck disable=SC2086
+    if ! "$FETCH_SCRIPT" "$url" "$branch" "$docs_path" "$repo_temp_dir" $root_files; then
         echo "Warning: Failed to fetch docs for $name"
         continue
     fi

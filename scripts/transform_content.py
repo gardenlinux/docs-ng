@@ -12,7 +12,6 @@ import json
 import os
 import re
 import shutil
-import yaml
 from pathlib import Path
 
 
@@ -598,6 +597,9 @@ def parse_frontmatter(content):
     """
     Parse YAML frontmatter from markdown content.
     Returns (frontmatter_dict, content_without_frontmatter) or (None, original_content)
+
+    Uses simple key: value parsing (no external YAML library required).
+    Handles the subset of YAML used in frontmatter: simple string key-value pairs.
     """
     if not content.startswith("---\n"):
         return None, content
@@ -610,7 +612,17 @@ def parse_frontmatter(content):
         frontmatter_text = content[4 : 4 + end_match.start()]
         rest_content = content[4 + end_match.end() :]
 
-        frontmatter_dict = yaml.safe_load(frontmatter_text)
+        frontmatter_dict = {}
+        for line in frontmatter_text.split("\n"):
+            line = line.strip()
+            if not line:
+                continue
+            if ":" in line:
+                key, value = line.split(":", 1)
+                key = key.strip()
+                value = value.strip().strip("\"'")
+                frontmatter_dict[key] = value
+
         return frontmatter_dict, rest_content
     except Exception as e:
         print(f"  [Warning] Failed to parse frontmatter: {e}")
