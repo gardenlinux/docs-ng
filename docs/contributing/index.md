@@ -1,14 +1,12 @@
 ---
 title: Contributing
 description: Guidelines and information for contributing to Garden Linux
-order: 1
+order: 6
 ---
 
 # Contributing
 
 This section provides guidelines and information for anyone who wants to contribute to Garden Linux. Whether you're fixing a bug, adding a feature, or improving documentation, we welcome your participation.
-
-## Available Contribution Guides
 
 <SectionIndex />
 

@@ -1,14 +1,12 @@
 ---
 title: Reference
 description: Information-oriented technical descriptions and specifications
-order: 1
+order: 5
 ---
 
 # Reference
 
 Reference materials are **information-oriented** technical descriptions that provide detailed, accurate information about Garden Linux. They describe how things work and what options are available.
-
-## Available Reference Documentation
 
 <SectionIndex />
 

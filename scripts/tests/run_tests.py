@@ -192,12 +192,11 @@ def test_quote_yaml_value_without_special_chars(runner):
     runner.assert_equal(result, "Simple Title", "Simple value should not be quoted")
 
 
-def test_ensure_frontmatter_adds_when_missing(runner):
-    """Test that frontmatter is added when missing"""
+def test_ensure_frontmatter_no_change_when_missing(runner):
+    """Test that content without frontmatter is returned unchanged"""
     content = "# Test Title\n\nContent here."
     result = ensure_frontmatter(content)
-    runner.assert_contains(result, "---", "Frontmatter delimiters should be added")
-    runner.assert_contains(result, "title:", "Title field should be added")
+    runner.assert_equal(result, content, "Content without frontmatter should be unchanged")
 
 
 def test_ensure_frontmatter_preserves_existing(runner):
@@ -260,7 +259,7 @@ def main():
             test_preserve_anchor_links,
             test_quote_yaml_value_with_colon,
             test_quote_yaml_value_without_special_chars,
-            test_ensure_frontmatter_adds_when_missing,
+            test_ensure_frontmatter_no_change_when_missing,
             test_ensure_frontmatter_preserves_existing,
             test_ensure_frontmatter_fixes_colons,
             test_escape_text_angle_brackets_preserves_html,

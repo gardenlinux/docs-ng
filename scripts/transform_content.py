@@ -218,171 +218,171 @@ def rewrite_links(
     return content
 
 
-def escape_angle_brackets(content):
-    """
-    Escape angle brackets that are not part of HTML tags.
-
-    This is needed for content like "<release number>" which should be
-    displayed as text, not parsed as an HTML tag.
-
-    Skip escaping inside:
-    - Code blocks (``` or indented)
-    - Inline code (``)
-    """
-    # Split content by code blocks and inline code to process only text parts
-    lines = content.split("\n")
-    result_lines = []
-    in_code_block = False
-
-    for line in lines:
-        if line.strip().startswith("```"):
-            in_code_block = not in_code_block
-            result_lines.append(line)
-            continue
-
-        if in_code_block:
-            result_lines.append(line)
-            continue
-
-        if line.startswith("    ") or line.startswith("\t"):
-            result_lines.append(line)
-            continue
-
-        parts = []
-        in_inline_code = False
-        current = ""
-        i = 0
-
-        while i < len(line):
-            if line[i] == "`":
-                if current:
-                    if in_inline_code:
-                        parts.append(current)
-                    else:
-                        parts.append(escape_text_angle_brackets(current))
-                    current = ""
-                parts.append("`")
-                in_inline_code = not in_inline_code
-                i += 1
-            else:
-                current += line[i]
-                i += 1
-
-        if current:
-            if in_inline_code:
-                parts.append(current)
-            else:
-                parts.append(escape_text_angle_brackets(current))
-
-        result_lines.append("".join(parts))
-
-    return "\n".join(result_lines)
-
-
-def escape_text_angle_brackets(text):
-    """
-    Escape angle brackets in plain text (not in code).
-    Only escape if they look like placeholders, not HTML tags.
-    """
-    import re
-
-    known_html_tags = {
-        "a",
-        "b",
-        "i",
-        "u",
-        "p",
-        "div",
-        "span",
-        "br",
-        "hr",
-        "img",
-        "picture",
-        "source",
-        "table",
-        "tr",
-        "td",
-        "th",
-        "ul",
-        "ol",
-        "li",
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "code",
-        "pre",
-        "blockquote",
-        "em",
-        "strong",
-        "del",
-        "ins",
-        "sub",
-        "sup",
-        "html",
-        "head",
-        "body",
-        "title",
-        "link",
-        "meta",
-        "script",
-        "style",
-        "nav",
-        "header",
-        "footer",
-        "section",
-        "article",
-        "aside",
-        "main",
-        "figure",
-        "figcaption",
-        "details",
-        "summary",
-        "video",
-        "audio",
-        "iframe",
-        "canvas",
-        "svg",
-        "path",
-        "form",
-        "input",
-        "button",
-        "select",
-        "option",
-        "textarea",
-        "label",
-    }
-
-    def replace_bracket(match):
-        content = match.group(1)
-
-        tag_content = content.strip()
-        if tag_content.startswith("/"):
-            tag_content = tag_content[1:]
-
-        tag_name = (
-            tag_content.split()[0].lower()
-            if " " in tag_content
-            else tag_content.lower()
-        )
-
-        if tag_name in known_html_tags:
-            return f"<{content}>"
-
-        return f"&lt;{content}&gt;"
-
-    text = re.sub(r"<([^>]+)>", replace_bracket, text)
-
-    return text
+# def escape_angle_brackets(content):
+#     """
+#     Escape angle brackets that are not part of HTML tags.
+#
+#     This is needed for content like "<release number>" which should be
+#     displayed as text, not parsed as an HTML tag.
+#
+#     Skip escaping inside:
+#     - Code blocks (``` or indented)
+#     - Inline code (``)
+#     """
+#     # Split content by code blocks and inline code to process only text parts
+#     lines = content.split("\n")
+#     result_lines = []
+#     in_code_block = False
+#
+#     for line in lines:
+#         if line.strip().startswith("```"):
+#             in_code_block = not in_code_block
+#             result_lines.append(line)
+#             continue
+#
+#         if in_code_block:
+#             result_lines.append(line)
+#             continue
+#
+#         if line.startswith("    ") or line.startswith("\t"):
+#             result_lines.append(line)
+#             continue
+#
+#         parts = []
+#         in_inline_code = False
+#         current = ""
+#         i = 0
+#
+#         while i < len(line):
+#             if line[i] == "`":
+#                 if current:
+#                     if in_inline_code:
+#                         parts.append(current)
+#                     else:
+#                         parts.append(escape_text_angle_brackets(current))
+#                     current = ""
+#                 parts.append("`")
+#                 in_inline_code = not in_inline_code
+#                 i += 1
+#             else:
+#                 current += line[i]
+#                 i += 1
+#
+#         if current:
+#             if in_inline_code:
+#                 parts.append(current)
+#             else:
+#                 parts.append(escape_text_angle_brackets(current))
+#
+#         result_lines.append("".join(parts))
+#
+#     return "\n".join(result_lines)
+#
+#
+# def escape_text_angle_brackets(text):
+#     """
+#     Escape angle brackets in plain text (not in code).
+#     Only escape if they look like placeholders, not HTML tags.
+#     """
+#     import re
+#
+#     known_html_tags = {
+#         "a",
+#         "b",
+#         "i",
+#         "u",
+#         "p",
+#         "div",
+#         "span",
+#         "br",
+#         "hr",
+#         "img",
+#         "picture",
+#         "source",
+#         "table",
+#         "tr",
+#         "td",
+#         "th",
+#         "ul",
+#         "ol",
+#         "li",
+#         "h1",
+#         "h2",
+#         "h3",
+#         "h4",
+#         "h5",
+#         "h6",
+#         "code",
+#         "pre",
+#         "blockquote",
+#         "em",
+#         "strong",
+#         "del",
+#         "ins",
+#         "sub",
+#         "sup",
+#         "html",
+#         "head",
+#         "body",
+#         "title",
+#         "link",
+#         "meta",
+#         "script",
+#         "style",
+#         "nav",
+#         "header",
+#         "footer",
+#         "section",
+#         "article",
+#         "aside",
+#         "main",
+#         "figure",
+#         "figcaption",
+#         "details",
+#         "summary",
+#         "video",
+#         "audio",
+#         "iframe",
+#         "canvas",
+#         "svg",
+#         "path",
+#         "form",
+#         "input",
+#         "button",
+#         "select",
+#         "option",
+#         "textarea",
+#         "label",
+#     }
+#
+#     def replace_bracket(match):
+#         content = match.group(1)
+#
+#         tag_content = content.strip()
+#         if tag_content.startswith("/"):
+#             tag_content = tag_content[1:]
+#
+#         tag_name = (
+#             tag_content.split()[0].lower()
+#             if " " in tag_content
+#             else tag_content.lower()
+#         )
+#
+#         if tag_name in known_html_tags:
+#             return f"<{content}>"
+#
+#         return f"&lt;{content}&gt;"
+#
+#     text = re.sub(r"<([^>]+)>", replace_bracket, text)
+#
+#     return text
 
 
 def ensure_frontmatter(content):
     """
     Ensure frontmatter exists and fix YAML formatting.
     Only fixes existing frontmatter - does not inject new fields.
-    
+
     Args:
         content: The markdown content
     """
@@ -396,12 +396,12 @@ def ensure_frontmatter(content):
 
                 # Parse and fix the frontmatter
                 fixed_frontmatter = fix_yaml_frontmatter(frontmatter_content)
-                
+
                 return f"---\n{fixed_frontmatter}\n---\n\n{rest_content}"
         except Exception:
             print(f"[Warning] Frontmatter: Couldn't parse existing frontmatter!")
             pass
-    
+
     return content
 
 
@@ -412,10 +412,10 @@ def quote_yaml_value(value):
         # Check if it's properly quoted (not escaped quotes)
         if not value.startswith('"\\"'):
             return value
-    
+
     if value.startswith("'") and value.endswith("'"):
         return value
-    
+
     special_chars = [
         ":",
         "#",
@@ -508,11 +508,11 @@ def fix_broken_project_links(
         potential_index = target_path / rel_path / "index.md"
         potential_dir = target_path / rel_path
 
-        # If file or directory exists, keep the link
+        # If file exists, or directory exists with index.md, keep the link
         if (
             potential_file.exists()
             or potential_index.exists()
-            or (potential_dir.exists() and potential_dir.is_dir())
+            or (potential_dir.exists() and potential_dir.is_dir() and (potential_dir / "index.md").exists())
         ):
             return match.group(0)
 
@@ -531,7 +531,7 @@ def process_markdown_file(file_path, repo_name, target_dir, base_path="/projects
     - Rewrite links
     - Fix broken project links
     - Fix frontmatter YAML formatting
-    
+
     Args:
         file_path: Path to the markdown file
         repo_name: Name of the repository
@@ -550,7 +550,7 @@ def process_markdown_file(file_path, repo_name, target_dir, base_path="/projects
         except ValueError:
             file_rel_path = ""
 
-        content = escape_angle_brackets(content)
+        # content = escape_angle_brackets(content)
         content = rewrite_links(content, repo_name, file_rel_path, base_path)
         content = fix_broken_project_links(content, repo_name, target_dir, base_path)
         content = ensure_frontmatter(content)
@@ -567,7 +567,7 @@ def process_markdown_file(file_path, repo_name, target_dir, base_path="/projects
 def process_all_markdown(target_dir, repo_name):
     """
     Process all markdown files in target directory
-    
+
     Args:
         target_dir: Target directory containing markdown files
         repo_name: Name of the repository
@@ -601,15 +601,15 @@ def parse_frontmatter(content):
     """
     if not content.startswith("---\n"):
         return None, content
-    
+
     try:
         end_match = re.search(r"\n---\n", content[4:])
         if not end_match:
             return None, content
-        
+
         frontmatter_text = content[4 : 4 + end_match.start()]
         rest_content = content[4 + end_match.end() :]
-        
+
         frontmatter_dict = yaml.safe_load(frontmatter_text)
         return frontmatter_dict, rest_content
     except Exception as e:
@@ -620,7 +620,7 @@ def parse_frontmatter(content):
 def copy_targeted_docs(source_dir, docs_dir, repo_name):
     """
     Copy markdown files with 'github_target_path:' frontmatter to their specified locations.
-    
+
     Args:
         source_dir: Source directory containing fetched docs (e.g., /tmp/xxx/gardenlinux)
         docs_dir: Target docs directory (e.g., /path/to/docs-ng/docs)
@@ -628,54 +628,54 @@ def copy_targeted_docs(source_dir, docs_dir, repo_name):
     """
     source_path = Path(source_dir)
     docs_path = Path(docs_dir)
-    
+
     if not source_path.exists():
         print(f"  [Warning] Source directory not found: {source_dir}")
         return
-    
+
     # Find all markdown files
     md_files = list(source_path.rglob("*.md"))
     targeted_files = []
-    
+
     print(f"  Scanning {len(md_files)} files for 'github_target_path:' frontmatter...")
-    
+
     for md_file in md_files:
         try:
             with open(md_file, "r", encoding="utf-8") as f:
                 content = f.read()
-            
+
             frontmatter, _ = parse_frontmatter(content)
-            
+
             # Check for 'github_target_path' in frontmatter
             if frontmatter and ("github_target_path" in frontmatter):
                 target_path = frontmatter.get("github_target_path") or frontmatter.get("target")
-                
+
                 # Strip leading 'docs/' if present
                 if target_path.startswith("docs/"):
                     target_path = target_path[5:]
-                
+
                 target_file = docs_path / target_path
-                
+
                 # Create parent directories if needed
                 target_file.parent.mkdir(parents=True, exist_ok=True)
-                
+
                 # Copy the file
                 shutil.copy2(md_file, target_file)
-                
+
                 # Apply markdown processing (but not project-specific link rewriting)
                 # These files live in main docs tree, not under /projects/
-                content = escape_angle_brackets(content)
+                # content = escape_angle_brackets(content)
                 content = ensure_frontmatter(content)
-                
+
                 with open(target_file, "w", encoding="utf-8") as f:
                     f.write(content)
-                
+
                 targeted_files.append((md_file.relative_to(source_path), target_path))
                 print(f"    ✓ Copied: {md_file.name} → {target_path}")
-                
+
         except Exception as e:
             print(f"  [Warning] Error processing {md_file.name}: {e}")
-    
+
     if targeted_files:
         print(f"  [Success] Copied {len(targeted_files)} targeted file(s)")
     else:
@@ -699,7 +699,7 @@ def transform_repo_docs(repo_config, docs_dir, temp_dir):
     # First, copy files with 'target:' frontmatter to their specified locations
     print(f"\n  Step 2a: Processing targeted files...")
     copy_targeted_docs(source_dir, docs_dir, repo_name)
-    
+
     # Then, do the standard structure transformation to projects/ directory
     print(f"\n  Step 2b: Transforming project structure...")
     transform_directory_structure(
