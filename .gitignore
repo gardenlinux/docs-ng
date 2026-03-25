@@ -8,9 +8,15 @@ shell.nix
 
 # added by aggregation
 docs/projects
-docs/contributing
-docs/explanation
-docs/how-to
-docs/projects
-docs/reference
-docs/tutorials
+
+# Section directories - aggregated content is ignored, index.md is tracked
+docs/contributing/**
+!docs/contributing/index.md
+docs/explanation/**
+!docs/explanation/index.md
+docs/how-to/**
+!docs/how-to/index.md
+docs/reference/**
+!docs/reference/index.md
+docs/tutorials/**
+!docs/tutorials/index.md

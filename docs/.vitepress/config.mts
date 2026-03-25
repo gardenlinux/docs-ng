@@ -17,6 +17,12 @@ export default defineConfig({
     /\/how-to\/troubleshooting\//,
     /localhost/,
     /\/projects\/gardenlinux\/02_operators\/deployment/,
+    // Ignore section index links without trailing slash (VitePress internal)
+    /\/tutorials\/index$/,
+    /\/how-to\/index$/,
+    /\/explanation\/index$/,
+    /\/reference\/index$/,
+    /\/contributing\/index$/,
   ],
   head: [
     [
