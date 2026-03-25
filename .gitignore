@@ -17,6 +17,7 @@ docs/explanation/**
 docs/how-to/**
 !docs/how-to/index.md
 docs/reference/**
+!docs/reference/glossary.md
 !docs/reference/index.md
 docs/tutorials/**
 !docs/tutorials/index.md
