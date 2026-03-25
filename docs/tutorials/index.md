@@ -1,14 +1,12 @@
 ---
 title: Tutorials
 description: Learning-oriented guides that take you through a series of steps to complete a project
-order: 1
+order: 2
 ---
 
 # Tutorials
 
 Tutorials are **learning-oriented** lessons that take you through a series of steps to complete a project. They are designed to help you learn by doing, providing a safe environment to get started with Garden Linux.
-
-## Available Tutorials
 
 <SectionIndex />
 

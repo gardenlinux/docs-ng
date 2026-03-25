@@ -1,14 +1,4 @@
 {
-  "section_priorities": {
-    "gardenlinux": -1,
-    "readme": -1,
-    "index": -1,
-    "tutorials": 0,
-    "how-to": 1,
-    "explanation": 2,
-    "reference": 3,
-    "contributing": 4
-  },
   "repos": [
     {
       "name": "gardenlinux",

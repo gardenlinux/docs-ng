@@ -310,16 +310,6 @@ The `scripts/repos-config.json` file defines which repositories to aggregate and
 
 ```json
 {
-  "section_priorities": {
-    "gardenlinux": -1,
-    "readme": -1,
-    "index": -1,
-    "tutorials": 0,
-    "how-to": 1,
-    "explanation": 2,
-    "reference": 3,
-    "contributing": 4
-  },
   "repos": [
     {
       "name": "gardenlinux",
@@ -345,7 +335,6 @@ The `scripts/repos-config.json` file defines which repositories to aggregate and
 
 ### Configuration Fields
 
-- `section_priorities` — Control sidebar section ordering (lower = higher priority)
 - `name` — Repository identifier used in paths
 - `url` — Git repository URL for cloning
 - `github_org` / `github_repo` — Used for edit links

@@ -29,27 +29,27 @@ REPO_FILTER=""
 
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --dry-run)
-            DRY_RUN=true
-            shift
-            ;;
-        --repo)
-            REPO_FILTER="$2"
-            shift 2
-            ;;
-        --help)
-            echo "Usage: $0 [OPTIONS]"
-            echo ""
-            echo "Options:"
-            echo "  --dry-run        Fetch and transform but don't update docs directory"
-            echo "  --repo <name>    Only process specific repository"
-            echo "  --help           Show this help message"
-            exit 0
-            ;;
-        *)
-            echo "Unknown option: $1"
-            exit 1
-            ;;
+    --dry-run)
+        DRY_RUN=true
+        shift
+        ;;
+    --repo)
+        REPO_FILTER="$2"
+        shift 2
+        ;;
+    --help)
+        echo "Usage: $0 [OPTIONS]"
+        echo ""
+        echo "Options:"
+        echo "  --dry-run        Fetch and transform but don't update docs directory"
+        echo "  --repo <name>    Only process specific repository"
+        echo "  --help           Show this help message"
+        exit 0
+        ;;
+    *)
+        echo "Unknown option: $1"
+        exit 1
+        ;;
     esac
 done
 
@@ -71,9 +71,8 @@ fi
 # Check if required scripts exist
 FETCH_SCRIPT="$SCRIPT_DIR/fetch-repo-docs.sh"
 TRANSFORM_SCRIPT="$SCRIPT_DIR/transform_content.py"
-UPDATE_CONFIG_SCRIPT="$SCRIPT_DIR/update_config.py"
 
-for script in "$FETCH_SCRIPT" "$TRANSFORM_SCRIPT" "$UPDATE_CONFIG_SCRIPT"; do
+for script in "$FETCH_SCRIPT" "$TRANSFORM_SCRIPT"; do
     if [ ! -f "$script" ]; then
         echo "Error: Required script not found: $script"
         exit 1
@@ -101,16 +100,16 @@ fi
 while IFS='|' read -r name url branch docs_path; do
     echo ""
     echo "Repository: $name"
-    
+
     repo_temp_dir="$TEMP_DIR/$name"
     mkdir -p "$repo_temp_dir"
-    
+
     # Fetch docs using sparse checkout
     if ! "$FETCH_SCRIPT" "$url" "$branch" "$docs_path" "$repo_temp_dir"; then
         echo "Warning: Failed to fetch docs for $name"
         continue
     fi
-done <<< "$repos"
+done <<<"$repos"
 
 echo ""
 echo "Fetch complete!"
@@ -137,20 +136,6 @@ fi
 if ! python3 "$TRANSFORM_SCRIPT" $transform_args; then
     echo "Error: Transformation failed"
     exit 1
-fi
-
-echo ""
-echo "Step 3: Updating VitePress configuration"
-echo "-------------------------------------------------------------"
-
-if [ "$DRY_RUN" = true ]; then
-    echo "Dry run mode: Skipping config update"
-    echo ""
-    echo "Transformed docs available at: $TRANSFORM_TARGET"
-else
-    if ! python3 "$UPDATE_CONFIG_SCRIPT" --config "$CONFIG_FILE" --docs-dir "$DOCS_DIR" --vitepress-config "$DOCS_DIR/.vitepress/config.mts"; then
-        echo "Warning: Failed to update VitePress config"
-    fi
 fi
 
 echo ""

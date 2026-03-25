@@ -139,22 +139,6 @@ Transforms documentation content to work with VitePress:
                        --temp-dir /tmp/fetched-docs
 ```
 
-### `update_config.py`
-
-Generates VitePress sidebar configuration based on aggregated documentation
-structure.
-
-**Usage:**
-
-```bash
-./update_config.py --config repos-config.json \
-                   --docs-dir ../docs \
-                   --vitepress-config ../docs/.vitepress/config.mts
-```
-
-**Output:** Creates `config.generated.json` with sidebar structure that can be
-integrated into VitePress config.
-
 ### `aggregate-docs.sh`
 
 Main orchestration script that runs the entire aggregation pipeline.
@@ -198,8 +182,7 @@ make clean-projects
    - Restructure directories according to `structure` mapping
    - Rewrite internal links to work with new paths
    - Add frontmatter to markdown files
-3. **Update Config**: Generate sidebar configuration for VitePress
-4. **Build**: VitePress builds the unified documentation site
+3. **Build**: VitePress builds the unified documentation site
 
 ## Testing Locally
 
@@ -295,12 +278,6 @@ See `tests/README.md` for more details.
 
 - Review `structure` configuration in `repos-config.json`
 - Check `transform_directory_structure()` in `transform-content.py`
-
-### Sidebar not generating correctly
-
-- Check output in `docs/.vitepress/config.generated.json`
-- Verify markdown files have proper titles/frontmatter
-- Review `scan_directory_structure()` in `update-config.py`
 
 ### Fetch failing
 

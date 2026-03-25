@@ -1,14 +1,12 @@
 ---
 title: Explanation
 description: Understanding-oriented articles that clarify and illuminate concepts
-order: 1
+order: 4
 ---
 
 # Explanation
 
 Explanations are **understanding-oriented** discussions that clarify and illuminate concepts. They provide background, context, and deeper insight into how and why Garden Linux works the way it does.
-
-## Available Explanations
 
 <SectionIndex />
 
