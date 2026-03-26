@@ -25,8 +25,8 @@
       "github_org": "gardenlinux",
       "github_repo": "builder",
       "docs_path": "docs",
-      "target_path": "projects/builder",
-      "branch": "main",
+      "target_path": "reference/supporting-tools/builder",
+      "branch": "docs-ng",
       "structure": "flat"
     },
     {
@@ -35,8 +35,8 @@
       "github_org": "gardenlinux",
       "github_repo": "python-gardenlinux-lib",
       "docs_path": "docs",
-      "target_path": "projects/python-gardenlinux-lib",
-      "branch": "main",
+      "target_path": "reference/supporting-tools/python-gardenlinux-lib",
+      "branch": "docs-ng",
       "structure": "sphinx"
     }
   ]
