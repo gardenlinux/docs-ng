@@ -4,6 +4,7 @@
 
 set -e
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_URL="$1"
 BRANCH="${2:-main}"
 DOCS_PATH="${3:-docs}"
@@ -16,6 +17,13 @@ if [ -z "$REPO_URL" ] || [ -z "$OUTPUT_DIR" ]; then
     echo "Usage: $0 <repo_url> <branch> <docs_path> <output_dir> [root_files...]"
     echo "Example: $0 https://github.com/gardenlinux/gardenlinux.git main docs /tmp/output CONTRIBUTING.md SECURITY.md"
     exit 1
+fi
+
+# Convert relative file:// URLs to absolute paths
+if [[ "$REPO_URL" == file://../* ]]; then
+    RELATIVE_PATH="${REPO_URL#file://}"
+    ABSOLUTE_PATH="$(cd "$SCRIPT_DIR/.." && cd "$RELATIVE_PATH" && pwd)"
+    REPO_URL="file://$ABSOLUTE_PATH"
 fi
 
 echo "Fetching docs from: $REPO_URL"
