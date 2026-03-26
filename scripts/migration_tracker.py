@@ -46,11 +46,20 @@ def extract_frontmatter(content: str) -> Optional[Dict[str, str]]:
     return frontmatter
 
 
-def scan_files(directory: Path) -> List[Dict]:
-    """Scan all markdown files in directory for migration tracking data."""
+def scan_files(directory: Path, exclude_dirs: Optional[List[str]] = None) -> List[Dict]:
+    """Scan all markdown files in directory for migration tracking data.
+    
+    Args:
+        directory: Root directory to scan
+        exclude_dirs: List of directory names to exclude from scanning
+    """
     files_data = []
+    exclude_dirs = exclude_dirs or []
 
     for md_file in directory.rglob('*.md'):
+        # Skip if any part of the full path matches excluded directories
+        if any(exclude_dir in str(md_file) for exclude_dir in exclude_dirs):
+            continue
         # Skip hidden files and node_modules
         if any(part.startswith('.') for part in md_file.parts):
             continue
@@ -67,9 +76,13 @@ def scan_files(directory: Path) -> List[Dict]:
 
             # Check if this file has migration tracking fields
             if 'migration_status' in frontmatter:
-                rel_path = md_file.relative_to(directory)
-                files_data.append({
-                    'path': str(rel_path),
+                 # Get relative path from the original scan directory
+                 # Get the relative path from the scan directory
+                 rel_path = md_file.relative_to(directory)
+                 # Prepend 'docs/' to create the full path
+                 full_path = 'docs/' + str(rel_path)
+                 files_data.append({
+                     'path': full_path,
                     'status': frontmatter.get('migration_status', ''),
                     'source': frontmatter.get('migration_source', ''),
                     'issue': frontmatter.get('migration_issue', ''),
@@ -214,6 +227,11 @@ def main():
         default='markdown',
         help='Output format (default: markdown)'
     )
+    parser.add_argument(
+        '--exclude-dir',
+        type=str,
+        help='Comma-separated list of directory names to exclude from scanning'
+    )
 
     args = parser.parse_args()
 
@@ -225,9 +243,15 @@ def main():
         print(f"Error: Directory not found: {args.dir}", file=sys.stderr)
         sys.exit(1)
 
+    # Process exclude-dir argument
+    exclude_dirs = []
+    if args.exclude_dir:
+        exclude_dirs = [d.strip() for d in args.exclude_dir.split(',')]
+        print(f"Excluding directories: {exclude_dirs}", file=sys.stderr)
+    
     # Scan files
     print(f"Scanning {args.dir}...", file=sys.stderr)
-    files_data = scan_files(args.dir)
+    files_data = scan_files(args.dir, exclude_dirs)
     print(f"Found {len(files_data)} files with migration tracking", file=sys.stderr)
 
     # Filter if needed
