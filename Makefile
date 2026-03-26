@@ -1,4 +1,4 @@
-.PHONY: help run dev build preview aggregate aggregate-dry aggregate-repo test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration
+.PHONY: help run dev build preview aggregate aggregate-dry aggregate-repo test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration check spelling linkcheck woke
 
 help:
 	@echo "Garden Linux Documentation Hub - Available targets:"
@@ -11,6 +11,12 @@ help:
 	@echo "  Testing:"
 	@echo "    test                   - Run full test suite"
 	@echo "    test-unit              - Run unit tests only"
+	@echo ""
+	@echo "  Quality Checks:"
+	@echo "    check                  - Run all quality checks (spelling, links, inclusive language)"
+	@echo "    spelling               - Check spelling with codespell"
+	@echo "    linkcheck              - Check links with lychee"
+	@echo "    woke                   - Check inclusive language with woke"
 	@echo ""
 	@echo "  Documentation Aggregation:"
 	@echo "    test-aggregate-local   - Test aggregation with local repos (recommended first)"
@@ -43,6 +49,22 @@ test: install
 test-unit: install
 	@echo "Running unit tests..."
 	@cd scripts/tests && python3 run_tests.py
+
+# Quality Checks
+check: spelling linkcheck woke
+	@echo "All quality checks passed!"
+
+spelling:
+	@echo "Running spelling checks..."
+	@pnpm run docs:spelling
+
+linkcheck: install
+	@echo "Running link checks..."
+	@pnpm run docs:linkcheck
+
+woke: install
+	@echo "Running inclusive language checks..."
+	@pnpm run docs:woke
 
 # Documentation Aggregation
 test-aggregate-local: install
