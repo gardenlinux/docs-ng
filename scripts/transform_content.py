@@ -511,7 +511,11 @@ def fix_broken_project_links(
         if (
             potential_file.exists()
             or potential_index.exists()
-            or (potential_dir.exists() and potential_dir.is_dir() and (potential_dir / "index.md").exists())
+            or (
+                potential_dir.exists()
+                and potential_dir.is_dir()
+                and (potential_dir / "index.md").exists()
+            )
         ):
             return match.group(0)
 
@@ -660,7 +664,12 @@ def copy_targeted_docs(source_dir, docs_dir, repo_name):
 
             # Check for 'github_target_path' in frontmatter
             if frontmatter and ("github_target_path" in frontmatter):
-                target_path = frontmatter.get("github_target_path") or frontmatter.get("target")
+                target_path = frontmatter.get("github_target_path") or frontmatter.get(
+                    "target"
+                )
+
+                if not target_path:
+                    continue
 
                 # Strip leading 'docs/' if present
                 if target_path.startswith("docs/"):
@@ -671,8 +680,43 @@ def copy_targeted_docs(source_dir, docs_dir, repo_name):
                 # Create parent directories if needed
                 target_file.parent.mkdir(parents=True, exist_ok=True)
 
-                # Copy the file
                 shutil.copy2(md_file, target_file)
+
+                # Copy associated assets directory if it exists
+                source_assets_dir = md_file.parent / "assets"
+                if source_assets_dir.exists() and source_assets_dir.is_dir():
+                    target_assets_dir = target_file.parent / "assets"
+                    if target_assets_dir.exists():
+                        shutil.rmtree(target_assets_dir)
+                    shutil.copytree(source_assets_dir, target_assets_dir)
+
+                # Read content and rewrite asset paths
+                with open(target_file, "r", encoding="utf-8") as f:
+                    content = f.read()
+
+                # Rewrite relative asset paths to absolute paths
+                # Pattern: ![alt](../assets/file.png) or ![alt](./assets/file.png) or ![alt](assets/file.png)
+                import re
+
+                # HACK: Typing error quickfix
+                target_path_str: str = target_path  # type: ignore
+
+                def rewrite_asset_path(match):
+                    alt_text = match.group(1)
+                    path = match.group(2)
+                    # Only rewrite if it's a relative path to assets
+                    if "assets/" in path and not path.startswith("/"):
+                        # Extract just the filename
+                        filename = path.split("assets/")[-1]
+                        # Create absolute path relative to target location
+                        target_path_obj = Path(target_path_str)
+                        abs_path = str(target_path_obj.parent / "assets" / filename)
+                        return f"![{alt_text}](/{abs_path})"
+                    return match.group(0)
+
+                content = re.sub(
+                    r"!\[([^\]]*)\]\(([^)]+)\)", rewrite_asset_path, content
+                )
 
                 # Apply markdown processing (but not project-specific link rewriting)
                 # These files live in main docs tree, not under /projects/
