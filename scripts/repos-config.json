@@ -17,7 +17,7 @@
         "contributing": "contributing"
       },
       "special_files": {},
-      "media_directories": [".media"]
+      "media_directories": [".media", "assets"]
     },
     {
       "name": "builder",
