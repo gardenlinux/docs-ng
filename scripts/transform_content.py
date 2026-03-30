@@ -700,6 +700,37 @@ def copy_targeted_docs(source_dir, docs_dir, repo_name):
                 content = re.sub(r"(\[([^\]]*)\]\()/docs/", r"\1/", content)
                 content = re.sub(r'(src=")/docs/', r"\1/", content)
 
+                # Rewrite relative markdown links to absolute paths
+                # When files are moved, relative links break, so convert them to absolute
+                def solve_relative_link(match):
+                    text = match.group(1)
+                    link = match.group(2)
+                    # Skip anchors, absolute paths, and external links
+                    if (
+                        link.startswith("#")
+                        or link.startswith("/")
+                        or link.startswith("http")
+                        or link.startswith("mailto")
+                    ):
+                        return match.group(0)
+                    # Relative link - convert to absolute based on original location
+                    # Get the original file's directory
+                    original_dir = md_file.relative_to(source_path).parent
+                    # Resolve the relative link from the original location and normalize
+                    resolved = os.path.normpath(
+                        os.path.join(str(original_dir), link)
+                    ).replace("\\", "/")
+                    # Strip leading ../ for paths that try to go above root
+                    while resolved.startswith("../"):
+                        resolved = resolved[3:]
+                    # Clean up the path (remove .md)
+                    resolved = resolved.replace(".md", "")
+                    return f"[{text}](/{resolved})"
+
+                content = re.sub(
+                    r"\[([^\]]+)\]\(([^)]+)\)", solve_relative_link, content
+                )
+
                 content = ensure_frontmatter(content)
 
                 with open(target_file, "w", encoding="utf-8") as f:

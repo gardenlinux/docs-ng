@@ -21,8 +21,8 @@ Tutorials are **learning-oriented** lessons that take you through a series of st
 :::tip Recommended First Tutorial
 Want to try Garden Linux right now with zero setup cost?
 
-- **macOS or Linux**: [First Boot on Lima](./local/first-boot-lima.md)
-- **Any OS with Docker**: [First Boot as OCI Container](./container/first-boot-oci.md)
+- **macOS or Linux**: [First Boot on Lima](/tutorials/local/first-boot-lima)
+- **Any OS with Docker**: [First Boot as OCI Container](/tutorials/container/first-boot-oci)
 
 Both tutorials run entirely on your workstation in under 5 minutes.
 :::
@@ -33,10 +33,10 @@ Both tutorials run entirely on your workstation in under 5 minutes.
 
 Browse tutorials by deployment target:
 
-- [**Local**](./local/index.md) — Run Garden Linux on your workstation (Lima, KVM)
-- [**Container**](./container/index.md) — Run as an OCI container (Docker/Podman)
-- [**Cloud**](./cloud/index.md) — Deploy to cloud providers (AWS, Azure, GCP, OpenStack)
-- [**On-Premises**](./on-premises/index.md) — Install on physical hardware
+- [**Local**](/tutorials/local/index) — Run Garden Linux on your workstation (Lima, KVM)
+- [**Container**](/tutorials/container/index) — Run as an OCI container (Docker/Podman)
+- [**Cloud**](/tutorials/cloud/index) — Deploy to cloud providers (AWS, Azure, GCP, OpenStack)
+- [**On-Premises**](/tutorials/on-premises/index) — Install on physical hardware
 
 ---
 
@@ -48,7 +48,7 @@ Following the [Diátaxis framework](https://diataxis.fr/), tutorials focus on pr
 
 Once you've completed your first tutorial, you can:
 
-- Explore [how-to guides](../how-to/index.md) for task-oriented instructions
-- Read [explanations](../explanation/index.md) to understand Garden Linux concepts and architecture
-- Review [reference documentation](../reference/index.md) for technical specifications
-- Learn about [contributing](../contributing/index.md) to Garden Linux
+- Explore [how-to guides](/how-to/index) for task-oriented instructions
+- Read [explanations](/explanation/index) to understand Garden Linux concepts and architecture
+- Review [reference documentation](/reference/index) for technical specifications
+- Learn about [contributing](/contributing/index) to Garden Linux

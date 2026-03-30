@@ -5,7 +5,7 @@ order: 1
 
 # Glossary
 
-This glossary provides definitions for Garden Linux-specific terminology. If you would like to contribute additional terms or improve existing definitions, please visit our [contributing guide](../contributing/index.md).
+This glossary provides definitions for Garden Linux-specific terminology. If you would like to contribute additional terms or improve existing definitions, please visit our [contributing guide](/contributing/index.md).
 
 **Jump to:** [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [I](#i) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v)
 
@@ -15,19 +15,19 @@ This glossary provides definitions for Garden Linux-specific terminology. If you
 
 ### ADR (Architecture Decision Record)
 
-A document that captures an important architectural decision made about the Garden Linux system. ADRs provide context, rationale, and consequences of decisions. Garden Linux stores ADRs in the [reference/adr](./adr/index.md) section. See [ADR-0001](./adr/0001-record-architecture-decisions.md) for more background on why Garden Linux uses ADRs, and [Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) by Michael Nygard for the original concept.
+A document that captures an important architectural decision made about the Garden Linux system. ADRs provide context, rationale, and consequences of decisions. Garden Linux stores ADRs in the [reference/adr](/reference/adr/index.md) section. See [ADR-0001](/reference/adr/0001-record-architecture-decisions.md) for more background on why Garden Linux uses ADRs, and [Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) by Michael Nygard for the original concept.
 
 ### Architecture
 
-The processor architecture for which a Garden Linux image is built. Supported architectures include `amd64` (x86-64) and `arm64` (ARM 64-bit). The architecture can be specified as the last component of a build flavor string, e.g., `kvm-python-amd64`. See [Architecture documentation](../explanation/architecture.md) for details on Garden Linux system design.
+The processor architecture for which a Garden Linux image is built. Supported architectures include `amd64` (x86-64) and `arm64` (ARM 64-bit). The architecture can be specified as the last component of a build flavor string, e.g., `kvm-python-amd64`. See [Architecture documentation](/explanation/architecture.md) for details on Garden Linux system design.
 
 ### AWS
 
-Amazon Web Services. One of the major cloud platforms supported by Garden Linux. Garden Linux provides AWS-specific images through the [`aws`](https://github.com/gardenlinux/gardenlinux/blob/main/features/aws/README.md) platform feature with cloud-init integration and AWS-specific kernel modules. See [AWS platform guide](../how-to/platform-specific/aws.md) and [AWS first boot tutorial](../tutorials/first-boot-aws.md) for usage details.
+Amazon Web Services. One of the major cloud platforms supported by Garden Linux. Garden Linux provides AWS-specific images through the [`aws`](https://github.com/gardenlinux/gardenlinux/blob/main/features/aws/README.md) platform feature with cloud-init integration and AWS-specific kernel modules. See [AWS platform guide](/how-to/platform-specific/aws.md) and [AWS first boot tutorial](/tutorials/first-boot-aws.md) for usage details.
 
 ### Azure
 
-Microsoft Azure. A major cloud platform supported by Garden Linux through the [`azure`](https://github.com/gardenlinux/gardenlinux/blob/main/features/azure/README.md) platform feature with platform-specific image configurations and optimizations. See [Azure platform guide](../how-to/platform-specific/azure.md) and [Azure first boot tutorial](../tutorials/first-boot-azure.md) for usage details.
+Microsoft Azure. A major cloud platform supported by Garden Linux through the [`azure`](https://github.com/gardenlinux/gardenlinux/blob/main/features/azure/README.md) platform feature with platform-specific image configurations and optimizations. See [Azure platform guide](/how-to/platform-specific/azure.md) and [Azure first boot tutorial](/tutorials/first-boot-azure.md) for usage details.
 
 ---
 
@@ -35,15 +35,15 @@ Microsoft Azure. A major cloud platform supported by Garden Linux through the [`
 
 ### Bare Metal
 
-A platform target for Garden Linux images designed to run directly on physical hardware without a hypervisor through the [`baremetal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/baremetal/README.md) platform feature. Also referred to as [`metal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/metal/README.md) in build configurations. See [Bare Metal platform guide](../how-to/platform-specific/bare-metal.md) and [Bare Metal first boot tutorial](../tutorials/first-boot-bare-metal.md) for usage details.
+A platform target for Garden Linux images designed to run directly on physical hardware without a hypervisor through the [`baremetal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/baremetal/README.md) platform feature. Also referred to as [`metal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/metal/README.md) in build configurations. See [Bare Metal platform guide](/how-to/platform-specific/bare-metal.md) and [Bare Metal first boot tutorial](/tutorials/first-boot-bare-metal.md) for usage details.
 
 ### Builder
 
-The [gardenlinux/builder](https://github.com/gardenlinux/builder) component that creates customized Linux distributions. The builder is a separate project maintained by the Garden Linux team and is used to build Garden Linux images with specific flavors and features. See [Building Images documentation](../how-to/building-images.md) for practical guidance, [ADR-0020](./adr/0020-enforce-single-platform-by-default-in-builder.md) for details on platform enforcement in the builder, and [ADR-0031](./adr/0031-builder-glci-interface.md) for the builder-GLCI interface design.
+The [gardenlinux/builder](https://github.com/gardenlinux/builder) component that creates customized Linux distributions. The builder is a separate project maintained by the Garden Linux team and is used to build Garden Linux images with specific flavors and features. See [Building Images documentation](/how-to/building-images.md) for practical guidance, [ADR-0020](/reference/adr/0020-enforce-single-platform-by-default-in-builder.md) for details on platform enforcement in the builder, and [ADR-0031](/reference/adr/0031-builder-glci-interface.md) for the builder-GLCI interface design.
 
 ### Build Flavor String
 
-The hyphenated string used with the `./build` command that specifies the platform, features, and optionally the architecture for a Garden Linux image. Format: `${platform}-${feature1}-${feature2}-${arch}`. Examples: `kvm-python_dev`, `aws-gardener_prod-amd64`. See [Building Flavors guide](../how-to/customization/building-flavors.md) for detailed instructions.
+The hyphenated string used with the `./build` command that specifies the platform, features, and optionally the architecture for a Garden Linux image. Format: `${platform}-${feature1}-${feature2}-${arch}`. Examples: `kvm-python_dev`, `aws-gardener_prod-amd64`. See [Building Flavors guide](/how-to/customization/building-flavors.md) for detailed instructions.
 
 ---
 
@@ -51,15 +51,15 @@ The hyphenated string used with the `./build` command that specifies the platfor
 
 ### CIS (Center for Internet Security)
 
-A framework providing security configuration benchmarks. Garden Linux offers optional CIS compliance through the [`cis`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cis/README.md) feature and related sub-features ([`cisAudit`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisAudit/README.md), [`cisModprobe`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisModprobe/README.md), [`cisOS`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisOS/README.md), [`cisPackages`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisPackages/README.md), [`cisPartition`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisPartition/README.md), [`cisSshd`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisSshd/README.md), [`cisSysctl`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisSysctl/README.md)). See [ADR-0017](./adr/0017-feature-cis-to-retain-shell-scripts.md) for details on the CIS feature implementation and [ADR-0029](./adr/0029-cis-selinux-permissive.md) regarding SELinux in permissive mode for CIS compliance.
+A framework providing security configuration benchmarks. Garden Linux offers optional CIS compliance through the [`cis`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cis/README.md) feature and related sub-features ([`cisAudit`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisAudit/README.md), [`cisModprobe`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisModprobe/README.md), [`cisOS`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisOS/README.md), [`cisPackages`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisPackages/README.md), [`cisPartition`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisPartition/README.md), [`cisSshd`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisSshd/README.md), [`cisSysctl`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisSysctl/README.md)). See [ADR-0017](/reference/adr/0017-feature-cis-to-retain-shell-scripts.md) for details on the CIS feature implementation and [ADR-0029](/reference/adr/0029-cis-selinux-permissive.md) regarding SELinux in permissive mode for CIS compliance.
 
 ### Cloud Image
 
-A Garden Linux image optimized for cloud platforms (AWS, Azure, GCP, etc.) with cloud-init support and platform-specific configurations. See [Image Types documentation](../explanation/image-types.md) and [Image Formats reference](./image-formats.md) for more details.
+A Garden Linux image optimized for cloud platforms (AWS, Azure, GCP, etc.) with cloud-init support and platform-specific configurations. See [Image Types documentation](/explanation/image-types.md) and [Image Formats reference](/reference/image-formats.md) for more details.
 
 ### Container Image
 
-A Garden Linux image packaged for use with container runtimes. Available through GitHub Packages at `ghcr.io/gardenlinux/gardenlinux`. See [Image Types documentation](../explanation/image-types.md) for more details.
+A Garden Linux image packaged for use with container runtimes. Available through GitHub Packages at `ghcr.io/gardenlinux/gardenlinux`. See [Image Types documentation](/explanation/image-types.md) for more details.
 
 ---
 
