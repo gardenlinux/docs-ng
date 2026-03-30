@@ -511,7 +511,11 @@ def fix_broken_project_links(
         if (
             potential_file.exists()
             or potential_index.exists()
-            or (potential_dir.exists() and potential_dir.is_dir() and (potential_dir / "index.md").exists())
+            or (
+                potential_dir.exists()
+                and potential_dir.is_dir()
+                and (potential_dir / "index.md").exists()
+            )
         ):
             return match.group(0)
 
@@ -660,7 +664,12 @@ def copy_targeted_docs(source_dir, docs_dir, repo_name):
 
             # Check for 'github_target_path' in frontmatter
             if frontmatter and ("github_target_path" in frontmatter):
-                target_path = frontmatter.get("github_target_path") or frontmatter.get("target")
+                target_path = frontmatter.get("github_target_path") or frontmatter.get(
+                    "target"
+                )
+
+                if target_path is None:
+                    continue
 
                 # Strip leading 'docs/' if present
                 if target_path.startswith("docs/"):
@@ -674,9 +683,23 @@ def copy_targeted_docs(source_dir, docs_dir, repo_name):
                 # Copy the file
                 shutil.copy2(md_file, target_file)
 
+                # Copy associated assets directory if it exists next to the source file
+                source_assets_dir = md_file.parent / "assets"
+                if source_assets_dir.exists() and source_assets_dir.is_dir():
+                    target_assets_dir = target_file.parent / "assets"
+                    if target_assets_dir.exists():
+                        shutil.rmtree(target_assets_dir)
+                    shutil.copytree(source_assets_dir, target_assets_dir)
+                    print(f"      → Copied assets directory")
+
                 # Apply markdown processing (but not project-specific link rewriting)
                 # These files live in main docs tree, not under /projects/
                 # content = escape_angle_brackets(content)
+
+                # Strip /docs/ prefix from absolute paths
+                content = re.sub(r"(\[([^\]]*)\]\()/docs/", r"\1/", content)
+                content = re.sub(r'(src=")/docs/', r"\1/", content)
+
                 content = ensure_frontmatter(content)
 
                 with open(target_file, "w", encoding="utf-8") as f:
