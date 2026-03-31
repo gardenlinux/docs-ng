@@ -2,8 +2,9 @@
   "repos": [
     {
       "name": "gardenlinux",
-      "url": "file:///home/$USER/*/gardenlinux/gardenlinux",
+      "url": "file://../gardenlinux",
       "docs_path": "docs",
+      "root_files": ["CONTRIBUTING.md", "SECURITY.md"],
       "target_path": "projects/gardenlinux",
       "branch": "docs-ng",
       "structure": {
@@ -18,7 +19,7 @@
     },
     {
       "name": "builder",
-      "url": "file:///home/$USER/*/gardenlinux/builder",
+      "url": "file://../builder",
       "docs_path": "docs",
       "target_path": "projects/builder",
       "branch": "main",
@@ -26,7 +27,7 @@
     },
     {
       "name": "python-gardenlinux-lib",
-      "url": "file:///home/$USER/*/gardenlinux/python-gardenlinux-lib",
+      "url": "file://../python-gardenlinux-lib",
       "docs_path": "docs",
       "target_path": "projects/python-gardenlinux-lib",
       "branch": "main",

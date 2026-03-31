@@ -19,6 +19,7 @@ help:
 	@echo "    woke                   - Check inclusive language with woke"
 	@echo ""
 	@echo "  Documentation Aggregation:"
+	@echo "    aggregate-local        - Aggregate from local repos using relative paths (../gardenlinux ../builder ../python-gardenlinux-lib)"
 	@echo "    test-aggregate-local   - Test aggregation with local repos (recommended first)"
 	@echo "    aggregate              - Fetch and aggregate docs from all source repos"
 	@echo "    aggregate-dry          - Test aggregation without modifying docs/"
@@ -70,6 +71,10 @@ woke: install
 test-aggregate-local: install
 	@echo "Testing aggregation with local repositories..."
 	./scripts/test-local.sh --dry-run
+
+aggregate-local: install
+	@echo "Aggregating from local repositories (relative paths)..."
+	CONFIG_FILE=scripts/repos-config.local.json ./scripts/aggregate-docs.sh
 
 aggregate: install
 	@echo "Aggregating documentation from source repositories..."

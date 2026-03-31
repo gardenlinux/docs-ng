@@ -8,7 +8,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 DOCS_DIR="$PROJECT_ROOT/docs"
 TEMP_DIR=$(mktemp -d)
-CONFIG_FILE="$SCRIPT_DIR/repos-config.json"
+CONFIG_FILE="${CONFIG_FILE:-$SCRIPT_DIR/repos-config.json}"
 
 echo "=============================================================="
 echo "  Garden Linux Documentation Aggregation"
