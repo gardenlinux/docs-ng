@@ -12,11 +12,12 @@ docs/**/.media
 docs/**/_static
 docs/**/assets
 
-# Section directories - aggregated content is ignored, index.md is tracked
+# Section directories - aggregated content is ignored, index.md and selected files are tracked
 docs/contributing/**
 !docs/contributing/index.md
 !docs/contributing/documentation/
 !docs/contributing/documentation/**
+!docs/contributing/documentation_workflow.md
 docs/explanation/**
 !docs/explanation/index.md
 !docs/explanation/documentation/
