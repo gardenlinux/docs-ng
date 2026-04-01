@@ -6,7 +6,10 @@
       "github_org": "gardenlinux",
       "github_repo": "gardenlinux",
       "docs_path": "docs",
-      "root_files": ["CONTRIBUTING.md", "SECURITY.md"],
+      "root_files": [
+        "CONTRIBUTING.md",
+        "SECURITY.md"
+      ],
       "target_path": "projects/gardenlinux",
       "branch": "docs-ng",
       "structure": {
@@ -17,7 +20,9 @@
         "contributing": "contributing"
       },
       "special_files": {},
-      "media_directories": [".media"]
+      "media_directories": [
+        ".media"
+      ]
     },
     {
       "name": "builder",
@@ -25,7 +30,6 @@
       "github_org": "gardenlinux",
       "github_repo": "builder",
       "docs_path": "docs",
-      "target_path": "reference/supporting-tools/builder",
       "branch": "docs-ng",
       "structure": "flat"
     },
@@ -35,7 +39,6 @@
       "github_org": "gardenlinux",
       "github_repo": "python-gardenlinux-lib",
       "docs_path": "docs",
-      "target_path": "reference/supporting-tools/python-gardenlinux-lib",
       "branch": "docs-ng",
       "structure": "sphinx"
     }
