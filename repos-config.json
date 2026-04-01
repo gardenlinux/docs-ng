@@ -4,14 +4,13 @@
       "name": "gardenlinux",
       "url": "https://github.com/gardenlinux/gardenlinux",
       "docs_path": "docs",
+      "target_path": "projects/gardenlinux",
+      "ref": "docs-ng",
+      "commit": "a915a5a6f0d3f6a65bc4ce24db16d5119448287a",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md"
       ],
-      "target_path": "projects/gardenlinux",
-      "ref": "docs-ng",
-      "commit": "c2cb572a8773779031dd5aaac75442caf9ee9f32",
-      "root_files": ["CONTRIBUTING.md", "SECURITY.md"],
       "structure": {
         "tutorials": "tutorials",
         "how-to": "how-to",
@@ -19,7 +18,6 @@
         "reference": "reference",
         "contributing": "contributing"
       },
-      "special_files": {},
       "media_directories": [
         ".media",
         "assets",
@@ -32,8 +30,12 @@
       "docs_path": "docs",
       "target_path": "projects/builder",
       "ref": "docs-ng",
-      "commit": "b10476ad8c46130f310e36daa42c6e2c14fb51a9",
-      "media_directories": [".media", "assets", "_static"]
+      "commit": "086e74ff032c5f2a05989aef4f20ba69f94bdbf9",
+      "media_directories": [
+        ".media",
+        "assets",
+        "_static"
+      ]
     },
     {
       "name": "python-gardenlinux-lib",
@@ -43,7 +45,11 @@
       "ref": "docs-ng",
       "commit": "9142fccc3d83ab51759db7d328fa19166bc1df63",
       "structure": "sphinx",
-      "media_directories": [".media", "assets", "_static"]
+      "media_directories": [
+        ".media",
+        "assets",
+        "_static"
+      ]
     }
   ]
 }
