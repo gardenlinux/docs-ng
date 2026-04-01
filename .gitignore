@@ -8,6 +8,9 @@ shell.nix
 
 # added by aggregation
 docs/projects
+docs/**/.media
+docs/**/_static
+docs/**/assets
 
 # Section directories - aggregated content is ignored, index.md is tracked
 docs/contributing/**
