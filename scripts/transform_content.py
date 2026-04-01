@@ -629,7 +629,7 @@ def parse_frontmatter(content):
         return None, content
 
 
-def copy_targeted_docs(source_dir, docs_dir, repo_name):
+def copy_targeted_docs(source_dir, docs_dir, repo_name, media_dirs=None):
     """
     Copy markdown files with 'github_target_path:' frontmatter to their specified locations.
 
@@ -637,9 +637,11 @@ def copy_targeted_docs(source_dir, docs_dir, repo_name):
         source_dir: Source directory containing fetched docs (e.g., /tmp/xxx/gardenlinux)
         docs_dir: Target docs directory (e.g., /path/to/docs-ng/docs)
         repo_name: Name of the repository for logging
+        media_dirs: List of media directory names to copy (e.g., ['assets', '_static'])
     """
     source_path = Path(source_dir)
     docs_path = Path(docs_dir)
+    media_dirs = media_dirs or []
 
     if not source_path.exists():
         print(f"  [Warning] Source directory not found: {source_dir}")
@@ -674,6 +676,16 @@ def copy_targeted_docs(source_dir, docs_dir, repo_name):
                 # Copy the file
                 shutil.copy2(md_file, target_file)
 
+                # Copy associated asset directories (assets, _static, .media) if they exist
+                for asset_dir_name in media_dirs:
+                    source_asset_dir = md_file.parent / asset_dir_name
+                    if source_asset_dir.exists() and source_asset_dir.is_dir():
+                        target_asset_dir = target_file.parent / asset_dir_name
+                        if target_asset_dir.exists():
+                            shutil.rmtree(target_asset_dir)
+                        shutil.copytree(source_asset_dir, target_asset_dir)
+                        print(f"      → Copied {asset_dir_name}/ directory")
+
                 # Apply markdown processing (but not project-specific link rewriting)
                 # These files live in main docs tree, not under /projects/
                 # content = escape_angle_brackets(content)
@@ -697,27 +709,17 @@ def copy_targeted_docs(source_dir, docs_dir, repo_name):
 def transform_repo_docs(repo_config, docs_dir, temp_dir):
     """
     Transform documentation for a single repository
+    All files must use 'github_target_path' frontmatter to specify their destination
     """
     repo_name = repo_config["name"]
     print(f"\nTransforming docs for: {repo_name}")
 
     source_dir = os.path.join(temp_dir, repo_name)
-    target_dir = os.path.join(docs_dir, repo_config["target_path"])
-
-    structure = repo_config.get("structure", "flat")
-    special_files = repo_config.get("special_files", {})
     media_dirs = repo_config.get("media_directories", [])
 
-    # First, copy files with 'target:' frontmatter to their specified locations
-    print(f"\n  Step 2a: Processing targeted files...")
-    copy_targeted_docs(source_dir, docs_dir, repo_name)
-
-    # Then, do the standard structure transformation to projects/ directory
-    print(f"\n  Step 2b: Transforming project structure...")
-    transform_directory_structure(
-        source_dir, target_dir, structure, special_files, media_dirs
-    )
-    process_all_markdown(target_dir, repo_name)
+    # Copy files with 'github_target_path' frontmatter to their specified locations
+    print(f"\n  Processing files with github_target_path frontmatter...")
+    copy_targeted_docs(source_dir, docs_dir, repo_name, media_dirs)
 
     print(f"[Complete] Transformation complete for {repo_name}")
 
