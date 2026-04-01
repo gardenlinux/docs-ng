@@ -37,6 +37,10 @@ def rewrite_links(
         if link.startswith("http://") or link.startswith("https://"):
             return match.group(0)
         
+        # Skip special protocols (mailto, tel, javascript, etc.)
+        if ":" in link and not link.startswith("/") and not link.startswith("./") and not link.startswith("../"):
+            return match.group(0)
+        
         # Skip anchors
         if link.startswith("#"):
             return match.group(0)
