@@ -25,5 +25,8 @@
     "@types/node": "20.11.27",
     "vitepress": "^2.0.0-alpha.16",
     "vue": "^3.5.29"
+  },
+  "overrides": {
+    "axios": "1.14.0"
   }
 }
