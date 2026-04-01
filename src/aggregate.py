@@ -37,7 +37,7 @@ def transform_repo_docs(
     
     # Step 1: Copy files with 'github_target_path:' frontmatter
     print(f"\nStep 1: Processing targeted files...")
-    copy_targeted_docs(str(source_dir), str(docs_dir), repo_name, repo.media_directories)
+    copy_targeted_docs(str(source_dir), str(docs_dir), repo_name, repo.media_directories, repo.root_files)
     
     # Step 2: Transform project structure
     print(f"\nStep 2: Transforming project structure...")

@@ -83,7 +83,7 @@ def transform_directory_structure(
                 shutil.copytree(item, target_item, dirs_exist_ok=True)
 
 
-def copy_targeted_docs(source_dir: str, docs_dir: str, repo_name: str, media_dirs: Optional[List[str]] = None) -> None:
+def copy_targeted_docs(source_dir: str, docs_dir: str, repo_name: str, media_dirs: Optional[List[str]] = None, root_files: Optional[List[str]] = None) -> None:
     """
     Copy markdown files with 'github_target_path:' frontmatter to their specified locations.
     Also copies media directories to the common target path of targeted files.
@@ -93,6 +93,7 @@ def copy_targeted_docs(source_dir: str, docs_dir: str, repo_name: str, media_dir
         docs_dir: Docs root directory
         repo_name: Repository name
         media_dirs: List of media directories to copy alongside targeted files
+        root_files: List of root-level files to scan for github_target_path (e.g., README.md)
     """
     source_path = Path(source_dir)
     docs_path = Path(docs_dir)
@@ -101,8 +102,35 @@ def copy_targeted_docs(source_dir: str, docs_dir: str, repo_name: str, media_dir
         print(f"  [Warning] Source directory not found: {source_dir}")
         return
     
-    # Find all markdown files
+    # Find all markdown files (recursively in source_dir)
     md_files = list(source_path.rglob("*.md"))
+    
+    # Also check root_files if provided
+    # Note: root_files may have been flattened by the fetcher (e.g., src/README.md -> README.md)
+    # So we need to check both the original path and just the basename
+    if root_files:
+        print(f"  Checking {len(root_files)} root_files for github_target_path...")
+        for root_file in root_files:
+            # Try the full path first
+            root_file_path = source_path / root_file
+            
+            # If that doesn't exist, try just the basename (in case fetcher flattened it)
+            if not root_file_path.exists():
+                root_file_path = source_path / Path(root_file).name
+            
+            print(f"    Checking: {root_file} -> {root_file_path}")
+            print(f"      Exists: {root_file_path.exists()}, Is file: {root_file_path.is_file() if root_file_path.exists() else 'N/A'}, Ends with .md: {root_file.endswith('.md')}")
+            
+            if root_file_path.exists() and root_file_path.is_file() and root_file.endswith('.md'):
+                # Add to list if not already there
+                if root_file_path not in md_files:
+                    md_files.append(root_file_path)
+                    print(f"      ✓ Added to scan list")
+                else:
+                    print(f"      Already in list")
+            else:
+                print(f"      ✗ Skipped")
+    
     targeted_files = []
     
     print(f"  Scanning {len(md_files)} files for 'github_target_path:' frontmatter...")

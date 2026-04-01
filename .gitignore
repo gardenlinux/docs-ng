@@ -22,5 +22,9 @@ docs/how-to/**
 docs/reference/**
 !docs/reference/glossary.md
 !docs/reference/index.md
+!docs/reference/supporting_tools/
+docs/reference/supporting_tools/**
+!docs/reference/supporting_tools/index.md
+!docs/reference/supporting_tools/docs-ng/
 docs/tutorials/**
 !docs/tutorials/index.md
