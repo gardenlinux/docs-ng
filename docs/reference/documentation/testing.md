@@ -1,14 +1,11 @@
 ---
-title: "docs-ng Testing Guide"
-description: "Test suite documentation for docs-ng - unit tests, integration tests, and testing best practices"
-github_org: gardenlinux
-github_repo: docs-ng
-github_source_path: docs/reference/supporting_tools/docs-ng/reference/testing.md
+title: "Documentation Aggregation Testing Guide"
+description: "Test suite for documentation - unit tests, integration tests, and testing best practices"
 ---
 
-# docs-ng Testing Guide
+# Documentation Aggregation Testing Guide
 
-Test suite documentation for the docs-ng aggregation system.
+Test suite documentation for the documentation aggregation system.
 
 > **Source Repository:** [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng) > **Source File:** [tests/README.md](https://github.com/gardenlinux/docs-ng/blob/main/tests/README.md)
 
@@ -227,6 +224,8 @@ Integration tests may fail if:
 
 ## See Also
 
-- [Technical Reference](/reference/supporting_tools/docs-ng/reference/technical) — Source code documentation
-- [Configuration Reference](/reference/supporting_tools/docs-ng/reference/configuration) — Configuration options
-- [Architecture Explanation](/reference/supporting_tools/docs-ng/explanation/architecture) — System design
+- [Getting Started Tutorial](../../tutorials/documentation/index.md) — Step-by-step guide to contributing documentation
+- [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repositories to the aggregation
+- [Technical Reference](../../reference/documentation/technical.md) — Source code and API documentation
+- [Configuration Reference](../../reference/documentation/configuration.md) — Complete configuration options
+- [Architecture Explanation](../../explanation/documentation/aggregation-architecture.md) — Deep dive into how the documentation aggregation system works

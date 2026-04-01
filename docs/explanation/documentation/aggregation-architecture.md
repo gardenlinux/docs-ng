@@ -1,20 +1,17 @@
 ---
-title: "docs-ng Architecture"
-description: "Deep dive into how the docs-ng documentation aggregation system works"
-github_org: gardenlinux
-github_repo: docs-ng
-github_source_path: docs/reference/supporting_tools/docs-ng/explanation/architecture.md
+title: "Documentation Aggregation Architecture"
+description: "Deep dive into how the documentation aggregation system works"
 ---
 
-# docs-ng Architecture
+# Documentation Aggregation Architecture
 
-Deep dive into the design and implementation of the docs-ng documentation aggregation system.
+Deep dive into the design and implementation of the documentation aggregation system.
 
 > **Source Repository:** [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
 
 ## System Overview
 
-docs-ng is a documentation aggregation pipeline that combines content from multiple source repositories into a unified VitePress documentation site.
+We use a documentation aggregation pipeline that combines content from multiple source repositories into a unified VitePress documentation site.
 
 ```
 ┌─────────────────┐
@@ -282,7 +279,8 @@ Temp Directory                 Docs Output
 
 ## See Also
 
-- [Technical Reference](/reference/supporting_tools/docs-ng/reference/technical) — Module and API documentation
-- [Configuration Reference](/reference/supporting_tools/docs-ng/reference/configuration) — Complete configuration field reference
-- [Getting Started](/reference/supporting_tools/docs-ng/tutorials/getting_started) — Setup guide
-- [Adding Repositories](/reference/supporting_tools/docs-ng/how-to/adding-repos) — How to add new repos
+- [Getting Started Tutorial](../../tutorials/documentation/index.md) — Step-by-step guide to contributing documentation
+- [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repositories to the aggregation
+- [Technical Reference](../../reference/documentation/technical.md) — Source code and API documentation
+- [Configuration Reference](../../reference/documentation/configuration.md) — Complete configuration options
+- [Architecture Explanation](../../explanation/documentation/aggregation-architecture.md) — Deep dive into how the documentation aggregation system works

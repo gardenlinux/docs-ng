@@ -1,14 +1,11 @@
 ---
-title: "docs-ng Technical Reference"
-description: "Source code documentation for the docs-ng aggregation system - modules, APIs, and implementation details"
-github_org: gardenlinux
-github_repo: docs-ng
-github_source_path: docs/reference/supporting_tools/docs-ng/reference/technical.md
+title: "Documentation Aggregation Technical Reference"
+description: "Source code documentation for the documentation aggregation system - modules, APIs, and implementation details"
 ---
 
-# docs-ng Technical Reference
+# Documentation Aggregation Technical Reference
 
-Source code documentation for the docs-ng aggregation system.
+Source code documentation for the documentation aggregation system.
 
 > **Source Repository:** [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng) > **Source File:** [src/README.md](https://github.com/gardenlinux/docs-ng/blob/main/src/README.md)
 
@@ -148,7 +145,7 @@ This ensures reproducible builds.
 
 ### Running Tests
 
-See [Testing Reference](/reference/supporting_tools/docs-ng/reference/testing) for details on the test suite.
+See [Testing Reference](./testing.md) for details on the test suite.
 
 ### Adding New Transformation
 
@@ -176,6 +173,6 @@ Key architectural decisions are documented in the source repository:
 
 ## See Also
 
-- [Testing Reference](/reference/supporting_tools/docs-ng/reference/testing) — Test suite documentation
-- [Configuration Reference](/reference/supporting_tools/docs-ng/reference/configuration) — Complete configuration field reference
-- [Architecture Explanation](/reference/supporting_tools/docs-ng/explanation/architecture) — How the system works
+- [Testing Reference](./testing.md) — Test suite documentation
+- [Configuration Reference](./configuration.md) — Complete configuration field reference
+- [Architecture Explanation](../../explanation/documentation/aggregation-architecture.md) — How the system works

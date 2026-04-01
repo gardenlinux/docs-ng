@@ -15,16 +15,25 @@ docs/**/assets
 # Section directories - aggregated content is ignored, index.md is tracked
 docs/contributing/**
 !docs/contributing/index.md
+!docs/contributing/documentation/
+!docs/contributing/documentation/**
 docs/explanation/**
 !docs/explanation/index.md
+!docs/explanation/documentation/
+!docs/explanation/documentation/**
 docs/how-to/**
+!docs/how-to/documentation/
+!docs/how-to/documentation/**
 !docs/how-to/index.md
 docs/reference/**
+!docs/reference/documentation/
+!docs/reference/documentation/**
 !docs/reference/glossary.md
 !docs/reference/index.md
 !docs/reference/supporting_tools/
 docs/reference/supporting_tools/**
 !docs/reference/supporting_tools/index.md
-!docs/reference/supporting_tools/docs-ng/
 docs/tutorials/**
+!docs/tutorials/documentation/
+!docs/tutorials/documentation/**
 !docs/tutorials/index.md
