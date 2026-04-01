@@ -23,11 +23,11 @@ The processor architecture for which a Garden Linux image is built. Supported ar
 
 ### AWS
 
-Amazon Web Services. One of the major cloud platforms supported by Garden Linux. Garden Linux provides AWS-specific images through the [`aws`](https://github.com/gardenlinux/gardenlinux/blob/main/features/aws/README.md) platform feature with cloud-init integration and AWS-specific kernel modules. See [AWS platform guide](../how-to/platform-specific/aws.md) and [AWS first boot tutorial](../tutorials/first-boot-aws.md) for usage details.
+Amazon Web Services. One of the major cloud platforms supported by Garden Linux. Garden Linux provides AWS-specific images through the [`aws`](https://github.com/gardenlinux/gardenlinux/blob/main/features/aws/README.md) platform feature with cloud-init integration and AWS-specific kernel modules. See [AWS platform guide](../how-to/platform-specific/aws.md) and [AWS first boot tutorial](../tutorials/cloud/first-boot-aws.md) for usage details.
 
 ### Azure
 
-Microsoft Azure. A major cloud platform supported by Garden Linux through the [`azure`](https://github.com/gardenlinux/gardenlinux/blob/main/features/azure/README.md) platform feature with platform-specific image configurations and optimizations. See [Azure platform guide](../how-to/platform-specific/azure.md) and [Azure first boot tutorial](../tutorials/first-boot-azure.md) for usage details.
+Microsoft Azure. A major cloud platform supported by Garden Linux through the [`azure`](https://github.com/gardenlinux/gardenlinux/blob/main/features/azure/README.md) platform feature with platform-specific image configurations and optimizations. See [Azure platform guide](../how-to/platform-specific/azure.md) and [Azure first boot tutorial](../tutorials/cloud/first-boot-azure.md) for usage details.
 
 ---
 
@@ -35,7 +35,7 @@ Microsoft Azure. A major cloud platform supported by Garden Linux through the [`
 
 ### Bare Metal
 
-A platform target for Garden Linux images designed to run directly on physical hardware without a hypervisor through the [`baremetal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/baremetal/README.md) platform feature. Also referred to as [`metal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/metal/README.md) in build configurations. See [Bare Metal platform guide](../how-to/platform-specific/bare-metal.md) and [Bare Metal first boot tutorial](../tutorials/first-boot-bare-metal.md) for usage details.
+A platform target for Garden Linux images designed to run directly on physical hardware without a hypervisor through the [`baremetal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/baremetal/README.md) platform feature. Also referred to as [`metal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/metal/README.md) in build configurations. See [Bare Metal platform guide](../how-to/platform-specific/bare-metal.md) and [Bare Metal first boot tutorial](../tutorials/on-premises/first-boot-bare-metal.md) for usage details.
 
 ### Builder
 
@@ -127,7 +127,7 @@ A Debian GNU/Linux derivative designed to provide small, auditable Linux images 
 
 ### GCP
 
-Google Cloud Platform. A major cloud platform supported by Garden Linux through the [`gcp`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gcp/README.md) platform feature with platform-specific configurations. See [GCP platform guide](../how-to/platform-specific/gcp.md) and [GCP first boot tutorial](../tutorials/first-boot-gcp.md) for usage details.
+Google Cloud Platform. A major cloud platform supported by Garden Linux through the [`gcp`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gcp/README.md) platform feature with platform-specific configurations. See [GCP platform guide](../how-to/platform-specific/gcp.md) and [GCP first boot tutorial](../tutorials/cloud/first-boot-gcp.md) for usage details.
 
 ### GitHub Actions
 

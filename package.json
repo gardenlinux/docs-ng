@@ -4,8 +4,8 @@
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
-    "docs:linkcheck": "lychee \"docs/**/*.md\" --config lychee.toml",
-    "docs:spelling": "codespell --ignore-words .custom_wordlist.txt docs",
+    "docs:linkcheck": "lychee \"docs/**/*.md\" --config lychee.toml --root-dir \"$(pwd)/docs/\"",
+    "docs:spelling": "codespell --ignore-words .custom_wordlist.txt docs --exclude-file $(cat .exclude_spelling)",
     "docs:woke": "woke docs/"
   },
   "dependencies": {

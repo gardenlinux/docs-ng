@@ -6,7 +6,6 @@
       "docs_path": "docs",
       "root_files": ["CONTRIBUTING.md", "SECURITY.md"],
       "target_path": "projects/gardenlinux",
-      "branch": "docs-ng",
       "structure": {
         "tutorials": "tutorials",
         "how-to": "how-to",
@@ -15,23 +14,23 @@
         "contributing": "contributing"
       },
       "special_files": {},
-      "media_directories": [".media"]
+      "media_directories": [".media", "assets", "_static"]
     },
     {
       "name": "builder",
       "url": "file://../builder",
       "docs_path": "docs",
       "target_path": "projects/builder",
-      "branch": "main",
-      "structure": "flat"
+      "structure": "flat",
+      "media_directories": [".media", "assets", "_static"]
     },
     {
       "name": "python-gardenlinux-lib",
       "url": "file://../python-gardenlinux-lib",
       "docs_path": "docs",
       "target_path": "projects/python-gardenlinux-lib",
-      "branch": "main",
-      "structure": "sphinx"
+      "structure": "sphinx",
+      "media_directories": [".media", "assets", "_static"]
     }
   ]
 }

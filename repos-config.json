@@ -3,15 +3,14 @@
     {
       "name": "gardenlinux",
       "url": "https://github.com/gardenlinux/gardenlinux",
-      "github_org": "gardenlinux",
-      "github_repo": "gardenlinux",
       "docs_path": "docs",
+      "target_path": "projects/gardenlinux",
+      "ref": "docs-ng",
+      "commit": "421e067d71fd118f58ec5126faedd028e623ad8d",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md"
       ],
-      "target_path": "projects/gardenlinux",
-      "branch": "docs-ng",
       "structure": {
         "tutorials": "tutorials",
         "how-to": "how-to",
@@ -19,28 +18,38 @@
         "reference": "reference",
         "contributing": "contributing"
       },
-      "special_files": {},
       "media_directories": [
-        ".media"
+        ".media",
+        "assets",
+        "_static"
       ]
     },
     {
       "name": "builder",
       "url": "https://github.com/gardenlinux/builder",
-      "github_org": "gardenlinux",
-      "github_repo": "builder",
       "docs_path": "docs",
-      "branch": "docs-ng",
-      "structure": "flat"
+      "target_path": "projects/builder",
+      "ref": "docs-ng",
+      "commit": "086e74ff032c5f2a05989aef4f20ba69f94bdbf9",
+      "media_directories": [
+        ".media",
+        "assets",
+        "_static"
+      ]
     },
     {
       "name": "python-gardenlinux-lib",
       "url": "https://github.com/gardenlinux/python-gardenlinux-lib",
-      "github_org": "gardenlinux",
-      "github_repo": "python-gardenlinux-lib",
       "docs_path": "docs",
-      "branch": "docs-ng",
-      "structure": "sphinx"
+      "target_path": "projects/python-gardenlinux-lib",
+      "ref": "docs-ng",
+      "commit": "9142fccc3d83ab51759db7d328fa19166bc1df63",
+      "structure": "sphinx",
+      "media_directories": [
+        ".media",
+        "assets",
+        "_static"
+      ]
     }
   ]
 }

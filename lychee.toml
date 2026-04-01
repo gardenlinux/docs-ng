@@ -1,13 +1,31 @@
 # lychee link checker configuration
 # https://lychee.cli.rs/
 
+# Verbosity level: 'error', 'warn', 'info', 'debug', 'trace'
+# Setting to 'error' will hide [WARN] messages
+verbose = "error"
+
 # Exclude patterns
 exclude = [
-  "^https://github\\.com/.*/edit/",
-  "^https://github\\.com/.*/new/",
-  "^mailto:",
-  "^tel:",
-  "^javascript:",
+  "^/",
+  "^file://",
+  # Legacy docs that reference non-existent GitHub paths
+  "^https://github\\.com/gardenlinux/gardenlinux/blob/main/legacy/",
+  "^https://github\\.com/gardenlinux/gardenlinux/blob/main/tests/README($|#)",
+  "^https://github\\.com/gardenlinux/gardenlinux/blob/main/features/.*/README\\.md$",
+  "^https://github\\.com/gardenlinux/gardenlinux/blob/main/features/.*/file\\.include/",
+  "^https://github\\.com/gardenlinux/gardenlinux/blob/main/assets/",
+  "^https://github\\.com/gardenlinux/gardenlinux/blob/main/reference/",
+  "^https://github\\.com/gardenlinux/gardenlinux/blob/main/how-to/",
+  "^https://github\\.com/gardenlinux/gardenlinux/blob/main/tutorials/",
+  "^https://github\\.com/gardenlinux/gardenlinux/blob/main/contributing/",
+  "^https://github\\.com/gardenlinux/gardenlinux/blob/main/explanation/",
+  "^https://github\\.com/gardenlinux/gardenlinux/blob/main/mailto:",
+  "^https://github\\.com/gardenlinux/builder/blob/main/reference/features$",
+  "^https://github\\.com/gardenlinux/gardenlinux/tree/main/tests/platformSetup/",
+  "^https://github\\.com/gardenlinux/python-gardenlinux-lib/blob/main/_static/",
+  "^https://github\\.com/gardenlinux/docs-ng/blob/main/src/README\\.md$",
+  "^https://github\\.com/gardenlinux/docs-ng/blob/main/tests/README\\.md$",
 ]
 
 # Accept these status codes as valid

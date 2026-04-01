@@ -1,4 +1,4 @@
-.PHONY: help run dev build preview aggregate aggregate-dry aggregate-repo test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration check spelling linkcheck woke
+.PHONY: help run dev build preview aggregate aggregate-repo test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration check spelling linkcheck woke
 
 help:
 	@echo "Garden Linux Documentation Hub - Available targets:"
@@ -9,8 +9,9 @@ help:
 	@echo "    preview                - Preview production build locally"
 	@echo ""
 	@echo "  Testing:"
-	@echo "    test                   - Run full test suite"
-	@echo "    test-unit              - Run unit tests only"
+	@echo "    test                   - Run full test suite (38 tests: unit + integration)"
+	@echo "    test-unit              - Run unit tests only (35 tests)"
+	@echo "    test-integration       - Run integration tests only (3 tests)"
 	@echo ""
 	@echo "  Quality Checks:"
 	@echo "    check                  - Run all quality checks (spelling, links, inclusive language)"
@@ -19,11 +20,11 @@ help:
 	@echo "    woke                   - Check inclusive language with woke"
 	@echo ""
 	@echo "  Documentation Aggregation:"
-	@echo "    aggregate-local        - Aggregate from local repos using relative paths (../gardenlinux ../builder ../python-gardenlinux-lib)"
-	@echo "    test-aggregate-local   - Test aggregation with local repos (recommended first)"
-	@echo "    aggregate              - Fetch and aggregate docs from all source repos"
-	@echo "    aggregate-dry          - Test aggregation without modifying docs/"
-	@echo "    aggregate-repo         - Aggregate specific repo (usage: make aggregate-repo REPO=gardenlinux)"
+	@echo "    aggregate-local        - Aggregate from local repos (file:// URLs in repos-config.local.json)"
+	@echo "    aggregate              - Aggregate from locked commits (repos-config.json)"
+	@echo "    aggregate-update       - Fetch latest from remotes and update commit locks"
+	@echo "    aggregate-repo         - Aggregate single repo (usage: make aggregate-repo REPO=gardenlinux)"
+	@echo "    aggregate-update-repo  - Update single repo to latest (usage: make aggregate-update-repo REPO=gardenlinux)"
 	@echo ""
 	@echo "  Utilities:"
 	@echo "    clean                  - Clean aggregated docs and build artifacts"
@@ -33,7 +34,7 @@ install:
 	@echo "Installing dependencies..."
 	pnpm install
 
-run: install
+dev: install
 	pnpm run docs:dev
 
 build: install clean aggregate
@@ -43,13 +44,16 @@ preview: install
 	pnpm run docs:preview
 
 # Testing
-test: install
-	@echo "Running full test suite..."
-	@cd scripts/tests && ./run_all.sh
+test: test-unit test-integration
+	@echo "All tests passed!"
 
-test-unit: install
+test-unit:
 	@echo "Running unit tests..."
-	@cd scripts/tests && python3 run_tests.py
+	python3 -m pytest tests/unit/ -v
+
+test-integration:
+	@echo "Running integration tests..."
+	python3 -m pytest tests/integration/ -v
 
 # Quality Checks
 check: spelling linkcheck woke
@@ -68,21 +72,17 @@ woke: install
 	@pnpm run docs:woke
 
 # Documentation Aggregation
-test-aggregate-local: install
-	@echo "Testing aggregation with local repositories..."
-	./scripts/test-local.sh --dry-run
-
 aggregate-local: install
 	@echo "Aggregating from local repositories (relative paths)..."
-	CONFIG_FILE=scripts/repos-config.local.json ./scripts/aggregate-docs.sh
+	python3 src/aggregate.py --config repos-config.local.json
 
 aggregate: install
-	@echo "Aggregating documentation from source repositories..."
-	./scripts/aggregate-docs.sh
+	@echo "Aggregating documentation from locked source repositories..."
+	python3 src/aggregate.py
 
-aggregate-dry: install
-	@echo "Dry run: Testing aggregation without modifying docs directory..."
-	./scripts/aggregate-docs.sh --dry-run
+aggregate-update: install
+	@echo "Aggregating documentation from latest source repositories..."
+	python3 src/aggregate.py --update-locks
 
 aggregate-repo: install
 	@if [ -z "$(REPO)" ]; then \
@@ -90,8 +90,17 @@ aggregate-repo: install
 		echo "Usage: make aggregate-repo REPO=gardenlinux"; \
 		exit 1; \
 	fi
-	@echo "Aggregating documentation for repository: $(REPO)"
-	./scripts/aggregate-docs.sh --repo $(REPO)
+	@echo "Aggregating documentation for locked repository: $(REPO)"
+	python3 src/aggregate.py --repo $(REPO)
+
+aggregate-update-repo: install
+	@if [ -z "$(REPO)" ]; then \
+		echo "Error: REPO variable not set"; \
+		echo "Usage: make aggregate-update-repo REPO=gardenlinux"; \
+		exit 1; \
+	fi
+	@echo "Aggregating documentation for locked repository: $(REPO)"
+	python3 src/aggregate.py --update-locks --repo $(REPO)
 
 # Utilities
 clean:
@@ -101,7 +110,7 @@ clean:
 	rm -rf docs/projects
 	@# Clean aggregated (untracked) content from section directories, preserving git-tracked files
 	@if [ -d .git ]; then \
-		git clean -fd docs/contributing/ docs/explanation/ docs/how-to/ docs/reference/ docs/tutorials/ 2>/dev/null || true; \
+		git clean -fdX docs/contributing/ docs/explanation/ docs/how-to/ docs/reference/ docs/tutorials/ 2>/dev/null || true; \
 	else \
 		rm -rf docs/contributing docs/explanation docs/how-to docs/reference docs/tutorials; \
 	fi
