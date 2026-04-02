@@ -2,20 +2,24 @@
 import { useData } from "vitepress";
 import { computed } from "vue";
 
-const { page, theme } = useData();
+const { page, theme, frontmatter } = useData();
 
 interface SidebarItem {
   text: string;
+  description?: string;
   link?: string;
   items?: SidebarItem[];
 }
 
 interface TreeNode {
   text: string;
+  description?: string;
   link?: string;
   depth: number;
   children?: TreeNode[];
 }
+
+const showDescriptions = computed(() => frontmatter.value.overviewDescriptions !== false);
 
 // Get the current directory path from the current page
 // e.g., 'how-to/' for how-to/index.md or 'how-to/platform-specific/' for how-to/platform-specific/index.md
@@ -103,6 +107,7 @@ const sectionItems = computed(() => {
           }
           flattened.push({
             text: item.text,
+            description: item.description,
             link: formattedLink,
             depth: 2, // Treat as depth 2 (child of sub-group)
           });
@@ -139,6 +144,7 @@ const sectionItems = computed(() => {
           }
           nodes.push({
             text: item.text,
+            description: item.description,
             link: formattedLink,
             depth,
             children,
@@ -154,6 +160,7 @@ const sectionItems = computed(() => {
         }
         nodes.push({
           text: item.text,
+          description: item.description,
           link: formattedLink,
           depth,
         });
@@ -187,15 +194,21 @@ const sectionName = computed(() => {
           class="section-item"
           :class="`depth-${node.depth}`">
           <a :href="node.link">{{ node.text }}</a>
+          <span
+            v-if="showDescriptions && node.description"
+            class="section-item-description">{{ node.description }}</span>
         </div>
 
         <!-- Group node (has children) -->
         <div v-else class="section-group" :class="`depth-${node.depth}`">
           <!-- Group header -->
           <div class="section-group-header">
-            <a v-if="node.link" :href="node.link" class="group-link">{{
-              node.text
-            }}</a>
+            <template v-if="node.link">
+              <a :href="node.link" class="group-link">{{ node.text }}</a>
+              <span
+                v-if="showDescriptions && node.description"
+                class="section-item-description">{{ node.description }}</span>
+            </template>
             <span v-else class="group-title">{{ node.text }}</span>
           </div>
 
@@ -210,14 +223,20 @@ const sectionName = computed(() => {
                 class="section-item"
                 :class="`depth-${child.depth}`">
                 <a :href="child.link">{{ child.text }}</a>
+                <span
+                  v-if="showDescriptions && child.description"
+                  class="section-item-description">{{ child.description }}</span>
               </div>
 
               <!-- Child group node (level 3) -->
               <div v-else class="section-group" :class="`depth-${child.depth}`">
                 <div class="section-group-header">
-                  <a v-if="child.link" :href="child.link" class="group-link">{{
-                    child.text
-                  }}</a>
+                  <template v-if="child.link">
+                    <a :href="child.link" class="group-link">{{ child.text }}</a>
+                    <span
+                      v-if="showDescriptions && child.description"
+                      class="section-item-description">{{ child.description }}</span>
+                  </template>
                   <span v-else class="group-title">{{ child.text }}</span>
                 </div>
 
@@ -229,6 +248,9 @@ const sectionName = computed(() => {
                     class="section-item"
                     :class="`depth-${grandchild.depth}`">
                     <a :href="grandchild.link">{{ grandchild.text }}</a>
+                    <span
+                      v-if="showDescriptions && grandchild.description"
+                      class="section-item-description">{{ grandchild.description }}</span>
                   </div>
                 </div>
               </div>
@@ -366,6 +388,19 @@ const sectionName = computed(() => {
   background-color: var(--vp-c-bg-soft);
   border-color: var(--vp-c-brand-1);
   transform: translateX(2px);
+}
+
+.section-item-description {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.5;
+  padding: 0 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.section-group-header .section-item-description {
+  padding: 0;
 }
 
 /* Depth-specific styling for items */
