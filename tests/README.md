@@ -1,1 +1,1 @@
-../docs/reference/supporting_tools/docs-ng/reference/testing.md
+../docs/reference/documentation/testing.md

@@ -1,1 +1,1 @@
-docs/reference/supporting_tools/docs-ng/overview/index.md
+docs/contributing/documentation/index.md

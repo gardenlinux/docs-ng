@@ -1,14 +1,11 @@
 ---
-title: "How to Add Repositories to docs-ng"
+title: "Adding Repositories to documentation aggregation"
 description: "Guide for adding new repositories to the documentation aggregation system"
-github_org: gardenlinux
-github_repo: docs-ng
-github_source_path: docs/reference/supporting_tools/docs-ng/how-to/adding-repos.md
 ---
 
-# How to Add Repositories to docs-ng
+# Adding Repositories to documentation aggregation
 
-This guide explains how to add a new repository to the docs-ng aggregation system.
+This guide explains how to add a new repository to the documentation aggregation system.
 
 > **Source Repository:** [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
 
@@ -251,6 +248,8 @@ Here's a complete configuration:
 
 ## See Also
 
-- [Configuration Reference](/reference/supporting_tools/docs-ng/reference/configuration) — Complete field documentation
-- [Architecture Explanation](/reference/supporting_tools/docs-ng/explanation/architecture) — How aggregation works
-- [Technical Reference](/reference/supporting_tools/docs-ng/reference/technical) — Source code documentation
+- [Getting Started Tutorial](../../tutorials/documentation/index.md) — Step-by-step guide to contributing documentation
+- [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repositories to the aggregation
+- [Technical Reference](../../reference/documentation/technical.md) — Source code and API documentation
+- [Configuration Reference](../../reference/documentation/configuration.md) — Complete configuration options
+- [Architecture Explanation](../../explanation/documentation/aggregation-architecture.md) — Deep dive into how the documentation aggregation system works

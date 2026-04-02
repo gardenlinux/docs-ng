@@ -1,14 +1,11 @@
 ---
-title: "docs-ng Configuration Reference"
+title: "Documentation Aggregation Configuration Reference"
 description: "Complete reference for repos-config.json and repos-config.local.json configuration options"
-github_org: gardenlinux
-github_repo: docs-ng
-github_source_path: docs/reference/supporting_tools/docs-ng/reference/configuration.md
 ---
 
-# docs-ng Configuration Reference
+# Documentation Aggregation Configuration Reference
 
-Complete reference for configuring the docs-ng aggregation system.
+Complete reference for configuring the documentation aggregation system.
 
 > **Source Repository:** [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
 
@@ -54,12 +51,14 @@ Development configuration file for local testing. Uses `file://` URLs to avoid g
 ### Required Fields
 
 #### `name`
+
 - **Type:** String
 - **Description:** Unique identifier for the repository
 - **Example:** `"gardenlinux"`, `"builder"`, `"python-gardenlinux-lib"`
 - **Notes:** Used in generated paths and logging
 
 #### `url`
+
 - **Type:** String (URL or file path)
 - **Description:** Repository location
 - **Examples:**
@@ -68,18 +67,21 @@ Development configuration file for local testing. Uses `file://` URLs to avoid g
 - **Notes:** For local development, use `file://` URLs in `repos-config.local.json`
 
 #### `docs_path`
+
 - **Type:** String
 - **Description:** Path to documentation directory within the repository
 - **Examples:** `"docs"`, `"documentation"`, `"."` (for root)
 - **Notes:** Relative to repository root; content of this directory is copied
 
 #### `target_path`
+
 - **Type:** String
 - **Description:** Destination path in the docs directory
 - **Example:** `"projects/gardenlinux"`
 - **Notes:** Usually `projects/<name>` for project mirrors
 
 #### `ref`
+
 - **Type:** String
 - **Description:** Git reference to fetch (branch, tag, or commit)
 - **Examples:** `"main"`, `"docs-ng"`, `"v1.0.0"`
@@ -88,6 +90,7 @@ Development configuration file for local testing. Uses `file://` URLs to avoid g
 ### Optional Fields
 
 #### `commit`
+
 - **Type:** String (commit hash)
 - **Description:** Lock to a specific commit for reproducible builds
 - **Example:** `"abc123def456..."`
@@ -95,6 +98,7 @@ Development configuration file for local testing. Uses `file://` URLs to avoid g
 - **Notes:** Generated automatically with `make aggregate-update`
 
 #### `root_files`
+
 - **Type:** Array of strings
 - **Description:** Root-level files to copy (e.g., README.md, CONTRIBUTING.md)
 - **Example:** `["README.md", "CONTRIBUTING.md", "LICENSE"]`
@@ -102,6 +106,7 @@ Development configuration file for local testing. Uses `file://` URLs to avoid g
 - **Notes:** Files can have `github_target_path` frontmatter for targeted placement
 
 #### `structure`
+
 - **Type:** String or Object
 - **Description:** How to reorganize directory structure
 - **Options:**
@@ -111,6 +116,7 @@ Development configuration file for local testing. Uses `file://` URLs to avoid g
 - **Default:** `"flat"`
 
 **Custom Structure Example:**
+
 ```json
 "structure": {
   "tutorials": "tutorials",
@@ -123,16 +129,18 @@ Development configuration file for local testing. Uses `file://` URLs to avoid g
 This maps source directories to Diataxis categories.
 
 #### `media_directories`
+
 - **Type:** Array of strings
 - **Description:** Directory names to treat as media/assets
 - **Example:** `[".media", "assets", "_static", "images"]`
 - **Default:** `[]`
-- **Notes:** 
+- **Notes:**
   - Searched recursively in source repository
   - Nested media dirs (e.g., `tutorials/assets/`) copied to same relative path
   - Root-level media dirs (e.g., `_static/`) copied to common ancestor of targeted files
 
 #### `special_files`
+
 - **Type:** Object (filename → category mapping)
 - **Description:** Map non-standard files to Diataxis categories
 - **Example:**
@@ -158,10 +166,7 @@ This maps source directories to Diataxis categories.
       "target_path": "projects/gardenlinux",
       "ref": "docs-ng",
       "commit": "c4b1d8d7f878fcb3e779315d28e35fcb19ae4dfb",
-      "root_files": [
-        "CONTRIBUTING.md",
-        "SECURITY.md"
-      ],
+      "root_files": ["CONTRIBUTING.md", "SECURITY.md"],
       "structure": {
         "tutorials": "tutorials",
         "how-to": "how-to",
@@ -169,11 +174,7 @@ This maps source directories to Diataxis categories.
         "reference": "reference",
         "contributing": "contributing"
       },
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "media_directories": [".media", "assets", "_static"]
     },
     {
       "name": "builder",
@@ -183,11 +184,7 @@ This maps source directories to Diataxis categories.
       "ref": "docs-ng",
       "commit": "b10476ad8c46130f310e36daa42c6e2c14fb51a9",
       "structure": "flat",
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "media_directories": [".media", "assets", "_static"]
     },
     {
       "name": "python-gardenlinux-lib",
@@ -197,11 +194,7 @@ This maps source directories to Diataxis categories.
       "ref": "docs-ng",
       "commit": "9142fccc3d83ab51759db7d328fa19166bc1df63",
       "structure": "sphinx",
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "media_directories": [".media", "assets", "_static"]
     }
   ]
 }
@@ -223,6 +216,7 @@ This maps source directories to Diataxis categories.
 - Keep structure and other settings consistent with production
 
 **Example local config:**
+
 ```json
 {
   "repos": [
@@ -278,6 +272,7 @@ Repository using `github_target_path` frontmatter:
 ```
 
 Then in your markdown files:
+
 ```yaml
 ---
 title: "My Tutorial"
@@ -297,7 +292,7 @@ These help create source links in the documentation.
 
 ## See Also
 
-- [Getting Started](/reference/supporting_tools/docs-ng/tutorials/getting_started) — Initial setup guide
-- [Adding Repositories](/reference/supporting_tools/docs-ng/how-to/adding-repos) — How to add new repos
-- [Technical Reference](/reference/supporting_tools/docs-ng/reference/technical) — Source code documentation
-- [Architecture](/reference/supporting_tools/docs-ng/explanation/architecture) — System design
+- [Getting Started](../../tutorials/documentation/index.md) — Initial setup guide
+- [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repos
+- [Technical Reference](./technical.md) — Source code documentation
+- [Architecture](../../explanation/documentation/aggregation-architecture.md) — System design
