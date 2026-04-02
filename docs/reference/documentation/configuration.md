@@ -299,7 +299,6 @@ These help create source links in the documentation.
 
 ## See Also
 
-- [Getting Started](../../tutorials/documentation/index.md) — Initial setup guide
 - [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repos
 - [Technical Reference](./technical.md) — Source code documentation
 - [Architecture](../../explanation/documentation/aggregation-architecture.md) — System design

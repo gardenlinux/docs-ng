@@ -213,9 +213,9 @@ Automated builds of Garden Linux that occur on a regular schedule from the lates
 
 ## O
 
-### OCI
+### OCI (OCI Image Format)
 
-Oracle Cloud Infrastructure. A supported cloud platform for Garden Linux.
+OCI Image Format. A container image specification defined by the Open Container Initiative. Garden Linux provides OCI-formatted container images. See [First Boot as OCI image](../tutorials/container/first-boot-oci.md) and the [OCI platform guide](../how-to/platform-specific/oci.md) for usage details.
 
 ### OpenSSL
 
