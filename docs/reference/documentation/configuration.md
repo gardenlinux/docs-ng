@@ -290,6 +290,13 @@ When using `github_target_path`, you can include additional metadata:
 
 These help create source links in the documentation.
 
+### Page Display Fields
+
+- **`description`**: A short summary of the page. Used as the `<meta>` description by VitePress and shown in section index listings when `overviewDescriptions` is enabled on the parent page.
+- **`overviewDescriptions`**: Boolean controlling whether the `<SectionIndex />` component displays child page descriptions. Defaults to `true`. Set to `false` on an index page to hide descriptions for its listing.
+- **`order`**: Numeric value for controlling sort order in the sidebar and section listings. Lower values appear first.
+- **`migration_status`**: Status for content migration (e.g., `"new"`, `"adapt"`, `"aggregate"`).
+
 ## See Also
 
 - [Getting Started](../../tutorials/documentation/index.md) — Initial setup guide
