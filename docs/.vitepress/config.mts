@@ -23,6 +23,12 @@ export default defineConfig({
     /\/explanation\/index$/,
     /\/reference\/index$/,
     /\/contributing\/index$/,
+    // Ignore specific release notes pages that don't exist
+    /release-notes\/1592-17/,
+    /release-notes\/1877-11/,
+    /release-notes\/1877-12/,
+    // Ignore LICENSE files (e.g. from aggregated repos)
+    /LICENSE$/,
   ],
   head: [
     [
@@ -112,14 +118,18 @@ export default defineConfig({
     editLink: {
       pattern: ({ filePath, frontmatter }) => {
         // If page has GitHub metadata from aggregated content, use it
-        if (frontmatter.github_org && frontmatter.github_repo && frontmatter.github_source_path) {
-          const branch = frontmatter.github_branch || 'main';
+        if (
+          frontmatter.github_org &&
+          frontmatter.github_repo &&
+          frontmatter.github_source_path
+        ) {
+          const branch = frontmatter.github_branch || "main";
           return `https://github.com/${frontmatter.github_org}/${frontmatter.github_repo}/edit/${branch}/${frontmatter.github_source_path}`;
         }
         // Fallback for pages native to docs-ng (no GitHub metadata)
         return `https://github.com/gardenlinux/docs-ng/edit/main/docs/${filePath}`;
       },
-      text: 'Edit this page on GitHub'
+      text: "Edit this page on GitHub",
     },
 
     search: {

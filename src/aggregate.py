@@ -19,6 +19,8 @@ from aggregation import (
     copy_targeted_docs,
     process_all_markdown,
 )
+from aggregation.releases import generate_release_docs
+from aggregation.release_notes import generate_release_notes_docs
 
 
 def transform_repo_docs(
@@ -213,6 +215,18 @@ Examples:
             
             save_config(str(config_path), repos)
             print(f"\n✓ Config updated: {config_path}")
+    
+    # Generate release documentation from GLRD
+    print(f"\n{'='*60}")
+    print("Generating release documentation...")
+    print(f"{'='*60}\n")
+    generate_release_docs(docs_dir)
+    
+    # Generate release notes from GitHub
+    print(f"\n{'='*60}")
+    print("Fetching release notes from GitHub...")
+    print(f"{'='*60}\n")
+    generate_release_notes_docs(docs_dir)
     
     # Summary
     print(f"\n{'='*60}")

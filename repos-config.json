@@ -63,6 +63,19 @@
         "assets",
         "_static"
       ]
+    },
+    {
+      "name": "glrd",
+      "url": "https://github.com/gardenlinux/glrd",
+      "docs_path": "docs",
+      "target_path": "projects/glrd",
+      "ref": "docs-ng",
+      "commit": "c444721b728c0be0de2c19a0bc328928a0091d65",
+      "media_directories": [
+        ".media",
+        "assets",
+        "_static"
+      ]
     }
   ]
 }

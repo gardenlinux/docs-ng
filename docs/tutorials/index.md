@@ -23,6 +23,26 @@ Want to try Garden Linux right now with zero setup cost?
 All three tutorials run entirely on your workstation in under 5 minutes.
 :::
 
+:::danger Recommended First Tutorial
+Want to try Garden Linux right now with zero setup cost?
+
+- **Linux**: [First Boot on KVM](./local/first-boot-kvm.md) or [First Boot on Lima](./local/first-boot-lima.md)
+- **macOS**: [First Boot on Lima](./local/first-boot-lima.md)
+- **Any OS with Container Engine**: [First Boot as OCI Container](./container/first-boot-oci.md)
+
+All three tutorials run entirely on your workstation in under 5 minutes.
+:::
+
+:::warning Recommended First Tutorial
+Want to try Garden Linux right now with zero setup cost?
+
+- **Linux**: [First Boot on KVM](./local/first-boot-kvm.md) or [First Boot on Lima](./local/first-boot-lima.md)
+- **macOS**: [First Boot on Lima](./local/first-boot-lima.md)
+- **Any OS with Container Engine**: [First Boot as OCI Container](./container/first-boot-oci.md)
+
+All three tutorials run entirely on your workstation in under 5 minutes.
+:::
+
 <SectionIndex />
 
 ## About Tutorials
