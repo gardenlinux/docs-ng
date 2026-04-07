@@ -31,6 +31,14 @@
       "target_path": "projects/python-gardenlinux-lib",
       "structure": "sphinx",
       "media_directories": [".media", "assets", "_static"]
+    },
+    {
+      "name": "package-linux",
+      "url": "file://../package-linux",
+      "docs_path": "docs",
+      "target_path": "projects/package-linux",
+      "structure": "flat",
+      "media_directories": [".media", "assets", "_static"]
     }
   ]
 }

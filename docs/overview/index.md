@@ -49,7 +49,7 @@ Information-oriented technical descriptions, specifications, and lookup tables f
 
 **Start here**: [Reference](/reference/)
 
-Includes the [flavor matrix](/reference/flavor-matrix), [glossary](/reference/glossary), [platform compatibility](/reference/platform-compatibility), [image formats](/reference/image-formats), [kernels and modules](/reference/kernels-and-modules), [release information](/reference/releases/), Architecture Decision Records (ADRs) in the [ADR catalog](/reference/adr/), and [supporting tools documentation](/reference/supporting_tools/) (builder, Python Garden Linux library).
+Includes the [flavor matrix](/reference/flavor-matrix), [glossary](/reference/glossary), [platform compatibility](/reference/platform-compatibility), [image formats](/reference/image-formats), [kernel](/reference/kernel), [release information](/reference/releases/), Architecture Decision Records (ADRs) in the [ADR catalog](/reference/adr/), and [supporting tools documentation](/reference/supporting_tools/) (builder, Python Garden Linux library).
 
 ## Contributing
 
