@@ -224,6 +224,7 @@ Integration tests may fail if:
 
 ## See Also
 
+- [Working with the Documentation System Locally](../../how-to/documentation/working-locally.md)
 - [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repositories to the aggregation
 - [Technical Reference](../../reference/documentation/technical.md) — Source code and API documentation
 - [Configuration Reference](../../reference/documentation/configuration.md) — Complete configuration options

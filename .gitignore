@@ -36,4 +36,5 @@ docs/reference/supporting_tools/**
 docs/tutorials/**
 !docs/tutorials/documentation/
 !docs/tutorials/documentation/**
+!docs/tutorials/documentation.md
 !docs/tutorials/index.md

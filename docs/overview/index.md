@@ -10,14 +10,14 @@ Garden Linux documentation uses the [Diátaxis framework](https://diataxis.fr/) 
 
 ## Where to Start
 
-| Your Situation | Where to Go |
-| --- | --- |
-| New to Garden Linux | Start with [Tutorials](/tutorials/) |
+| Your Situation                | Where to Go                                                  |
+| ----------------------------- | ------------------------------------------------------------ |
+| New to Garden Linux           | Start with [Tutorials](/tutorials/)                          |
 | Deploy on a specific platform | Go to [Platform-Specific Guides](/how-to/platform-specific/) |
-| Customize Garden Linux | Check [Customization Guides](/how-to/customization/) |
-| Understand concepts | Read [Explanation](/explanation/) |
-| Look up specifications | Search [Reference](/reference/) |
-| Contribute to the project | See [Contributing](/contributing/) |
+| Customize Garden Linux        | Check [Customization Guides](/how-to/customization/)         |
+| Understand concepts           | Read [Explanation](/explanation/)                            |
+| Look up specifications        | Search [Reference](/reference/)                              |
+| Contribute to the project     | See [Contributing](/contributing/)                           |
 
 ## Tutorials
 
