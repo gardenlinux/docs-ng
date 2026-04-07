@@ -299,6 +299,8 @@ These help create source links in the documentation.
 
 ## See Also
 
+- [Working with the Documentation System Locally](../../how-to/documentation/working-locally.md)
+- [Testing Reference](./testing.md) — Test suite documentation
 - [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repos
 - [Technical Reference](./technical.md) — Source code documentation
 - [Architecture](../../explanation/documentation/aggregation-architecture.md) — System design

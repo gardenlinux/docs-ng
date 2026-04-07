@@ -173,6 +173,8 @@ Key architectural decisions are documented in the source repository:
 
 ## See Also
 
+- [Working with the Documentation System Locally](../../how-to/documentation/working-locally.md)
 - [Testing Reference](./testing.md) — Test suite documentation
+- [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repos
 - [Configuration Reference](./configuration.md) — Complete configuration field reference
 - [Architecture Explanation](../../explanation/documentation/aggregation-architecture.md) — How the system works
