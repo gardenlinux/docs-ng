@@ -34,24 +34,26 @@ contributions or similar that have no outside effect.
 
 ## Who Is Responsible for Maintaining Documentation?
 
-The question of _"who is responsible?"_ can be split into two camps: The
+The question of _"who is responsible?"_ can be split into two roles: The
 contributors and a documentation lead.
 
 ### Contributors
 
-Contributors are defined as individuals, groups or organisation that submit code
-or non-code contributions to the project. These should, in addition to their
-submission, document their changes with appropriate changes to any relevant
-pieces of documentation. This applies to _any contribution_ if the change is
-relevant for others.
+Contributors are defined as individuals, groups or organisations that submit
+code or non-code contributions to the project. These should, in addition to
+their submission, document their changes with appropriate changes to any
+relevant pieces of documentation. This applies to _any contribution_ if the
+change is relevant for others.
 
 For example:
 
 1. A person introduces a new feature to Gardenlinux and opens a Pull Request
-2. After their PR is approved, they are greenlit to open a PR in the `docs-ng`
-   branch of the code repository in which they document their new feature.
-3. The PR will be reviewed by a maintainer or the documentation lead on duty.
-4. After both are greenlit, both PRs are merged.
+2. A maintainer reviews said feature and advises the contributor to write
+   documentation for it
+3. Said documentation will reviewed by the maintainer in question or the
+   documentation lead if applicable
+4. If both the code and the documentation both fulfill their respective quality
+   markers, the PR is merged
 
 ### The Documentation Lead
 
@@ -71,15 +73,15 @@ The responsibilities of this person are:
 
 - Evaluating whether a contribution requires documentation & what scope that
   documentation needs to be
-- Making sure that documentation is written and put in the correct space
+- Making sure that documentation is written and put in the correct place
 - Ensuring that the documentation pipeline is running and the documentation
   website is accessible
 
 ## The Review Process
 
 Any changes to documentation will be reviewed by maintainers for the quality
-criteria mentioned below. Only after the review is sucessful will the changes be
-merged. The review validates:
+criteria mentioned below. Only after the review is successful will the changes
+be merged. The review validates:
 
 - **Technical accuracy and sufficient depth**: The document matches implemented
   behaviour and guides are executable.
@@ -102,9 +104,9 @@ All documentation should have a professional and inclusive tone. Gender-neutral
 language (like they/them or role based nouns like "maintainer", "developer" or
 "user") should be used. Language specific idioms common amongst native speakers
 should be avoided and project specific abbreviations should always link to their
-respective Glossar section.
+respective Glossary section.
 
-Documentation should go into appropriate detail for the intended autience (i.e.
+Documentation should go into appropriate detail for the intended audience (i.e.
 Users or Developers) and not omit any details or become vague when talking about
 specific topics.
 
@@ -120,7 +122,7 @@ readers to action.
 
 ## Version Compatibility
 
-Features that only apply to a specific versions of gardenlinux or supporting
+Features that only apply to a specific versions of Gardenlinux or supporting
 tools should be marked as such using admonishments.
 
 Breaking changes between version should be indicated in a appropriately colored
