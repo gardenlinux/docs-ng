@@ -1,1 +1,1 @@
-docs/tutorials/documentation/index.md
+docs/tutorials/documentation.md
