@@ -6,7 +6,7 @@
       "docs_path": "docs",
       "target_path": "projects/gardenlinux",
       "ref": "docs-ng",
-      "commit": "5add412443b1d8351aab7ef5c6347a3fc8cfa1aa",
+      "commit": "aafc4d98545ea7dcd458faff4e1b8d7e6fcb9af2",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md"
@@ -45,6 +45,19 @@
       "ref": "docs-ng",
       "commit": "9142fccc3d83ab51759db7d328fa19166bc1df63",
       "structure": "sphinx",
+      "media_directories": [
+        ".media",
+        "assets",
+        "_static"
+      ]
+    },
+    {
+      "name": "package-linux",
+      "url": "https://github.com/gardenlinux/package-linux",
+      "docs_path": "docs",
+      "target_path": "projects/package-linux",
+      "ref": "docs-ng",
+      "commit": "841139441357a222ea10349f6d09a875ce9732d1",
       "media_directories": [
         ".media",
         "assets",
