@@ -16,6 +16,7 @@ from .structure import (
     copy_targeted_docs,
     process_all_markdown,
 )
+from .releases import generate_release_docs
 
 __all__ = [
     # Models
@@ -35,4 +36,6 @@ __all__ = [
     "transform_directory_structure",
     "copy_targeted_docs",
     "process_all_markdown",
+    # Releases
+    "generate_release_docs",
 ]

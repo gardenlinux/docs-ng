@@ -39,6 +39,14 @@
       "target_path": "projects/package-linux",
       "structure": "flat",
       "media_directories": [".media", "assets", "_static"]
+    },
+    {
+      "name": "glrd",
+      "url": "file://../glrd",
+      "docs_path": "docs",
+      "target_path": "projects/glrd",
+      "structure": "flat",
+      "media_directories": [".media", "assets", "_static"]
     }
   ]
 }

@@ -329,3 +329,85 @@ def fix_broken_project_links(
     
     content = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", check_and_fix_link, content)
     return content
+
+
+def cleanup_github_markdown(content: str) -> str:
+    """
+    Clean up GitHub release notes markdown for VitePress compatibility.
+    
+    Handles common issues in GitHub release notes that cause VitePress parsing errors:
+    - Orphaned code fences followed by headers
+    - Empty code blocks
+    - Inconsistent fence markers
+    - Windows line endings
+    - Content followed by fence on same line
+    
+    Args:
+        content: Raw markdown from GitHub release notes
+        
+    Returns:
+        Cleaned markdown safe for VitePress rendering
+    """
+    if not content:
+        return content
+    
+    # Fix Windows line endings first
+    content = content.replace("\r\n", "\n").replace("\r", "\n")
+    
+    # Remove or fix HTML details/summary tags that cause parsing issues
+    # Replace <details><summary>content</summary>content</details> with just content
+    content = re.sub(r'<details><summary>([^<]*)</summary>', r'\1', content)
+    content = re.sub(r'</details>', '', content)
+    content = re.sub(r'<details>', '', content)
+    content = re.sub(r'<summary>', '', content)
+    content = re.sub(r'</summary>', '', content)
+    
+    # Fix patterns where content is followed by fence on same line
+    # e.g., "tag```" or "content````" should become "tag\n```" or "content\n```"
+    content = re.sub(r'([^`])````', r'\1\n```', content)
+    content = re.sub(r'([^`])```$', r'\1\n```', content, flags=re.MULTILINE)
+    content = re.sub(r'`````', '```', content)  # Fix five backticks
+    content = re.sub(r'````', '```', content)   # Fix four backticks
+    
+    lines = content.split('\n')
+    cleaned = []
+    i = 0
+    
+    while i < len(lines):
+        line = lines[i]
+        stripped = line.strip()
+        
+        # Detect code fence
+        is_fence_start = stripped in ("```", "````", "`````")
+        
+        # Handle orphan fence followed by header (add blank line)
+        if is_fence_start and i + 1 < len(lines):
+            next_line = lines[i + 1].strip()
+            if next_line.startswith("##") or next_line.startswith("# "):
+                cleaned.append(line)
+                cleaned.append("")  # Add blank line before header
+                i += 1
+                continue
+        
+        # Handle empty code block (fence followed immediately by another fence)
+        if is_fence_start and i + 1 < len(lines):
+            next_stripped = lines[i + 1].strip()
+            if next_stripped in ("```", "````", "`````"):
+                # Skip this empty block
+                i += 2
+                continue
+        
+        # Normalize fence markers (```` or ````` -> ```)
+        if stripped == "````" or stripped == "`````":
+            cleaned.append("```")
+            i += 1
+            continue
+        
+        cleaned.append(line)
+        i += 1
+    
+    # Join and fix multiple blank lines
+    content = "\n".join(cleaned)
+    content = re.sub(r"\n{4,}", "\n\n\n", content)
+    
+    return content

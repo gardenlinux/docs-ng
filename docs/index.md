@@ -13,6 +13,9 @@ hero:
     - theme: alt
       text: Browse Documentation
       link: /overview/
+    - theme: alt
+      text: Releases
+      link: /reference/releases/
   image:
     src: /gardenlinux-logo.svg
     alt: Garden Linux Logo
@@ -33,6 +36,9 @@ features:
   - title: Contributing
     details: Guides for contributing to Garden Linux documentation and development
     link: /contributing/
+  - title: Releases
+    details: Overiew which Graden Linux Releases are available
+    link: /reference/releases/
   # - title: Legacy Documentation
   #   details: Aggregated documentation from source repositories (being migrated)
   #   link: /projects/gardenlinux/introduction/index
