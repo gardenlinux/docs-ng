@@ -74,7 +74,7 @@ class DocsFetcher:
                 print(f"  Root files: {', '.join(repo.root_files)}")
             print(f"  Output: {output_dir}")
             
-            # Initialize sparse checkout
+            # Initialize git repository
             subprocess.run(["git", "init"], check=True, capture_output=True, cwd=temp_dir)
             subprocess.run(
                 ["git", "remote", "add", "origin", repo.url],
@@ -82,32 +82,27 @@ class DocsFetcher:
                 capture_output=True,
                 cwd=temp_dir,
             )
+            
+            # Fetch the ref (full history to support any locked commit)
+            print("  Fetching repository...")
             subprocess.run(
-                ["git", "config", "core.sparseCheckout", "true"],
+                ["git", "fetch", "--all"],
                 check=True,
                 capture_output=True,
                 cwd=temp_dir,
             )
             
-            # Configure sparse checkout patterns
-            # Git sparse-checkout doesn't support **, so convert to folder prefixes
-            sparse_checkout_file = temp_dir / ".git" / "info" / "sparse-checkout"
-            with open(sparse_checkout_file, "w") as f:
-                f.write(f"{repo.docs_path}/*\n")
-                for root_file in repo.root_files:
-                    converted = _convert_to_git_pattern(root_file)
-                    f.write(f"{converted}\n")
+            # Determine which commit to checkout:
+            # - In update-locks mode: always checkout the ref (latest)
+            # - In normal mode: use locked commit if available, otherwise checkout ref
+            if self.update_locks or not repo.commit:
+                checkout_ref = repo.ref
+            else:
+                checkout_ref = repo.commit
             
-            # Fetch and checkout
-            print("  Cloning (sparse checkout)...")
+            print(f"  Checking out: {checkout_ref}")
             subprocess.run(
-                ["git", "fetch", "--depth=1", "origin", repo.ref],
-                check=True,
-                capture_output=True,
-                cwd=temp_dir,
-            )
-            subprocess.run(
-                ["git", "checkout", repo.ref],
+                ["git", "checkout", checkout_ref],
                 check=True,
                 capture_output=True,
                 cwd=temp_dir,
@@ -123,21 +118,6 @@ class DocsFetcher:
             )
             resolved_commit = result.stdout.strip()
             print(f"  Resolved commit: {resolved_commit}")
-            
-            # Verify commit lock if specified
-            if repo.commit:
-                if resolved_commit != repo.commit:
-                    if self.update_locks:
-                        # In update-locks mode, commit mismatch is expected
-                        print(f"  Updating lock: {repo.commit[:8]} → {resolved_commit[:8]}")
-                    else:
-                        # In normal mode, commit mismatch is an error
-                        print(f"  Warning: Commit mismatch!", file=sys.stderr)
-                        print(f"    Expected: {repo.commit}", file=sys.stderr)
-                        print(f"    Got: {resolved_commit}", file=sys.stderr)
-                        return False, resolved_commit
-                else:
-                    print(f"  ✓ Commit lock verified")
             
             # Copy docs to output directory
             docs_source = temp_dir / repo.docs_path
