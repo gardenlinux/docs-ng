@@ -4,7 +4,21 @@ description: "How Garden Linux documentation is organized"
 order: 1
 ---
 
-# Documentation Overview
+# Garden Linux
+
+## Mission Statement
+
+Garden Linux (GL) is a Debian Linux derivative built with three main goals: fully open source, ease-of-use & purpose-optimized!
+
+It is **not** a general-purpose Operating System targeting all possible use-cases & scenarios.
+
+Instead, it is built to serve as:
+
+- **Container runtime** — The preferred Kubernetes worker node for 90% of the cloud applications deployed with Gardener
+- **Container base images** — Our solution for packaging applications according to the OCI specification
+- **Virtual machine hypervisor host** — OS used to deploy hypervisor nodes to run Kubernetes nodes
+
+## Documentation Overview
 
 Garden Linux documentation uses the [Diátaxis framework](https://diataxis.fr/) to organize content by what you need, not by your role. This page explains the structure and helps you find the right section.
 

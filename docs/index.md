@@ -4,15 +4,15 @@ layout: home
 
 hero:
   name: "Garden Linux"
-  text: "the best Linux for Gardener nodes"
-  tagline: "small, auditable Linux images for cloud and bare-metal workloads"
+  text: "Purpose-built Linux for cloud-native workloads"
+  tagline: "Debian-based, fully open source, and optimized for Kubernetes and containers"
   actions:
     - theme: brand
-      text: First Boot Tutorial
-      link: /tutorials/
-    - theme: alt
-      text: Browse Documentation
+      text: Start Here
       link: /overview/
+    - theme: alt
+      text: First Boot
+      link: /tutorials
     - theme: alt
       text: Releases
       link: /reference/releases/
@@ -21,6 +21,17 @@ hero:
     alt: Garden Linux Logo
 
 features:
+  ### # use cases
+  ### - title: Container Runtime
+  ###   details: The preferred Kubernetes worker node for 90% of cloud applications deployed with Gardener
+  ###   link: /overview/
+  ### - title: Container Base Images
+  ###   details: Package applications according to the OCI specification
+  ###   link: /how-to/container-base-image
+  ### - title: Virtual Machine Host
+  ###   details: OS for deploying hypervisor nodes to run Kubernetes nodes
+  ###   link: /tutorials/
+  # documentation
   - title: Tutorials
     details: Step-by-step walkthroughs to get you started with Garden Linux
     link: /tutorials/
@@ -37,9 +48,6 @@ features:
     details: Guides for contributing to Garden Linux documentation and development
     link: /contributing/
   - title: Releases
-    details: Overiew which Graden Linux Releases are available
+    details: Overview which Garden Linux Releases are available
     link: /reference/releases/
-  # - title: Legacy Documentation
-  #   details: Aggregated documentation from source repositories (being migrated)
-  #   link: /projects/gardenlinux/introduction/index
 ---
