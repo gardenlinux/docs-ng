@@ -138,9 +138,9 @@ Documentation should be structured to minimize maintenance burden:
 
 ### Version Compatibility
 
-Features that only apply to specific versions of Gardenlinux or supporting tools
-should be marked as such using markdown admonishments or any other suitable
-formatting to make them stand out.
+Features that only apply to specific versions of Garden Linux or supporting
+tools should be marked as such using markdown admonishments or any other
+suitable formatting to make them stand out.
 
 Breaking changes between versions should be indicated in an appropriately
 colored warning or info box at the top of the document.
@@ -183,3 +183,11 @@ Use this checklist when reviewing or submitting documentation:
 - [ ] Breaking changes highlighted (if applicable)
 - [ ] Known issues section included (if applicable)
 - [ ] External dependencies documented (if applicable)
+
+## Next Steps
+
+Before you get started, you might want to check out the following docs:
+
+- [Documentation Workflow](./documentation_workflow.md)
+- [How to Documentation - Adding Repos to This Hub](/how-to/documentation/adding-repos.md)
+- [How to Documentation - Working With the Aggregator Locally](/how-to/documentation/working-locally.md)

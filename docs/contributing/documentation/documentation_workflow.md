@@ -1,13 +1,13 @@
 ---
 title: Documentation Workflow
-description: How to Contribute Documentation to Gardenlinux
+description: How to Contribute Documentation to Garden Linux
 order: 1
 ---
 
-# Documenting Gardenlinux
+# Documenting Garden Linux
 
 This guide will provide you with a detailed overview over everything you need to
-know to support our efforts in documenting the Gardenlinux project.
+know to support our efforts in documenting the Garden Linux project.
 
 If you would like to know what markers we use to determine if submitted
 documentation is good, please check our guide about
@@ -27,7 +27,7 @@ to be documented accordingly.
 
 This includes, but is not limited to:
 
-- Usage of Gardenlinux and any supporting tool
+- Usage of Garden Linux and any supporting tool
 - Features and components of the project
 - Ways to contribute and where to find help
 - Information about where to submit security incidents
@@ -51,7 +51,7 @@ change is relevant for others.
 
 For example:
 
-1. A person introduces a new feature to Gardenlinux and opens a Pull Request
+1. A person introduces a new feature to Garden Linux and opens a Pull Request
 2. A maintainer reviews said feature and advises the contributor to write
    documentation for it
 3. Said documentation will be reviewed by the maintainer in question or the
@@ -94,7 +94,7 @@ Documentation ownership depends on the scope:
 
 ## How to Submit Documentation Changes
 
-To contribute documentation to Gardenlinux:
+To contribute documentation to Garden Linux:
 
 1. **Create a branch** named descriptively ideally with a `docs/` prefix
 2. **Make your changes** following the [quality markers](./writing_good_docs.md)
@@ -133,3 +133,11 @@ The review validates:
   text descriptions
 - **Maintainability**: Documentation follows single source of truth principle,
   ownership is clear, no unnecessary duplication
+
+## Next Steps
+
+Before you get started, you might want to check out the following docs:
+
+- [Documentation Quality Markers](./writing_good_docs.md)
+- [How to Documentation - Adding Repos to This Hub](/how-to/documentation/adding-repos.md)
+- [How to Documentation - Working With the Aggregator Locally](/how-to/documentation/working-locally.md)
