@@ -6,10 +6,12 @@
       "docs_path": "docs",
       "target_path": "projects/gardenlinux",
       "ref": "docs-ng",
-      "commit": "aafc4d98545ea7dcd458faff4e1b8d7e6fcb9af2",
+      "commit": "22c66b7579de3a23aa55e63634f8852c6d152430",
       "root_files": [
         "CONTRIBUTING.md",
-        "SECURITY.md"
+        "SECURITY.md",
+        "features/",
+        "flavors.yaml"
       ],
       "structure": {
         "tutorials": "tutorials",

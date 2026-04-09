@@ -215,11 +215,11 @@ class DocsFetcher:
     @staticmethod
     def _copy_root_files(repo_root: Path, root_files: list, dest: Path) -> None:
         """
-        Copy specified root-level files from repository.
+        Copy specified root-level files and directories from repository.
         
         Args:
             repo_root: Root directory of the repository
-            root_files: List of filenames to copy
+            root_files: List of filenames/directories to copy
             dest: Destination directory
         """
         if not root_files:
@@ -227,10 +227,19 @@ class DocsFetcher:
         
         print("  Copying root files")
         for filename in root_files:
-            src = repo_root / filename
+            # Strip trailing slash for path resolution
+            clean_name = filename.rstrip("/")
+            src = repo_root / clean_name
             if src.exists():
                 target = dest / src.name
-                shutil.copy2(src, target)
-                print(f"    ✓ {filename}")
+                if src.is_dir():
+                    try:
+                        shutil.copytree(src, target, dirs_exist_ok=True, symlinks=False)
+                        print(f"    ✓ {filename} (directory)")
+                    except Exception as e:
+                        print(f"    Warning: Failed to copy {filename}: {e}")
+                else:
+                    shutil.copy2(src, target)
+                    print(f"    ✓ {filename}")
             else:
                 print(f"    Warning: {filename} not found")
