@@ -17,6 +17,7 @@ from .structure import (
     process_all_markdown,
 )
 from .releases import generate_release_docs
+from .flavor_matrix import generate_flavor_matrix_docs
 
 __all__ = [
     # Models
@@ -38,4 +39,6 @@ __all__ = [
     "process_all_markdown",
     # Releases
     "generate_release_docs",
+    # Flavor Matrix
+    "generate_flavor_matrix_docs",
 ]

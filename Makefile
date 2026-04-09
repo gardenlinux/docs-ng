@@ -33,6 +33,9 @@ help:
 install:
 	@echo "Installing dependencies..."
 	pnpm install
+	pip install git+https://github.com/gardenlinux/glrd.git@v4.1.0
+	pip install git+https://github.com/gardenlinux/python-gardenlinux-lib.git@0.10.20
+	pip install -r requirements.txt	
 
 dev: install
 	pnpm run docs:dev

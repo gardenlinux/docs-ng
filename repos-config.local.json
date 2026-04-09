@@ -4,7 +4,13 @@
       "name": "gardenlinux",
       "url": "file://../gardenlinux",
       "docs_path": "docs",
-      "root_files": ["CONTRIBUTING.md", "SECURITY.md"],
+      "root_files": [
+        "CONTRIBUTING.md",
+        "SECURITY.md",
+        "features/*/README.md",
+        "features/*/info.yaml",
+        "flavors.yaml"
+      ],
       "target_path": "projects/gardenlinux",
       "structure": {
         "tutorials": "tutorials",

@@ -21,6 +21,7 @@ from aggregation import (
 )
 from aggregation.releases import generate_release_docs
 from aggregation.release_notes import generate_release_notes_docs
+from aggregation.flavor_matrix import generate_flavor_matrix_docs
 
 
 def transform_repo_docs(
@@ -215,6 +216,15 @@ Examples:
             
             save_config(str(config_path), repos)
             print(f"\n✓ Config updated: {config_path}")
+        
+        # Generate flavor matrix documentation after all repos are aggregated
+        # Use docs/projects/gardenlinux path since temp_dir is cleaned up
+        gardenlinux_docs_path = docs_dir / "projects" / "gardenlinux"
+        if gardenlinux_docs_path.exists():
+            print(f"\n{'='*60}")
+            print("Generating flavor matrix documentation...")
+            print(f"{'='*60}\n")
+            generate_flavor_matrix_docs(docs_dir, gardenlinux_docs_path)
     
     # Generate release documentation from GLRD
     print(f"\n{'='*60}")
