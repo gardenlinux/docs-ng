@@ -10,6 +10,23 @@ from typing import Tuple, Optional
 from .models import RepoConfig, AggregateResult
 
 
+def _convert_to_git_pattern(pattern: str) -> str:
+    """
+    Convert Python glob pattern to git sparse-checkout compatible pattern.
+    
+    Git doesn't support **, so convert to folder prefix.
+    e.g., "features/**/*.md" -> "features/*"
+    """
+    if "**" in pattern:
+        parts = pattern.split("/")
+        for i, part in enumerate(parts):
+            if "**" in part:
+                parts[i] = "*"
+                return "/".join(parts[:i+1])
+        return pattern
+    return pattern
+
+
 class DocsFetcher:
     """Handles fetching documentation from remote or local repositories."""
     
@@ -73,11 +90,13 @@ class DocsFetcher:
             )
             
             # Configure sparse checkout patterns
+            # Git sparse-checkout doesn't support **, so convert to folder prefixes
             sparse_checkout_file = temp_dir / ".git" / "info" / "sparse-checkout"
             with open(sparse_checkout_file, "w") as f:
                 f.write(f"{repo.docs_path}/*\n")
                 for root_file in repo.root_files:
-                    f.write(f"{root_file}\n")
+                    converted = _convert_to_git_pattern(root_file)
+                    f.write(f"{converted}\n")
             
             # Fetch and checkout
             print("  Cloning (sparse checkout)...")
@@ -217,9 +236,12 @@ class DocsFetcher:
         """
         Copy specified root-level files and directories from repository.
         
+        Supports glob patterns like "features/*/*.md" to match specific files
+        without copying entire directories.
+        
         Args:
             repo_root: Root directory of the repository
-            root_files: List of filenames/directories to copy
+            root_files: List of filenames/directories/patterns to copy
             dest: Destination directory
         """
         if not root_files:
@@ -227,19 +249,41 @@ class DocsFetcher:
         
         print("  Copying root files")
         for filename in root_files:
-            # Strip trailing slash for path resolution
             clean_name = filename.rstrip("/")
-            src = repo_root / clean_name
-            if src.exists():
-                target = dest / src.name
-                if src.is_dir():
-                    try:
-                        shutil.copytree(src, target, dirs_exist_ok=True, symlinks=False)
-                        print(f"    ✓ {filename} (directory)")
-                    except Exception as e:
-                        print(f"    Warning: Failed to copy {filename}: {e}")
-                else:
-                    shutil.copy2(src, target)
-                    print(f"    ✓ {filename}")
+            
+            if '*' in clean_name or '?' in clean_name or '[' in clean_name:
+                matches = list(repo_root.glob(clean_name))
+                if not matches:
+                    print(f"    Warning: {filename} not found (no matches)")
+                    continue
+                
+                for src in matches:
+                    rel_path = src.relative_to(repo_root)
+                    target = dest / rel_path
+                    if src.is_dir():
+                        try:
+                            shutil.copytree(src, target, dirs_exist_ok=True, symlinks=False)
+                            print(f"    ✓ {filename} -> {rel_path} (directory)")
+                        except Exception as e:
+                            print(f"    Warning: Failed to copy {rel_path}: {e}")
+                    else:
+                        target.parent.mkdir(parents=True, exist_ok=True)
+                        shutil.copy2(src, target)
+                        print(f"    ✓ {filename} -> {rel_path}")
             else:
-                print(f"    Warning: {filename} not found")
+                src = repo_root / clean_name
+                if src.exists():
+                    target = dest / src.name
+                    if src.is_dir():
+                        try:
+                            shutil.copytree(src, target, dirs_exist_ok=True, symlinks=False)
+                            print(f"    ✓ {filename} (directory)")
+                        except Exception as e:
+                            print(f"    Warning: Failed to copy {filename}: {e}")
+                    else:
+                        shutil.copy2(src, target)
+                        print(f"    ✓ {filename}")
+                else:
+                    print(f"    Warning: {filename} not found")
+    
+    

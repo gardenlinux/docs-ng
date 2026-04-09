@@ -10,7 +10,8 @@
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
-        "features/",
+        "features/*/README.md",
+        "features/*/info.yaml",
         "flavors.yaml"
       ],
       "structure": {
@@ -20,11 +21,7 @@
         "reference": "reference",
         "contributing": "contributing"
       },
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "media_directories": [".media", "assets", "_static"]
     },
     {
       "name": "builder",
@@ -33,11 +30,7 @@
       "target_path": "projects/builder",
       "ref": "docs-ng",
       "commit": "086e74ff032c5f2a05989aef4f20ba69f94bdbf9",
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "media_directories": [".media", "assets", "_static"]
     },
     {
       "name": "python-gardenlinux-lib",
@@ -47,11 +40,7 @@
       "ref": "docs-ng",
       "commit": "9142fccc3d83ab51759db7d328fa19166bc1df63",
       "structure": "sphinx",
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "media_directories": [".media", "assets", "_static"]
     },
     {
       "name": "package-linux",
@@ -60,11 +49,7 @@
       "target_path": "projects/package-linux",
       "ref": "docs-ng",
       "commit": "841139441357a222ea10349f6d09a875ce9732d1",
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "media_directories": [".media", "assets", "_static"]
     },
     {
       "name": "glrd",
@@ -73,11 +58,7 @@
       "target_path": "projects/glrd",
       "ref": "docs-ng",
       "commit": "c444721b728c0be0de2c19a0bc328928a0091d65",
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "media_directories": [".media", "assets", "_static"]
     }
   ]
 }
