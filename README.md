@@ -1,1 +1,1 @@
-docs/tutorials/documentation.md
+docs/contributing/documentation/working-locally.md
