@@ -98,9 +98,10 @@ To contribute documentation to Garden Linux:
 
 1. **Create a branch** named descriptively ideally with a `docs/` prefix
 2. **Make your changes** following the [quality markers](./writing_good_docs.md)
-3. **Add frontmatter** to your markdown files according to the
+3. **Add front-matter** to your markdown files according to the
    [technical reference](/reference/documentation/technical.md)
-4. **Test your changes** locally by running the documentation server
+4. **Test your changes** locally by running the documentation server Check the
+   [documentation testing guide](/reference/documentation/testing.md)
 5. **Open a Pull Request** with:
    - Clear description of what documentation was added/changed
    - Reference to any related code changes or issues
