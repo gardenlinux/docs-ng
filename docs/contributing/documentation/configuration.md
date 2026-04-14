@@ -7,19 +7,22 @@ description: "Complete reference for repos-config.json and repos-config.local.js
 
 Complete reference for configuring the documentation aggregation system.
 
-> **Source Repository:** [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
+> **Source Repository:**
+> [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
 
 ## Configuration Files
 
 ### `repos-config.json`
 
-Main configuration file for production aggregation. Uses git URLs and commit locks.
+Main configuration file for production aggregation. Uses git URLs and commit
+locks.
 
 **Location:** Project root
 
 ### `repos-config.local.json`
 
-Development configuration file for local testing. Uses `file://` URLs to avoid git operations.
+Development configuration file for local testing. Uses `file://` URLs to avoid
+git operations.
 
 **Location:** Project root
 
@@ -64,7 +67,8 @@ Development configuration file for local testing. Uses `file://` URLs to avoid g
 - **Examples:**
   - Git: `"https://github.com/gardenlinux/gardenlinux"`
   - Local: `"file://../gardenlinux"`
-- **Notes:** For local development, use `file://` URLs in `repos-config.local.json`
+- **Notes:** For local development, use `file://` URLs in
+  `repos-config.local.json`
 
 #### `docs_path`
 
@@ -103,7 +107,8 @@ Development configuration file for local testing. Uses `file://` URLs to avoid g
 - **Description:** Root-level files to copy (e.g., README.md, CONTRIBUTING.md)
 - **Example:** `["README.md", "CONTRIBUTING.md", "LICENSE"]`
 - **Default:** `[]` (no root files copied)
-- **Notes:** Files can have `github_target_path` frontmatter for targeted placement
+- **Notes:** Files can have `github_target_path` front-matter for targeted
+  placement
 
 #### `structure`
 
@@ -137,7 +142,8 @@ This maps source directories to Diataxis categories.
 - **Notes:**
   - Searched recursively in source repository
   - Nested media dirs (e.g., `tutorials/assets/`) copied to same relative path
-  - Root-level media dirs (e.g., `_static/`) copied to common ancestor of targeted files
+  - Root-level media dirs (e.g., `_static/`) copied to common ancestor of
+    targeted files
 
 #### `special_files`
 
@@ -257,7 +263,7 @@ Simplest configuration for a flat repository:
 
 ### With Targeted Documentation
 
-Repository using `github_target_path` frontmatter:
+Repository using `github_target_path` front-matter:
 
 ```json
 {
@@ -280,27 +286,37 @@ github_target_path: "docs/tutorials/my-tutorial.md"
 ---
 ```
 
-## Frontmatter Fields
+## Front-Matter Fields
 
 When using `github_target_path`, you can include additional metadata:
 
 - **`github_org`**: Organization name (e.g., `"gardenlinux"`)
 - **`github_repo`**: Repository name (e.g., `"docs-ng"`)
-- **`github_source_path`**: Original file path in source repo (e.g., `"docs/tutorial.md"`)
+- **`github_source_path`**: Original file path in source repo (e.g.,
+  `"docs/tutorial.md"`)
 
 These help create source links in the documentation.
 
 ### Page Display Fields
 
-- **`description`**: A short summary of the page. Used as the `<meta>` description by VitePress and shown in section index listings when `overviewDescriptions` is enabled on the parent page.
-- **`overviewDescriptions`**: Boolean controlling whether the `<SectionIndex />` component displays child page descriptions. Defaults to `true`. Set to `false` on an index page to hide descriptions for its listing.
-- **`order`**: Numeric value for controlling sort order in the sidebar and section listings. Lower values appear first.
-- **`migration_status`**: Status for content migration (e.g., `"new"`, `"adapt"`, `"aggregate"`).
+- **`description`**: A short summary of the page. Used as the `<meta>`
+  description by VitePress and shown in section index listings when
+  `overviewDescriptions` is enabled on the parent page.
+- **`overviewDescriptions`**: Boolean controlling whether the `<SectionIndex />`
+  component displays child page descriptions. Defaults to `true`. Set to `false`
+  on an index page to hide descriptions for its listing.
+- **`order`**: Numeric value for controlling sort order in the sidebar and
+  section listings. Lower values appear first.
+- **`migration_status`**: Status for content migration (e.g., `"new"`,
+  `"adapt"`, `"aggregate"`).
 
 ## See Also
 
-- [Working with the Documentation System Locally](../../how-to/documentation/working-locally.md)
-- [Testing Reference](./testing.md) — Test suite documentation
-- [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repos
-- [Technical Reference](./technical.md) — Source code documentation
-- [Architecture](../../explanation/documentation/aggregation-architecture.md) — System design
+- [Documentation Workflow](./documentation_workflow.md)
+- [Documentation Quality Markers](./writing_good_docs.md)
+- [Documentation Aggregator Architecture](./aggregation-architecture.md)
+- [How to Documentation - Adding Repos to Aggregate](./adding-repos.md)
+- [How to Documentation - Working With the Aggregator Locally](./working-locally.md)
+- [Documentation Aggregator Technical Reference](./technical.md)
+- [Documentation Aggregator Local Testing Guide](./testing.md)
+- [Working with the Documentation Hub on Your Machine](./working-locally.md)

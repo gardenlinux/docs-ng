@@ -189,5 +189,9 @@ Use this checklist when reviewing or submitting documentation:
 Before you get started, you might want to check out the following docs:
 
 - [Documentation Workflow](./documentation_workflow.md)
-- [How to Documentation - Adding Repos to This Hub](/how-to/documentation/adding-repos.md)
-- [How to Documentation - Working With the Aggregator Locally](/how-to/documentation/working-locally.md)
+- [Documentation Aggregator Architecture](./aggregation-architecture.md)
+- [How to Documentation - Adding Repos to Aggregate](./adding-repos.md)
+- [How to Documentation - Working With the Aggregator Locally](./working-locally.md)
+- [Documentation Aggregator Technical Reference](./technical.md)
+- [Documentation Aggregator Local Testing Guide](./testing.md)
+- [Working with the Documentation Hub on Your Machine](./working-locally.md)

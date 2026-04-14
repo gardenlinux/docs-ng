@@ -28,6 +28,7 @@ to be documented accordingly.
 This includes, but is not limited to:
 
 - Usage of Garden Linux and any supporting tool
+- Processes used to develop or maintain Garden Linux or any supporting tool
 - Features and components of the project
 - Ways to contribute and where to find help
 - Information about where to submit security incidents
@@ -99,9 +100,9 @@ To contribute documentation to Garden Linux:
 1. **Create a branch** named descriptively ideally with a `docs/` prefix
 2. **Make your changes** following the [quality markers](./writing_good_docs.md)
 3. **Add front-matter** to your markdown files according to the
-   [technical reference](/reference/documentation/technical.md)
+   [technical reference](./technical.md)
 4. **Test your changes** locally by running the documentation server Check the
-   [documentation testing guide](/reference/documentation/testing.md)
+   [documentation testing guide](./testing.md)
 5. **Open a Pull Request** with:
    - Clear description of what documentation was added/changed
    - Reference to any related code changes or issues
@@ -135,10 +136,17 @@ The review validates:
 - **Maintainability**: Documentation follows single source of truth principle,
   ownership is clear, no unnecessary duplication
 
-## Next Steps
+## Related Topics
 
 Before you get started, you might want to check out the following docs:
 
 - [Documentation Quality Markers](./writing_good_docs.md)
-- [How to Documentation - Adding Repos to This Hub](/how-to/documentation/adding-repos.md)
-- [How to Documentation - Working With the Aggregator Locally](/how-to/documentation/working-locally.md)
+- [Documentation Aggregator Architecture](./aggregation-architecture.md)
+- [How to Documentation - Adding Repos to Aggregate](./adding-repos.md)
+- [How to Documentation - Working With the Aggregator Locally](./working-locally.md)
+- [Documentation Aggregator Technical Reference](./technical.md)
+- [Documentation Aggregator Local Testing Guide](./testing.md)
+- [Working with the Documentation Hub on Your Machine](./working-locally.md)
+
+> **Source Repository:**
+> [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
