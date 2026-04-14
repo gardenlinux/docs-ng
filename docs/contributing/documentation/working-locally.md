@@ -5,13 +5,18 @@ description: "Learn how to contribute to Garden Linux documentation — working 
 
 # Contributing to the Garden Linux Documentation
 
-Garden Linux documentation is published at **https://gardenlinux-docs.netlify.app/** and combines content from multiple repositories into a unified documentation site.
+Garden Linux documentation is published at
+**https://gardenlinux-docs.netlify.app/** and combines content from multiple
+repositories into a unified documentation site.
 
-> **Source Repository:** [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
+> **Source Repository:**
+> [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
 
 ## Working with the Documentation System Locally
 
-For more substantial changes — like adding new pages, restructuring content, or working on the aggregation system itself — you'll want to set up the documentation system locally.
+For more substantial changes — like adding new pages, restructuring content, or
+working on the aggregation system itself — you'll want to set up the
+documentation system locally.
 
 ### Prerequisites
 
@@ -32,7 +37,8 @@ cd docs-ng
 pnpm install
 ```
 
-This installs VitePress and other Node.js dependencies needed to build the documentation site.
+This installs VitePress and other Node.js dependencies needed to build the
+documentation site.
 
 ### Step 3: Aggregate Documentation
 
@@ -44,7 +50,8 @@ Aggregate from locked commits in `repos-config.json`:
 make aggregate
 ```
 
-This fetches documentation from the configured repositories at their locked commit hashes.
+This fetches documentation from the configured repositories at their locked
+commit hashes.
 
 #### From Local Repositories (Development)
 
@@ -123,9 +130,9 @@ docs/
 
 ## Next Steps
 
-- Learn how to [add new repositories](../../how-to/documentation/adding-repos)
-- Understand the [architecture](../../explanation/architecture)
-- Review the [configuration reference](../../reference/documentation/configuration)
+- Learn how to [add new repositories](adding-repos.md)
+- Understand the [architecture](./aggregation-architecture.md)
+- Review the [configuration reference](./configuration.md)
 
 ## Troubleshooting
 
@@ -150,13 +157,16 @@ python3 --version  # Should be 3.x
 
 ### Verify Configuration
 
-Check that `repos-config.json` or `repos-config.local.json` is properly configured. See the [configuration reference](../../reference/documentation/configuration) for details.
+Check that `repos-config.json` or `repos-config.local.json` is properly
+configured. See the [configuration reference](./configuration.md) for details.
 
 ## See Also
 
-- [Quick Edits](../../tutorials/documentation.md)
-- [Working with the Documentation System Locally](../../how-to/documentation/working-locally.md)
-- [Testing Reference](../../reference/documentation/testing.md) — Test suite documentation
-- [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repos
-- [Technical Reference](../../reference/documentation/technical.md) — Source code documentation
-- [Architecture](../../explanation/documentation/aggregation-architecture.md) — System design
+- [Documentation Workflow](./documentation_workflow.md)
+- [Documentation Quality Markers](./writing_good_docs.md)
+- [Documentation Aggregator Architecture](./aggregation-architecture.md)
+- [How to Documentation - Adding Repos to Aggregate](./adding-repos.md)
+- [How to Documentation - Working With the Aggregator Locally](./working-locally.md)
+- [Documentation Aggregator Technical Reference](./technical.md)
+- [Documentation Aggregator Local Testing Guide](./testing.md)
+- [Working with the Documentation Hub on Your Machine](./working-locally.md)

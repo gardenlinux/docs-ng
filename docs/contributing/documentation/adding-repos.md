@@ -1,13 +1,15 @@
 ---
-title: "Adding Repositories to documentation aggregation"
+title: "Adding Repositories to Documentation Aggregation"
 description: "Guide for adding new repositories to the documentation aggregation system"
 ---
 
-# Adding Repositories to documentation aggregation
+# Adding Repositories to Documentation Aggregation
 
-This guide explains how to add a new repository to the documentation aggregation system.
+This guide explains how to add a new repository to the documentation aggregation
+system.
 
-> **Source Repository:** [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
+> **Source Repository:**
+> [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
 
 ## Prerequisites
 
@@ -41,9 +43,11 @@ Edit `repos-config.json` and add a new entry to the `repos` array:
 ### Optional Fields
 
 - **`commit`**: Lock to a specific commit hash for reproducibility
-- **`root_files`**: List of root-level files to copy (e.g., `["README.md", "CONTRIBUTING.md"]`)
+- **`root_files`**: List of root-level files to copy (e.g.,
+  `["README.md", "CONTRIBUTING.md"]`)
 - **`structure`**: Directory mapping strategy (see below)
-- **`media_directories`**: List of media directories to copy (e.g., `[".media", "_static", "assets"]`)
+- **`media_directories`**: List of media directories to copy (e.g.,
+  `[".media", "_static", "assets"]`)
 
 ## Step 2: Choose a Structure Strategy
 
@@ -78,7 +82,8 @@ Map source directories to Diataxis categories:
 
 ## Step 3: Configure Targeted Documentation
 
-To have files automatically placed into the main Diataxis structure, add `github_target_path` frontmatter to markdown files in the source repository:
+To have files automatically placed into the main Diataxis structure, add
+`github_target_path` front-matter to markdown files in the source repository:
 
 ```markdown
 ---
@@ -91,7 +96,8 @@ github_target_path: "docs/how-to/example-guide.md"
 Content here...
 ```
 
-Files with `github_target_path` will be copied to that exact location, not to `projects/<repo-name>/`.
+Files with `github_target_path` will be copied to that exact location, not to
+`projects/<repo-name>/`.
 
 ## Step 4: Test with Local Configuration
 
@@ -172,7 +178,8 @@ The system will:
 
 - Find all instances of these directories recursively
 - Copy nested media dirs (e.g., `tutorials/assets/`) to the same relative path
-- Copy root-level media dirs (e.g., `_static/`) to the common ancestor of targeted files
+- Copy root-level media dirs (e.g., `_static/`) to the common ancestor of
+  targeted files
 
 ### Root Files
 
@@ -185,7 +192,8 @@ Copy root-level files (like README.md or CONTRIBUTING.md):
 }
 ```
 
-These files can also have `github_target_path` frontmatter for targeted placement.
+These files can also have `github_target_path` front-matter for targeted
+placement.
 
 ### Special Files
 
@@ -233,7 +241,7 @@ Here's a complete configuration:
 
 - Verify `docs_path` points to the correct directory
 - Check that the repository has a `docs-ng` branch or adjust `ref`
-- Ensure `github_target_path` frontmatter is correct
+- Ensure `github_target_path` front-matter is correct
 
 ### Media Not Copied
 
@@ -246,9 +254,13 @@ Here's a complete configuration:
 - Check that relative links in source docs are correct
 - Review `src/aggregation/transformer.py` for link rewriting logic
 
-## See Also
+## Related Topics
 
-- [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repositories to the aggregation
-- [Technical Reference](../../reference/documentation/technical.md) — Source code and API documentation
-- [Configuration Reference](../../reference/documentation/configuration.md) — Complete configuration options
-- [Architecture Explanation](../../explanation/documentation/aggregation-architecture.md) — Deep dive into how the documentation aggregation system works
+- [Documentation Workflow](./documentation_workflow.md)
+- [Documentation Quality Markers](./writing_good_docs.md)
+- [Documentation Aggregator Architecture](./aggregation-architecture.md)
+- [How to Documentation - Adding Repos to Aggregate](./adding-repos.md)
+- [How to Documentation - Working With the Aggregator Locally](./working-locally.md)
+- [Documentation Aggregator Technical Reference](./technical.md)
+- [Documentation Aggregator Local Testing Guide](./testing.md)
+- [Working with the Documentation Hub on Your Machine](./working-locally.md)

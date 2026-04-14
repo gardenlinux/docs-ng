@@ -5,13 +5,16 @@ description: "Deep dive into how the documentation aggregation system works"
 
 # Documentation Aggregation Architecture
 
-Deep dive into the design and implementation of the documentation aggregation system.
+Deep dive into the design and implementation of the documentation aggregation
+system.
 
-> **Source Repository:** [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
+> **Source Repository:**
+> [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
 
 ## System Overview
 
-We use a documentation aggregation pipeline that combines content from multiple source repositories into a unified VitePress documentation site.
+We use a documentation aggregation pipeline that combines content from multiple
+source repositories into a unified VitePress documentation site.
 
 ```
 ┌─────────────────┐
@@ -33,7 +36,7 @@ We use a documentation aggregation pipeline that combines content from multiple 
 ┌─────────────────┐
 │ Transform Stage │
 │ Rewrite links   │
-│ Fix frontmatter │
+│ Fix front-matter│
 └────────┬────────┘
          │
          ▼
@@ -58,8 +61,10 @@ We use a documentation aggregation pipeline that combines content from multiple 
 
 **Mechanisms:**
 
-- **Git Sparse Checkout:** For remote repositories, uses sparse checkout to fetch only the `docs/` directory, minimizing clone size
-- **Local Copy:** For `file://` URLs, performs direct filesystem copy without git operations
+- **Git Sparse Checkout:** For remote repositories, uses sparse checkout to
+  fetch only the `docs/` directory, minimizing clone size
+- **Local Copy:** For `file://` URLs, performs direct filesystem copy without
+  git operations
 - **Commit Resolution:** Records the resolved commit hash for locking
 
 **Key Features:**
@@ -74,15 +79,16 @@ We use a documentation aggregation pipeline that combines content from multiple 
 
 **Transformations:**
 
-1. **Link Rewriting:** Transform relative links to work across repository boundaries
+1. **Link Rewriting:** Transform relative links to work across repository
+   boundaries
 
    - Intra-repo links: Maintained relative to project mirror
    - Cross-repo links: Rewritten to absolute paths
    - External links: Preserved as-is
 
-2. **Frontmatter Handling:** Ensure all documents have proper frontmatter
+2. **Front-matter Handling:** Ensure all documents have proper front-matter
 
-   - Add missing frontmatter blocks
+   - Add missing front-matter blocks
    - Quote YAML values safely
    - Preserve existing metadata
 
@@ -94,8 +100,10 @@ We use a documentation aggregation pipeline that combines content from multiple 
 
 **Operations:**
 
-1. **Targeted Documentation:** Copy files with `github_target_path` to specified locations
-2. **Directory Mapping:** Transform source directories according to `structure` config
+1. **Targeted Documentation:** Copy files with `github_target_path` to specified
+   locations
+2. **Directory Mapping:** Transform source directories according to `structure`
+   config
 3. **Media Copying:** Discover and copy media directories
 4. **Markdown Processing:** Apply transformations to all markdown files
 
@@ -109,7 +117,8 @@ We use a documentation aggregation pipeline that combines content from multiple 
 
 ### Targeted Documentation
 
-Files with `github_target_path` frontmatter are copied directly to their specified location:
+Files with `github_target_path` front-matter are copied directly to their
+specified location:
 
 ```yaml
 ---
@@ -128,7 +137,8 @@ This allows fine-grained control over where content appears in the final site.
 
 ### Project Mirrors
 
-In addition to targeted docs, the entire `docs/` directory from each repo is mirrored under `docs/projects/<repo-name>/`:
+In addition to targeted docs, the entire `docs/` directory from each repo is
+mirrored under `docs/projects/<repo-name>/`:
 
 **Purpose:**
 
@@ -158,9 +168,9 @@ For reproducible builds, commits can be locked:
 
 ```json
 {
-  "name": "repo",
-  "ref": "main",
-  "commit": "abc123..."
+   "name": "repo",
+   "ref": "main",
+   "commit": "abc123..."
 }
 ```
 
@@ -186,7 +196,7 @@ This fetches the latest from `ref` and updates commit locks.
 - **Speed:** Faster than full clone, especially for large repos
 - **Minimal Disk Usage:** Reduces storage requirements
 
-### Why Frontmatter-Based Targeting?
+### Why Front-Matter-Based Targeting?
 
 - **Flexibility:** Authors control where their docs appear
 - **Decentralization:** No central mapping file to maintain
@@ -243,7 +253,7 @@ Temp Directory                 Docs Output
 ### Transform Stage
 
 - **Link rewriting:** O(n \* m) where n = files, m = avg file size
-- **Frontmatter:** O(n) single pass through files
+- **Front-matter:** O(n) single pass through files
 
 ### Structure Stage
 
@@ -267,7 +277,7 @@ Temp Directory                 Docs Output
 
 ### Transform Failures
 
-- Invalid frontmatter → Add default frontmatter, log warning
+- Invalid front-matter → Add default front-matter, log warning
 - Broken links → Log warning, preserve original link
 - Invalid markdown → Process as best-effort, log error
 
@@ -277,9 +287,13 @@ Temp Directory                 Docs Output
 - Conflicting file paths → Error with clear message
 - Media directory not found → Log warning, continue
 
-## See Also
+## Related Topics
 
-- [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repositories to the aggregation
-- [Technical Reference](../../reference/documentation/technical.md) — Source code and API documentation
-- [Configuration Reference](../../reference/documentation/configuration.md) — Complete configuration options
-- [Architecture Explanation](../../explanation/documentation/aggregation-architecture.md) — Deep dive into how the documentation aggregation system works
+- [Documentation Workflow](./documentation_workflow.md)
+- [Documentation Quality Markers](./writing_good_docs.md)
+- [Documentation Aggregator Architecture](./aggregation-architecture.md)
+- [How to Documentation - Adding Repos to Aggregate](./adding-repos.md)
+- [How to Documentation - Working With the Aggregator Locally](./working-locally.md)
+- [Documentation Aggregator Technical Reference](./technical.md)
+- [Documentation Aggregator Local Testing Guide](./testing.md)
+- [Working with the Documentation Hub on Your Machine](./working-locally.md)

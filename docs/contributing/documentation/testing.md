@@ -7,7 +7,10 @@ description: "Test suite for documentation - unit tests, integration tests, and 
 
 Test suite documentation for the documentation aggregation system.
 
-> **Source Repository:** [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng) > **Source File:** [tests/README.md](https://github.com/gardenlinux/docs-ng/blob/main/tests/README.md)
+> **Source Repository:**
+> [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng) > **Source
+> File:**
+> [tests/README.md](https://github.com/gardenlinux/docs-ng/blob/main/tests/README.md)
 
 ## Test Structure
 
@@ -66,7 +69,8 @@ Test pure functions with no I/O side effects:
 
 - **Link rewriting** (`rewrite_links`) — Transform markdown links
 - **YAML quoting** (`quote_yaml_value`) — Safely quote YAML values
-- **Frontmatter handling** (`ensure_frontmatter`, `parse_frontmatter`) — Parse and manipulate frontmatter
+- **Front-matter handling** (`ensure_frontmatter`, `parse_frontmatter`) — Parse
+  and manipulate front-matter
 - **Config loading/saving** — Parse and write configuration files
 - **Model validation** — Data class validation and serialization
 
@@ -88,7 +92,7 @@ Integration tests are slower and require temporary directories.
 Located in `tests/fixtures/`, these provide:
 
 - Sample markdown files
-- Example frontmatter configurations
+- Example front-matter configurations
 - Mock repository structures
 - Configuration file examples
 
@@ -212,7 +216,8 @@ export PYTHONPATH="${PYTHONPATH}:$(pwd)"
 
 ### Fixture Not Found
 
-Check that `conftest.py` is in the correct location and properly defines fixtures.
+Check that `conftest.py` is in the correct location and properly defines
+fixtures.
 
 ### Integration Tests Failing
 
@@ -224,8 +229,11 @@ Integration tests may fail if:
 
 ## See Also
 
-- [Working with the Documentation System Locally](../../how-to/documentation/working-locally.md)
-- [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repositories to the aggregation
-- [Technical Reference](../../reference/documentation/technical.md) — Source code and API documentation
-- [Configuration Reference](../../reference/documentation/configuration.md) — Complete configuration options
-- [Architecture Explanation](../../explanation/documentation/aggregation-architecture.md) — Deep dive into how the documentation aggregation system works
+- [Documentation Workflow](./documentation_workflow.md)
+- [Documentation Quality Markers](./writing_good_docs.md)
+- [Documentation Aggregator Architecture](./aggregation-architecture.md)
+- [How to Documentation - Adding Repos to Aggregate](./adding-repos.md)
+- [How to Documentation - Working With the Aggregator Locally](./working-locally.md)
+- [Documentation Aggregator Technical Reference](./technical.md)
+- [Documentation Aggregator Local Testing Guide](./testing.md)
+- [Working with the Documentation Hub on Your Machine](./working-locally.md)

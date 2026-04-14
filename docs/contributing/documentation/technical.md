@@ -7,7 +7,10 @@ description: "Source code documentation for the documentation aggregation system
 
 Source code documentation for the documentation aggregation system.
 
-> **Source Repository:** [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng) > **Source File:** [src/README.md](https://github.com/gardenlinux/docs-ng/blob/main/src/README.md)
+> **Source Repository:**
+> [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng) > **Source
+> File:**
+> [src/README.md](https://github.com/gardenlinux/docs-ng/blob/main/src/README.md)
 
 ## Source Code Structure
 
@@ -48,33 +51,40 @@ Repository fetching:
 
 Methods:
 
-- **`__init__(project_root, update_locks=False)`** — Initialize with optional commit lock updating
+- **`__init__(project_root, update_locks=False)`** — Initialize with optional
+  commit lock updating
 - **`fetch()`** — Fetch repository and return result with commit hash
 - **`_fetch_remote()`** — Git sparse checkout from remote repository
 - **`_fetch_local()`** — Filesystem copy from local repository
 - **`_copy_docs()`** — Static method to copy docs directory
-- **`_copy_root_files()`** — Static method to copy root-level files (e.g., CONTRIBUTING.md)
+- **`_copy_root_files()`** — Static method to copy root-level files (e.g.,
+  CONTRIBUTING.md)
 
 ### `aggregation/transformer.py`
 
 Content transformation:
 
 - **`rewrite_links()`** — Fix markdown links for cross-repository references
-- **`quote_yaml_value()`** — YAML safety for frontmatter values
-- **`ensure_frontmatter()`** — Add or fix frontmatter in markdown files
-- **`parse_frontmatter()`** — Extract metadata from markdown frontmatter
+- **`quote_yaml_value()`** — YAML safety for front-matter values
+- **`ensure_frontmatter()`** — Add or fix front-matter in markdown files
+- **`parse_frontmatter()`** — Extract metadata from markdown front-matter
 - **`fix_broken_project_links()`** — Validate and fix links to project mirrors
 
 ### `aggregation/structure.py`
 
 Directory operations:
 
-- **`transform_directory_structure()`** — Restructure docs based on config mapping
-- **`copy_targeted_docs(source_dir, docs_dir, repo_name, media_dirs=None, root_files=None)`** — Copy files with `github_target_path` frontmatter to specified locations
-  - Handles nested media dirs (e.g., `tutorials/assets/`) by copying to same relative path
-  - Handles root-level media dirs (e.g., `_static/`) by copying to common ancestor of targeted files
+- **`transform_directory_structure()`** — Restructure docs based on config
+  mapping
+- **`copy_targeted_docs(source_dir, docs_dir, repo_name, media_dirs=None, root_files=None)`**
+  — Copy files with `github_target_path` front-matter to specified locations
+  - Handles nested media dirs (e.g., `tutorials/assets/`) by copying to same
+    relative path
+  - Handles root-level media dirs (e.g., `_static/`) by copying to common
+    ancestor of targeted files
   - Supports scanning root_files for targeted placement
-- **`process_markdown_file()`** — Transform single markdown file (links, frontmatter)
+- **`process_markdown_file()`** — Transform single markdown file (links,
+  front-matter)
 - **`process_all_markdown()`** — Batch process all markdown files in directory
 
 ### `aggregate.py`
@@ -105,7 +115,8 @@ process_all_markdown(target_dir, repo_name)
 
 ### Targeted Documentation
 
-Files with `github_target_path` in their frontmatter are automatically placed at that exact path:
+Files with `github_target_path` in their front-matter are automatically placed
+at that exact path:
 
 ```yaml
 ---
@@ -113,11 +124,13 @@ github_target_path: "docs/tutorials/example.md"
 ---
 ```
 
-The `copy_targeted_docs()` function scans all markdown files and copies those with this frontmatter to their specified locations.
+The `copy_targeted_docs()` function scans all markdown files and copies those
+with this front-matter to their specified locations.
 
 ### Link Rewriting
 
-The `rewrite_links()` function transforms markdown links to work in the aggregated site:
+The `rewrite_links()` function transforms markdown links to work in the
+aggregated site:
 
 - Relative links within the same repo are maintained
 - Cross-repository links are rewritten to point to the correct locations
@@ -129,7 +142,8 @@ Media directories specified in `media_directories` configuration are:
 
 1. Discovered recursively in the source repository
 2. Copied alongside their associated documentation
-3. Placed according to whether they're nested (same relative path) or root-level (common ancestor)
+3. Placed according to whether they're nested (same relative path) or root-level
+   (common ancestor)
 
 ### Commit Locking
 
@@ -168,13 +182,16 @@ To add a new structure mapping type:
 Key architectural decisions are documented in the source repository:
 
 - Sparse git checkout for efficiency
-- Frontmatter-based targeting for flexibility
+- Front-matter-based targeting for flexibility
 - Separate fetch/transform/structure stages for modularity
 
 ## See Also
 
-- [Working with the Documentation System Locally](../../how-to/documentation/working-locally.md)
-- [Testing Reference](./testing.md) — Test suite documentation
-- [Adding Repositories](../../how-to/documentation/adding-repos.md) — How to add new repos
-- [Configuration Reference](./configuration.md) — Complete configuration field reference
-- [Architecture Explanation](../../explanation/documentation/aggregation-architecture.md) — How the system works
+- [Documentation Workflow](./documentation_workflow.md)
+- [Documentation Quality Markers](./writing_good_docs.md)
+- [Documentation Aggregator Architecture](./aggregation-architecture.md)
+- [How to Documentation - Adding Repos to Aggregate](./adding-repos.md)
+- [How to Documentation - Working With the Aggregator Locally](./working-locally.md)
+- [Documentation Aggregator Technical Reference](./technical.md)
+- [Documentation Aggregator Local Testing Guide](./testing.md)
+- [Working with the Documentation Hub on Your Machine](./working-locally.md)
