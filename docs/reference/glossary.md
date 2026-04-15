@@ -23,11 +23,11 @@ The processor architecture for which a Garden Linux image is built. Supported ar
 
 ### AWS
 
-Amazon Web Services. One of the major cloud platforms supported by Garden Linux. Garden Linux provides AWS-specific images through the [`aws`](https://github.com/gardenlinux/gardenlinux/blob/main/features/aws/README.md) platform feature with cloud-init integration and AWS-specific kernel modules. See [AWS platform guide](../how-to/platform-specific/aws.md) and [AWS first boot tutorial](../tutorials/cloud/first-boot-aws.md) for usage details.
+Amazon Web Services. One of the major cloud platforms supported by Garden Linux. Garden Linux provides AWS-specific images through the [`aws`](https://github.com/gardenlinux/gardenlinux/blob/main/features/aws/README.md) platform feature with cloud-init integration and AWS-specific kernel modules. See [AWS platform guide](../how-to/installation/cloud/aws.md) and [AWS first boot tutorial](../tutorials/cloud/first-boot-aws.md) for usage details.
 
 ### Azure
 
-Microsoft Azure. A major cloud platform supported by Garden Linux through the [`azure`](https://github.com/gardenlinux/gardenlinux/blob/main/features/azure/README.md) platform feature with platform-specific image configurations and optimizations. See [Azure platform guide](../how-to/platform-specific/azure.md) and [Azure first boot tutorial](../tutorials/cloud/first-boot-azure.md) for usage details.
+Microsoft Azure. A major cloud platform supported by Garden Linux through the [`azure`](https://github.com/gardenlinux/gardenlinux/blob/main/features/azure/README.md) platform feature with platform-specific image configurations and optimizations. See [Azure platform guide](../how-to/installation/cloud/azure.md) and [Azure first boot tutorial](../tutorials/cloud/first-boot-azure.md) for usage details.
 
 ---
 
@@ -35,7 +35,7 @@ Microsoft Azure. A major cloud platform supported by Garden Linux through the [`
 
 ### Bare Metal
 
-A platform target for Garden Linux images designed to run directly on physical hardware without a hypervisor through the [`baremetal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/baremetal/README.md) platform feature. Also referred to as [`metal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/metal/README.md) in build configurations. See [Bare Metal platform guide](../how-to/platform-specific/bare-metal.md) and [Bare Metal first boot tutorial](../tutorials/on-premises/first-boot-bare-metal.md) for usage details.
+A platform target for Garden Linux images designed to run directly on physical hardware without a hypervisor through the [`baremetal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/baremetal/README.md) platform feature. Also referred to as [`metal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/metal/README.md) in build configurations. See [Bare Metal platform guide](../how-to/installation/on-premises/bare-metal.md) and [Bare Metal first boot tutorial](../tutorials/on-premises/first-boot-bare-metal.md) for usage details.
 
 ### Builder
 
@@ -43,7 +43,7 @@ The [gardenlinux/builder](https://github.com/gardenlinux/builder) component that
 
 ### Build Flavor String
 
-The hyphenated string used with the `./build` command that specifies the platform, features, and optionally the architecture for a Garden Linux image. Format: `${platform}-${feature1}-${feature2}-${arch}`. Examples: `kvm-python_dev`, `aws-gardener_prod-amd64`. See [Building Flavors guide](../how-to/customization/building-flavors.md) for detailed instructions.
+The hyphenated string used with the `./build` command that specifies the platform, features, and optionally the architecture for a Garden Linux image. Format: `${platform}-${feature1}-${feature2}-${arch}`. Examples: `kvm-python_dev`, `aws-gardener_prod-amd64`.
 
 ---
 
@@ -55,11 +55,11 @@ A framework providing security configuration benchmarks. Garden Linux offers opt
 
 ### Cloud Image
 
-A Garden Linux image optimized for cloud platforms (AWS, Azure, GCP, etc.) with cloud-init support and platform-specific configurations. See [Image Types documentation](../explanation/image-types.md) and [Image Formats reference](./image-formats.md) for more details.
+A Garden Linux image optimized for cloud platforms (AWS, Azure, GCP, etc.) with cloud-init support and platform-specific configurations.
 
 ### Container Image
 
-A Garden Linux image packaged for use with container runtimes. Available through GitHub Packages at `ghcr.io/gardenlinux/gardenlinux`. See [Image Types documentation](../explanation/image-types.md) for more details.
+A Garden Linux image packaged for use with container runtimes. Available through GitHub Packages at `ghcr.io/gardenlinux/gardenlinux`.
 
 ---
 
@@ -123,11 +123,11 @@ A Debian GNU/Linux derivative designed to provide small, auditable Linux images 
 
 ### Gardener
 
-[Gardener](https://gardener.cloud/) is a Kubernetes-based platform for managing clusters across multiple cloud providers. Garden Linux is the recommended operating system for Gardener worker nodes through the [`gardener`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gardener/README.md) feature. See [Gardener platform guide](../how-to/platform-specific/gardener.md) for integration details.
+[Gardener](https://gardener.cloud/) is a Kubernetes-based platform for managing clusters across multiple cloud providers. Garden Linux is the recommended operating system for Gardener worker nodes through the [`gardener`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gardener/README.md) feature.
 
 ### GCP
 
-Google Cloud Platform. A major cloud platform supported by Garden Linux through the [`gcp`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gcp/README.md) platform feature with platform-specific configurations. See [GCP platform guide](../how-to/platform-specific/gcp.md) and [GCP first boot tutorial](../tutorials/cloud/first-boot-gcp.md) for usage details.
+Google Cloud Platform. A major cloud platform supported by Garden Linux through the [`gcp`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gcp/README.md) platform feature with platform-specific configurations. See [GCP platform guide](../how-to/installation/cloud/gcp.md) and [GCP first boot tutorial](../tutorials/cloud/first-boot-gcp.md) for usage details.
 
 ### GitHub Actions
 
@@ -148,10 +148,6 @@ Garden Linux uses Go for various tools and components. See [ADR-0004](./adr/0004
 ---
 
 ## I
-
-### Image Type
-
-The format and target deployment method for a Garden Linux image, such as cloud images, container images, virtual machine images, or bare-metal images. See [Image Types documentation](../explanation/image-types.md) and [Image Formats reference](./image-formats.md) for detailed information.
 
 ### Immutable
 
@@ -215,7 +211,7 @@ Automated builds of Garden Linux that occur on a regular schedule from the lates
 
 ### OCI (OCI Image Format)
 
-OCI Image Format. A container image specification defined by the Open Container Initiative. Garden Linux provides OCI-formatted container images. See [First Boot as OCI image](../tutorials/container/first-boot-oci.md) and the [OCI platform guide](../how-to/platform-specific/oci.md) for usage details.
+OCI Image Format. A container image specification defined by the Open Container Initiative. Garden Linux provides OCI-formatted container images. See [First Boot as OCI image](../tutorials/container/first-boot-oci.md) and the [OCI platform guide](../how-to/installation/container/oci.md) for usage details.
 
 ### OpenSSL
 
@@ -267,7 +263,7 @@ Running Podman without requiring root privileges. Garden Linux builds use rootle
 
 ### Secure Boot
 
-A security feature that ensures only trusted software can boot on a system by verifying digital signatures. Garden Linux supports Secure Boot through the [`_secureboot`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_secureboot/README.md) feature. See [ADR-0005](./adr/0005-secure-boot-keys-glci.md) for details on Secure Boot keys in GLCI, and the [Secure Boot documentation](../how-to/security/secure-boot.md) for usage details.
+A security feature that ensures only trusted software can boot on a system by verifying digital signatures. Garden Linux supports Secure Boot through the [`_secureboot`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_secureboot/README.md) feature. See [ADR-0005](./adr/0005-secure-boot-keys-glci.md) for details on Secure Boot keys in GLCI, and the [Secure Boot documentation](../how-to/secure-boot.md) for usage details.
 
 ### SELinux
 

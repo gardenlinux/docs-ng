@@ -6,7 +6,7 @@
       "docs_path": "docs",
       "target_path": "projects/gardenlinux",
       "ref": "docs-ng",
-      "commit": "235ee3265e3d7363146769f07b1fab14586eb2aa",
+      "commit": "7615fe00399f8bb8a6d5b7c36d6a8023747420fa",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
@@ -33,7 +33,7 @@
       "docs_path": "docs",
       "target_path": "projects/builder",
       "ref": "docs-ng",
-      "commit": "6691070742e1550dff42e00b7834df5fd4e3f832",
+      "commit": "ff29b1c4a5abddf855e6b4b7e14bf985a790779e",
       "media_directories": [
         ".media",
         "assets",
@@ -60,7 +60,7 @@
       "docs_path": "docs",
       "target_path": "projects/package-linux",
       "ref": "docs-ng",
-      "commit": "841139441357a222ea10349f6d09a875ce9732d1",
+      "commit": "413b12c2a253f576983b2bc165b98b42044d8ffc",
       "media_directories": [
         ".media",
         "assets",
@@ -73,7 +73,7 @@
       "docs_path": "docs",
       "target_path": "projects/glrd",
       "ref": "docs-ng",
-      "commit": "c444721b728c0be0de2c19a0bc328928a0091d65",
+      "commit": "b855783938aad5cf3238fef9b5dc12190e0b7207",
       "media_directories": [
         ".media",
         "assets",

@@ -2,6 +2,10 @@
 title: "Overview"
 description: "How Garden Linux documentation is organized"
 order: 1
+migration_status: "adapt"
+migration_issue: https://github.com/gardenlinux/gardenlinux/issues/4622
+migration_stakeholder: "@tmang0ld, @yeoldegrove, @ByteOtter"
+migration_approved: false
 ---
 
 # Garden Linux
@@ -24,14 +28,13 @@ Garden Linux documentation uses the [Diátaxis framework](https://diataxis.fr/) 
 
 ## Where to Start
 
-| Your Situation                | Where to Go                                                  |
-| ----------------------------- | ------------------------------------------------------------ |
-| New to Garden Linux           | Start with [Tutorials](/tutorials/)                          |
-| Deploy on a specific platform | Go to [Platform-Specific Guides](/how-to/platform-specific/) |
-| Customize Garden Linux        | Check [Customization Guides](/how-to/customization/)         |
-| Understand concepts           | Read [Explanation](/explanation/)                            |
-| Look up specifications        | Search [Reference](/reference/)                              |
-| Contribute to the project     | See [Contributing](/contributing/)                           |
+| Your Situation                | Where to Go                                             |
+| ----------------------------- | ------------------------------------------------------- |
+| New to Garden Linux           | Start with [Tutorials](/tutorials/)                     |
+| Deploy on a specific platform | Go to [Platform-Specific Guides](/how-to/installation/) |
+| Understand concepts           | Read [Explanation](/explanation/)                       |
+| Look up specifications        | Search [Reference](/reference/)                         |
+| Contribute to the project     | See [Contributing](/contributing/)                      |
 
 ## Tutorials
 
@@ -47,7 +50,7 @@ Task-oriented directions for solving specific problems. These guides assume some
 
 **Start here**: [How-to Guides](/how-to/)
 
-Topics include [getting images](/how-to/getting-images), [choosing flavors](/how-to/choosing-flavors), [initial configuration](/how-to/initial-configuration), [building images](/how-to/building-images), [testing images](/how-to/testing-images), [platform-specific deployment](/how-to/platform-specific/), [security hardening](/how-to/security/), and [customization](/how-to/customization/).
+Topics include [getting images](/how-to/getting-images), [choosing flavors](/how-to/choosing-flavors), [building images](/how-to/building-images), [platform-specific deployment](/how-to/installation/).
 
 ## Explanation
 
@@ -55,7 +58,7 @@ Understanding-oriented articles that clarify concepts, provide background, and e
 
 **Start here**: [Explanation](/explanation/)
 
-Topics include [use cases](/explanation/use-cases), [flavors and features](/explanation/flavors-and-features), [image types](/explanation/image-types), [architecture](/explanation/architecture), [security posture](/explanation/security-posture), [release cadence](/explanation/release-cadence), and [design decisions](/explanation/design-decisions).
+Topics include [use cases](/explanation/use-cases), [flavors and features](/explanation/flavors-and-features), [architecture](/explanation/architecture), [security posture](/explanation/security-posture), and [design decisions](/explanation/design-decisions).
 
 ## Reference
 
@@ -63,7 +66,7 @@ Information-oriented technical descriptions, specifications, and lookup tables f
 
 **Start here**: [Reference](/reference/)
 
-Includes the [flavor matrix](/reference/flavor-matrix), [glossary](/reference/glossary), [platform compatibility](/reference/platform-compatibility), [image formats](/reference/image-formats), [kernel](/reference/kernel), [release information](/reference/releases/), Architecture Decision Records (ADRs) in the [ADR catalog](/reference/adr/), and [supporting tools documentation](/reference/supporting_tools/) (builder, Python Garden Linux library).
+Includes the [flavor matrix](/reference/flavor-matrix), [glossary](/reference/glossary), [kernel](/reference/kernel), [release information](/reference/releases/), Architecture Decision Records (ADRs) in the [ADR catalog](/reference/adr/), and [supporting tools documentation](/reference/supporting_tools/) (builder, Python Garden Linux library).
 
 ## Contributing
 
