@@ -76,6 +76,11 @@ img[src="/search.png"] {
   color: var(--vp-c-text-1);
 }
 
+/* Allow active state to override the text color for sections */
+#VPSidebarNav section.VPSidebarItem.is-active > .item .link > .text {
+  color: var(--vp-c-brand-1);
+}
+
 #VPSidebarNav div.VPSidebarItem > .item .text {
   font-weight: 500;
 }
