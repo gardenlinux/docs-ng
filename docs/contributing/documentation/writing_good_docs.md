@@ -10,6 +10,7 @@ related_topics:
   - /contributing/documentation/working-locally.md
   - /contributing/documentation/technical.md
   - /contributing/documentation/testing.md
+  - /contributing/documentation/vitepress-features.md
 ---
 
 # Documentation Quality Markers
@@ -141,6 +142,20 @@ Documentation should be structured to minimize maintenance burden:
   - For documentation hub content (like these guides), the Documentation Lead
     owns maintenance if that role exists
 - Use includes or references for content that appears in multiple places
+
+### Using Custom Components
+
+Garden Linux documentation includes custom VitePress components that should
+be used appropriately:
+
+- **`<SectionIndex />`**: Always use on section index pages (tutorials/index.md,
+  how-to/index.md, etc.) to display child pages automatically
+- **`<RelatedTopics />`**: Add at the end of content pages to link to related
+  documentation
+- **Front-matter**: Always include `title` and `description` fields; use
+  `order` to control sort order in listings
+- See [VitePress Features](vitepress-features.md) for complete documentation
+  of available components and front-matter fields
 
 ## Conditional Markers
 

@@ -9,6 +9,7 @@ related_topics:
   - /contributing/documentation/working-locally.md
   - /contributing/documentation/technical.md
   - /contributing/documentation/testing.md
+  - /contributing/documentation/vitepress-features.md
 ---
 
 # Documentation Aggregation Configuration Reference
@@ -296,27 +297,23 @@ github_target_path: "docs/tutorials/my-tutorial.md"
 
 ## Front-Matter Fields
 
-When using `github_target_path`, you can include additional metadata:
+### Aggregation-Specific Fields
+
+When using `github_target_path` for aggregated content, you can include additional metadata:
 
 - **`github_org`**: Organization name (e.g., `"gardenlinux"`)
 - **`github_repo`**: Repository name (e.g., `"docs-ng"`)
 - **`github_source_path`**: Original file path in source repo (e.g.,
   `"docs/tutorial.md"`)
+- **`github_branch`**: Branch name for edit links (default: `"main"`)
 
-These help create source links in the documentation.
+These fields enable "Edit this page on GitHub" links for aggregated content.
 
 ### Page Display Fields
 
-- **`description`**: A short summary of the page. Used as the `<meta>`
-  description by VitePress and shown in section index listings when
-  `overviewDescriptions` is enabled on the parent page.
-- **`overviewDescriptions`**: Boolean controlling whether the `<SectionIndex />`
-  component displays child page descriptions. Defaults to `true`. Set to `false`
-  on an index page to hide descriptions for its listing.
-- **`order`**: Numeric value for controlling sort order in the sidebar and
-  section listings. Lower values appear first.
-- **`migration_status`**: Status for content migration (e.g., `"new"`,
-  `"adapt"`, `"aggregate"`).
+For general page display and component configuration fields (such as `title`,
+`description`, `order`, `overviewDescriptions`, and `related_topics`), see
+[VitePress Features](vitepress-features.md).
 
 ## Related Topics
 

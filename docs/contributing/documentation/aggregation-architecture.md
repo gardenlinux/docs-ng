@@ -9,6 +9,7 @@ related_topics:
   - /contributing/documentation/working-locally.md
   - /contributing/documentation/technical.md
   - /contributing/documentation/testing.md
+  - /contributing/documentation/vitepress-features.md
 ---
 
 # Documentation Aggregation Architecture
@@ -89,13 +90,11 @@ source repositories into a unified VitePress documentation site.
 
 1. **Link Rewriting:** Transform relative links to work across repository
    boundaries
-
    - Intra-repo links: Maintained relative to project mirror
    - Cross-repo links: Rewritten to absolute paths
    - External links: Preserved as-is
 
 2. **Front-matter Handling:** Ensure all documents have proper front-matter
-
    - Add missing front-matter blocks
    - Quote YAML values safely
    - Preserve existing metadata
@@ -176,9 +175,9 @@ For reproducible builds, commits can be locked:
 
 ```json
 {
-   "name": "repo",
-   "ref": "main",
-   "commit": "abc123..."
+  "name": "repo",
+  "ref": "main",
+  "commit": "abc123..."
 }
 ```
 

@@ -10,6 +10,7 @@ related_topics:
   - /contributing/documentation/working-locally.md
   - /contributing/documentation/technical.md
   - /contributing/documentation/testing.md
+  - /contributing/documentation/vitepress-features.md
 ---
 
 # Documenting Garden Linux
