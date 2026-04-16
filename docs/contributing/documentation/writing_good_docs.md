@@ -2,6 +2,15 @@
 title: Documentation Quality Markers
 description: Writing Good Documentation
 order: 2
+related_topics:
+  - /contributing/documentation/documentation_workflow.md
+  - /contributing/documentation/writing_good_docs.md
+  - /contributing/documentation/aggregation-architecture.md
+  - /contributing/documentation/adding-repos.md
+  - /contributing/documentation/working-locally.md
+  - /contributing/documentation/technical.md
+  - /contributing/documentation/testing.md
+  - /contributing/documentation/vitepress-features.md
 ---
 
 # Documentation Quality Markers
@@ -134,6 +143,20 @@ Documentation should be structured to minimize maintenance burden:
     owns maintenance if that role exists
 - Use includes or references for content that appears in multiple places
 
+### Using Custom Components
+
+Garden Linux documentation includes custom VitePress components that should
+be used appropriately:
+
+- **`<SectionIndex />`**: Always use on section index pages (tutorials/index.md,
+  how-to/index.md, etc.) to display child pages automatically
+- **`<RelatedTopics />`**: Add at the end of content pages to link to related
+  documentation
+- **Front-matter**: Always include `title` and `description` fields; use
+  `order` to control sort order in listings
+- See [VitePress Features](vitepress-features.md) for complete documentation
+  of available components and front-matter fields
+
 ## Conditional Markers
 
 ### Version Compatibility
@@ -184,14 +207,6 @@ Use this checklist when reviewing or submitting documentation:
 - ✅ Known issues section included (if applicable)
 - ✅ External dependencies documented (if applicable)
 
-## Next Steps
+## Related Topics
 
-Before you get started, you might want to check out the following docs:
-
-- [Documentation Workflow](./documentation_workflow.md)
-- [Documentation Aggregator Architecture](./aggregation-architecture.md)
-- [How to Documentation - Adding Repos to Aggregate](./adding-repos.md)
-- [How to Documentation - Working With the Aggregator Locally](./working-locally.md)
-- [Documentation Aggregator Technical Reference](./technical.md)
-- [Documentation Aggregator Local Testing Guide](./testing.md)
-- [Working with the Documentation Hub on Your Machine](./working-locally.md)
+<RelatedTopics />

@@ -1,11 +1,76 @@
 import { defineConfig } from "vitepress";
 import { generateDocumentationSidebar } from "./sidebar.js";
+import { readdir, readFile } from "fs/promises";
+import { join } from "path";
+import matter from "gray-matter";
 
 // Get base URL from environment variable (for GitHub Pages deployment)
 const base = process.env.BASE_URL || "/";
 
 // Generate sidebar dynamically at build time
 const documentationSidebar = generateDocumentationSidebar();
+
+// Build a map of URL -> { title, description, url } for all markdown pages
+async function buildPageMap(pagesDir: string): Promise<Record<string, { title: string; description: string; url: string }>> {
+  const map: Record<string, { title: string; description: string; url: string }> = {};
+  const skipDirs = ['.vitepress', 'node_modules', 'dist', '_build', '.venv'];
+
+  async function scanDir(dir: string, basePath: string = "") {
+    const dirName = dir.split('/').pop() || '';
+    if (skipDirs.includes(dirName)) {
+      return;
+    }
+    
+    try {
+      const entries = await readdir(dir, { withFileTypes: true });
+      for (const entry of entries) {
+        const fullPath = join(dir, entry.name);
+        if (entry.isDirectory()) {
+          await scanDir(fullPath, basePath + entry.name + "/");
+        } else if (entry.name.endsWith(".md")) {
+          try {
+            const content = await readFile(fullPath, "utf-8");
+            const { data } = matter(content);
+            let url = basePath + entry.name.replace(/\.md$/, ".html");
+            url = url.replace(/\/index\.html$/, "/");
+            if (!url.startsWith("/")) {
+              url = "/" + url;
+            }
+            map[url] = {
+              title: data.title || entry.name.replace(/\.md$/, ""),
+              description: data.description || "",
+              url,
+            };
+          } catch (e) {
+            // Skip files that can't be read
+          }
+        }
+      }
+    } catch (e) {
+      // Skip directories that can't be read
+    }
+  }
+
+  await scanDir(pagesDir);
+  return map;
+}
+
+// Normalize a related_topics path to a URL
+function normalizeUrl(ref: string): string {
+  // Remove .md extension if present
+  let url = ref.replace(/\.md$/, "");
+  // If no extension and no trailing slash, add .html
+  if (!url.endsWith("/") && !url.includes(".")) {
+    url = url + ".html";
+  }
+  // Handle /index paths
+  url = url.replace(/\/index\.html$/, "/");
+  // Ensure leading slash
+  if (!url.startsWith("/")) {
+    url = "/" + url;
+  }
+  return url;
+}
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -146,5 +211,47 @@ export default defineConfig({
     search: {
       provider: "local",
     },
+  },
+  async transformPageData(pageData, { siteConfig }) {
+    // Build page map - NOT cached globally due to VitePress config execution issues
+    const pagesDir = siteConfig.root;
+    const pageMap = await buildPageMap(pagesDir);
+    
+    // Resolve related_topics if present
+    const relatedTopics = pageData.frontmatter?.related_topics;
+    if (relatedTopics && Array.isArray(relatedTopics)) {
+      // Get current page URL
+      let currentPageUrl = "/" + pageData.relativePath.replace(/\.md$/, ".html");
+      currentPageUrl = currentPageUrl.replace(/\/index\.html$/, "/");
+      
+      pageData.frontmatter.resolvedRelated = relatedTopics
+        .map((ref: string) => {
+          // Normalize the file path to URL
+          const url = normalizeUrl(ref);
+          const page = pageMap[url];
+
+          // ERROR: File not found
+          if (!page) {
+            throw new Error(
+              `RelatedTopics: File not found "${ref}" (resolved to "${url}") in ${pageData.relativePath}`
+            );
+          }
+
+          // ERROR: Title missing in frontmatter
+          if (!page.title) {
+            throw new Error(
+              `RelatedTopics: File "${ref}" has no title in frontmatter (in ${pageData.relativePath})`
+            );
+          }
+
+          // OK: Description is optional
+          return {
+            url,
+            title: page.title,
+            description: page.description || "",
+          };
+        })
+        .filter((page) => page.url !== currentPageUrl); // Remove self-references
+    }
   },
 });
