@@ -15,7 +15,7 @@ hero:
       link: /tutorials
     - theme: alt
       text: Releases
-      link: /reference/releases/
+      link: /reference/releases/maintained-releases
   image:
     src: /gardenlinux-logo.svg
     alt: Garden Linux Logo
@@ -50,4 +50,9 @@ features:
   - title: Releases
     details: Overview which Garden Linux Releases are available
     link: /reference/releases/
+
+migration_status: "adapt"
+migration_issue: https://github.com/gardenlinux/gardenlinux/issues/4622
+migration_stakeholder: "@tmang0ld, @yeoldegrove, @ByteOtter"
+migration_approved: false
 ---

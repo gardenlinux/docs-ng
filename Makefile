@@ -37,13 +37,13 @@ install:
 	pip install git+https://github.com/gardenlinux/python-gardenlinux-lib.git@0.10.20
 	pip install -r requirements.txt	
 
-dev: install
+dev:
 	pnpm run docs:dev
 
 build: install clean aggregate
 	pnpm run docs:build
 
-preview: install
+preview:
 	pnpm run docs:preview
 
 # Testing
@@ -66,28 +66,28 @@ spelling:
 	@echo "Running spelling checks..."
 	@pnpm run docs:spelling
 
-linkcheck: install
+linkcheck:
 	@echo "Running link checks..."
 	@pnpm run docs:linkcheck
 
-woke: install
+woke:
 	@echo "Running inclusive language checks..."
 	@pnpm run docs:woke
 
 # Documentation Aggregation
-aggregate-local: install
+aggregate-local:
 	@echo "Aggregating from local repositories (relative paths)..."
 	python3 src/aggregate.py --config repos-config.local.json
 
-aggregate: install
+aggregate:
 	@echo "Aggregating documentation from locked source repositories..."
 	python3 src/aggregate.py
 
-aggregate-update: install
+aggregate-update:
 	@echo "Aggregating documentation from latest source repositories..."
 	python3 src/aggregate.py --update-locks
 
-aggregate-repo: install
+aggregate-repo:
 	@if [ -z "$(REPO)" ]; then \
 		echo "Error: REPO variable not set"; \
 		echo "Usage: make aggregate-repo REPO=gardenlinux"; \
@@ -96,7 +96,7 @@ aggregate-repo: install
 	@echo "Aggregating documentation for locked repository: $(REPO)"
 	python3 src/aggregate.py --repo $(REPO)
 
-aggregate-update-repo: install
+aggregate-update-repo:
 	@if [ -z "$(REPO)" ]; then \
 		echo "Error: REPO variable not set"; \
 		echo "Usage: make aggregate-update-repo REPO=gardenlinux"; \
