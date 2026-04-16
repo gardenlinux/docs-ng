@@ -22,13 +22,17 @@ interface TreeNode {
 const showDescriptions = computed(() => frontmatter.value.overviewDescriptions !== false);
 
 // Get the current directory path from the current page
-// e.g., 'how-to/' for how-to/index.md or 'how-to/platform-specific/' for how-to/platform-specific/index.md
+// e.g., '/how-to/' for how-to/index.md or '/how-to/platform-specific/' for how-to/platform-specific/index.md
 const currentDirectory = computed(() => {
   const path = page.value.relativePath;
   // Remove /index.md or .md and get directory path
   const dirPath = path.replace(/\/index\.md$/, "").replace(/\.md$/, "");
-  // If it's a directory, add trailing slash
-  return dirPath ? dirPath + "/" : "";
+  // If it's a directory, add trailing slash and leading slash
+  if (dirPath) {
+    const normalized = dirPath.startsWith('/') ? dirPath : '/' + dirPath;
+    return normalized.endsWith('/') ? normalized : normalized + '/';
+  }
+  return "/";
 });
 
 // Find items in the current section/subsection from sidebar and build a tree structure
@@ -38,7 +42,9 @@ const sectionItems = computed(() => {
     return [];
   }
 
-  const sidebarGroups = sidebar["/"];
+  // Handle both array format and { base, items } format
+  const sidebarData = sidebar["/"];
+  const sidebarGroups = Array.isArray(sidebarData) ? sidebarData : (sidebarData.items || []);
   const currentPagePath = page.value.relativePath.replace(/\.md$/, "");
   const targetPath = currentDirectory.value;
 
@@ -50,8 +56,16 @@ const sectionItems = computed(() => {
     for (const item of items) {
       // Check if this item's link matches our target path
       if (item.link) {
-        const itemPath =
-          item.link.replace(/\.md$/, "").replace(/\/index$/, "") + "/";
+        // Normalize the link - ensure it starts with / and ends with /
+        let itemPath = item.link;
+        if (!itemPath.startsWith('/')) {
+          itemPath = '/' + itemPath;
+        }
+        itemPath = itemPath.replace(/\.md$/, "").replace(/\/index$/, "");
+        if (!itemPath.endsWith('/')) {
+          itemPath = itemPath + '/';
+        }
+        
         if (itemPath === searchPath) {
           return item;
         }
@@ -72,8 +86,16 @@ const sectionItems = computed(() => {
   for (const group of sidebarGroups) {
     // Check if the group itself matches
     if (group.link) {
-      const groupPath =
-        group.link.replace(/\.md$/, "").replace(/\/index$/, "") + "/";
+      // Normalize the link - ensure it starts with / and ends with /
+      let groupPath = group.link;
+      if (!groupPath.startsWith('/')) {
+        groupPath = '/' + groupPath;
+      }
+      groupPath = groupPath.replace(/\.md$/, "").replace(/\/index$/, "");
+      if (!groupPath.endsWith('/')) {
+        groupPath = groupPath + '/';
+      }
+      
       if (groupPath === targetPath) {
         matchingNode = group;
         break;
