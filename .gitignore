@@ -26,6 +26,7 @@ docs/how-to/**
 !docs/how-to/documentation/
 !docs/how-to/documentation/**
 !docs/how-to/index.md
+!docs/how-to/reporting-issues.md
 docs/reference/**
 !docs/reference/documentation/
 !docs/reference/documentation/**
