@@ -2,6 +2,14 @@
 title: Documentation Workflow
 description: How to Contribute Documentation to Garden Linux
 order: 1
+related_topics:
+  - /contributing/documentation/documentation_workflow.md
+  - /contributing/documentation/writing_good_docs.md
+  - /contributing/documentation/aggregation-architecture.md
+  - /contributing/documentation/adding-repos.md
+  - /contributing/documentation/working-locally.md
+  - /contributing/documentation/technical.md
+  - /contributing/documentation/testing.md
 ---
 
 # Documenting Garden Linux
@@ -138,15 +146,4 @@ The review validates:
 
 ## Related Topics
 
-Before you get started, you might want to check out the following docs:
-
-- [Documentation Quality Markers](./writing_good_docs.md)
-- [Documentation Aggregator Architecture](./aggregation-architecture.md)
-- [How to Documentation - Adding Repos to Aggregate](./adding-repos.md)
-- [How to Documentation - Working With the Aggregator Locally](./working-locally.md)
-- [Documentation Aggregator Technical Reference](./technical.md)
-- [Documentation Aggregator Local Testing Guide](./testing.md)
-- [Working with the Documentation Hub on Your Machine](./working-locally.md)
-
-> **Source Repository:**
-> [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
+<RelatedTopics />

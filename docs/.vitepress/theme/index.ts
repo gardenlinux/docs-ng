@@ -5,6 +5,7 @@ import { useData } from 'vitepress'
 import { createMermaidRenderer } from 'vitepress-mermaid-renderer'
 import './style.css'
 import SectionIndex from './components/SectionIndex.vue'
+import RelatedTopics from './components/RelatedTopics.vue'
 
 export default {
   extends: DefaultTheme,
@@ -31,5 +32,6 @@ export default {
   },
   enhanceApp({ app }) {
     app.component('SectionIndex', SectionIndex)
+    app.component('RelatedTopics', RelatedTopics)
   },
 } satisfies Theme

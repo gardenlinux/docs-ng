@@ -1,6 +1,14 @@
 ---
 title: "Documentation Aggregation Architecture"
 description: "Deep dive into how the documentation aggregation system works"
+related_topics:
+  - /contributing/documentation/documentation_workflow.md
+  - /contributing/documentation/writing_good_docs.md
+  - /contributing/documentation/aggregation-architecture.md
+  - /contributing/documentation/adding-repos.md
+  - /contributing/documentation/working-locally.md
+  - /contributing/documentation/technical.md
+  - /contributing/documentation/testing.md
 ---
 
 # Documentation Aggregation Architecture
@@ -289,11 +297,4 @@ Temp Directory                 Docs Output
 
 ## Related Topics
 
-- [Documentation Workflow](./documentation_workflow.md)
-- [Documentation Quality Markers](./writing_good_docs.md)
-- [Documentation Aggregator Architecture](./aggregation-architecture.md)
-- [How to Documentation - Adding Repos to Aggregate](./adding-repos.md)
-- [How to Documentation - Working With the Aggregator Locally](./working-locally.md)
-- [Documentation Aggregator Technical Reference](./technical.md)
-- [Documentation Aggregator Local Testing Guide](./testing.md)
-- [Working with the Documentation Hub on Your Machine](./working-locally.md)
+<RelatedTopics />
