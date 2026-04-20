@@ -1,8 +1,8 @@
+import { readdir, readFile } from "fs/promises";
+import matter from "gray-matter";
+import { join } from "path";
 import { defineConfig } from "vitepress";
 import { generateDocumentationSidebar } from "./sidebar.js";
-import { readdir, readFile } from "fs/promises";
-import { join } from "path";
-import matter from "gray-matter";
 
 // Get base URL from environment variable (for GitHub Pages deployment)
 const base = process.env.BASE_URL || "/";
@@ -140,8 +140,8 @@ export default defineConfig({
         text: "Documentation",
         items: [
           {
-            text: "Overview",
-            link: "/overview/",
+            text: "Introduction",
+            link: "/introduction/",
           },
           {
             text: "Tutorials",

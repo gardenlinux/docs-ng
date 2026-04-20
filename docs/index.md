@@ -9,7 +9,7 @@ hero:
   actions:
     - theme: brand
       text: Start Here
-      link: /overview/
+      link: /introduction/
     - theme: alt
       text: First Boot
       link: /tutorials
@@ -24,7 +24,7 @@ features:
   ### # use cases
   ### - title: Container Runtime
   ###   details: The preferred Kubernetes worker node for 90% of cloud applications deployed with Gardener
-  ###   link: /overview/
+  ###   link: /introduction/
   ### - title: Container Base Images
   ###   details: Package applications according to the OCI specification
   ###   link: /how-to/container-base-image
