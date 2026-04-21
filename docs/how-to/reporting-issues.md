@@ -14,7 +14,7 @@ To do so, first identify which component of the project gives you troubles and
 open a new bug in the appropriate repository:
 
 - [Gardenlinux - The Main Repo](https://github.com/gardenlinux/gardenlinux/issues/new/choose)
-- [Builder](https://github.com/gardenlinux/builder/issues/new/choose)
+- [Builder - The Image Building Utility](https://github.com/gardenlinux/builder/issues/new/choose)
 - [GLRD - The Garden Linux Release Database](https://github.com/gardenlinux/glrd/issues/new/choose)
 - [Python Library - python-gardenlinux-lib](https://github.com/gardenlinux/python-gardenlinux-lib/issues/new/choose)
 

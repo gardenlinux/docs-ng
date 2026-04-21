@@ -41,15 +41,18 @@ features:
   - title: Explanation
     details: Understanding-oriented content that provides context and background
     link: /explanation/
-  - title: Reference
-    details: Information-oriented technical specifications and lookup tables
-    link: /reference/
+  # - title: Reference
+  #   details: Information-oriented technical specifications and lookup tables
+  #   link: /reference/
   - title: Contributing
     details: Guides for contributing to Garden Linux documentation and development
     link: /contributing/
   - title: Releases
     details: Overview which Garden Linux Releases are available
     link: /reference/releases/
+  - title: Report an Issue
+    details: Learn how to report any issue you face with Garden Linux
+    link: /how-to/reporting-issues
 
 migration_status: "adapt"
 migration_issue: https://github.com/gardenlinux/gardenlinux/issues/4622
