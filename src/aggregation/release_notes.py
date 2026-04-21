@@ -7,6 +7,10 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
+from .glrd import (
+    run_glrd_json,
+    get_active_minor_versions
+)
 from .transformer import cleanup_github_markdown
 
 GITHUB_API_URL = "https://api.github.com/repos/gardenlinux/gardenlinux/releases"
@@ -15,6 +19,7 @@ GITHUB_COMMITS_URL = "https://github.com/gardenlinux/gardenlinux/commit"
 
 # Configuration
 MAX_RELEASES = 200  # Include up to 200 recent releases
+ARCHIVED_DIR = "archived"
 
 
 def parse_version(tag: str) -> tuple:
@@ -129,12 +134,27 @@ def generate_release_notes_docs(docs_dir: Path) -> bool:
     releases_dir = docs_dir / "reference" / "releases" / "release-notes"
     releases_dir.mkdir(parents=True, exist_ok=True)
 
+    archived_dir = releases_dir / ARCHIVED_DIR
+    archived_dir.mkdir(parents=True, exist_ok=True)
+
+    # Clean up existing release notes (except index.md and archived/index.md)
+    for md_file in releases_dir.glob("*.md"):
+        if md_file.name not in ["index.md"]:
+            md_file.unlink()
+            print(f"  Removed: {md_file.relative_to(docs_dir)}")
+
     print("Fetching release notes from GitHub...")
     releases = fetch_github_releases()
 
     if not releases:
         print("Warning: No releases fetched from GitHub", file=sys.stderr)
         return False
+
+    # Query GLRD to determine release status
+    print("Querying GLRD for release status...")
+    active_versions = get_active_minor_versions()
+    if not active_versions:
+        print("Warning: GLRD query failed, defaulting all releases to archived", file=sys.stderr)
 
     # Filter releases (skip drafts)
     filtered = []
@@ -161,6 +181,12 @@ def generate_release_notes_docs(docs_dir: Path) -> bool:
         # Make version heading h1 (replace ## VersionName with # VersionName)
         content = re.sub(r'^##\s+' + re.escape(name) + r'$', '# ' + name, content, flags=re.MULTILINE)
 
+        # Determine if this release is archived
+        # A release is active ONLY if it's explicitly in the active_versions dict
+        # All other releases are archived
+        tag_without_v = tag_name.lstrip('v')
+        is_archived = tag_without_v not in active_versions
+
         # Order: highest version = 1, second = 2, etc.
         release_order = idx + 1
 
@@ -168,18 +194,31 @@ def generate_release_notes_docs(docs_dir: Path) -> bool:
 title: "Release {tag_name}"
 description: "Release notes for Garden Linux {tag_name}, published at {date}."
 order: {release_order}
+editLink: false
+related_topics:
+  - /reference/releases/release-lifecycle
+  - /reference/releases/maintained-releases
+  - /reference/releases/archived-releases
+  - /reference/releases/release-notes/
 ---
 
 {content}
 
-## Other Releases
+## Related Topics
 
-- [All Releases Index](../release-notes/index.md)
+<RelatedTopics />
+
 """
 
         # Create filename from tag
         filename = tag_name.replace(".", "-") + ".md"
-        filepath = releases_dir / filename
+
+        # Route to appropriate directory based on archive status
+        if is_archived:
+            filepath = archived_dir / filename
+        else:
+            filepath = releases_dir / filename
+
         filepath.write_text(page_content)
 
         release_list.append({
@@ -187,6 +226,7 @@ order: {release_order}
             "name": name,
             "filename": filename,
             "date": format_release_date(release.get("published_at", "")),
+            "is_archived": is_archived,
         })
         print(f"  Created: {filepath.relative_to(docs_dir)}")
 
