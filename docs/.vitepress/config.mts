@@ -89,9 +89,9 @@ export default defineConfig({
     /\/reference\/index$/,
     /\/contributing\/index$/,
     // Ignore specific release notes pages that don't exist
-    /release-notes\/1592-17/,
-    /release-notes\/1877-11/,
-    /release-notes\/1877-12/,
+    /release-notes\/archived\/1592-17/,
+    /release-notes\/archived\/1877-11/,
+    /release-notes\/archived\/1877-12/,
     // Ignore LICENSE files (e.g. from aggregated repos)
     /LICENSE$/,
     // Ignore broken links inside features for now

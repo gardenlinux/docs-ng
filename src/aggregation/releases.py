@@ -13,34 +13,23 @@ from .constants import (
     LIFECYCLE_LINKS,
 )
 
-
-def run_glrd_json(args: list[str]) -> Optional[dict]:
-    """Run glrd command with JSON output and return parsed data."""
-    try:
-        result = subprocess.run(
-            ["glrd"] + args + ["--output-format", "json"],
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        if result.returncode == 0:
-            return json.loads(result.stdout)
-        print(f"glrd command failed: {result.stderr}", file=sys.stderr)
-        return None
-    except FileNotFoundError:
-        print("glrd not found - install with: pip install glrd", file=sys.stderr)
-        return None
-    except (json.JSONDecodeError, Exception) as e:
-        print(f"Error running glrd: {e}", file=sys.stderr)
-        return None
+from .glrd import (
+    run_glrd_json,
+    get_active_minor_versions
+)
 
 
-def format_version(release: dict) -> tuple[str, str]:
+def format_version(release: dict, active_versions: set[str]) -> tuple[str, str]:
     """Extract version string and link from release data.
+
+    Args:
+        release: Release data from GLRD
+        active_versions: Set of active minor version strings
 
     Returns:
         Tuple of (version_string, version_link)
-        - Minor releases: link to release notes page
+        - Active minor releases: link to release-notes/{version}.html
+        - Archived minor releases: link to release-notes/archived/{version}.html
         - Major releases: no link (just plain text)
     """
     version_obj = release.get("version", {})
@@ -59,7 +48,13 @@ def format_version(release: dict) -> tuple[str, str]:
 
     # Only link minor releases to release notes; major releases have no link
     if has_minor:
-        version_link = f"[{version_str}](release-notes/{version_str.replace('.', '-')}.html)"
+        # Check if this version is active
+        is_active = version_str in active_versions
+
+        if is_active:
+            version_link = f"[{version_str}](release-notes/{version_str.replace('.', '-')}.html)"
+        else:
+            version_link = f"[{version_str}](release-notes/archived/{version_str.replace('.', '-')}.html)"
     else:
         version_link = version_str  # Major release - no link
 
@@ -146,8 +141,13 @@ gantt
     return gantt
 
 
-def generate_release_table(releases_data: dict) -> str:
-    """Generate markdown table from GLRD JSON data."""
+def generate_release_table(releases_data: dict, active_versions: set[str]) -> str:
+    """Generate markdown table from GLRD JSON data.
+
+    Args:
+        releases_data: Release data from GLRD
+        active_versions: Set of active minor version strings
+    """
     if not releases_data or "releases" not in releases_data:
         return "*No releases found*"
 
@@ -159,7 +159,7 @@ def generate_release_table(releases_data: dict) -> str:
     table += "|:--------|:-------|:---------------------|:---------------------|:-------------------|\n"
 
     for release in releases:
-        _, version_link = format_version(release)
+        _, version_link = format_version(release, active_versions)
         commit_link = format_commit(release)
 
         lifecycle = release.get("lifecycle", {})
@@ -192,46 +192,15 @@ def get_timeline_section(gantt_chart: str, title: str) -> str:
 """
 
 
-def build_release_page(title: str, intro: str, table: str, timeline: str, page_type: str = "maintained") -> str:
-    """Build release page content with frontmatter and sections."""
-    descriptions = {
-        "maintained": "Currently maintained Garden Linux releases with support dates and timelines.",
-        "archived": "Garden Linux releases that have reached end of maintenance and are no longer supported.",
-    }
-    orders = {
-        "maintained": 2,
-        "archived": 3,
-    }
+def append_release_page(table: str, timeline: str, page_type: str = "maintained") -> str:
+    """Append to an existing release page."""
 
-    further_reading = f"""
-
-## Further Reading
-
-- [Release Lifecycle](release-lifecycle.md) — Understanding Garden Linux release phases
-- [Maintained Releases](maintained-releases.md) — Currently supported releases
-- [Archived Releases](archived-releases.md) — Past releases no longer maintained
-- [Release Notes](release-notes/) — Detailed release-specific notes
-"""
-
-    description = descriptions.get(page_type, "")
-    order = orders.get(page_type, 2)
-
-    return f"""---
-title: "{title}"
-description: "{description}"
-order: {order}
----
-
-# {title}
-
-{intro}
-
-:::tip All data is sourced from [GLRD](../../how-to/glrd.html)
-:::
-
+    return f"""
 {table}{timeline}
 
-{further_reading}
+## Related Topics
+
+<RelatedTopics />
 
 """
 
@@ -243,6 +212,10 @@ def generate_release_docs(docs_dir: Path) -> bool:
 
     print("Generating release documentation from GLRD...")
 
+    # Get active minor versions for correct link generation
+    active_versions = get_active_minor_versions()
+    print(f"  Found {len(active_versions)} active minor versions")
+
     active_data = run_glrd_json(["--active"])
     archived_data = run_glrd_json(["--archived"])
 
@@ -250,36 +223,63 @@ def generate_release_docs(docs_dir: Path) -> bool:
         print("Warning: Could not fetch active releases - skipping generation", file=sys.stderr)
         return False
 
-    active_table = generate_release_table(active_data)
+    active_table = generate_release_table(active_data, active_versions)
     active_gantt = generate_mermaid_gantt(active_data)
     active_timeline = get_timeline_section(active_gantt, "Release Timeline")
 
-    active_content = build_release_page(
-        "Maintained Releases",
-        "The table below provides the current list of actively maintained Garden Linux releases. For details about the release lifecycle phases, see [Release Lifecycle](release-lifecycle.md).",
-        f"## Active Releases\n\n{active_table}",
+    active_content = append_release_page(
+        active_table,
         active_timeline,
         "maintained",
     )
 
-    (releases_dir / "maintained-releases.md").write_text(active_content)
-    print(f"  Created: {releases_dir / 'maintained-releases.md'}")
+    release_file = "maintained-releases.md"
+    release_path = (releases_dir / release_file)
+
+    # Read existing file and keep only frontmatter and static content
+    # (everything before the generated tables)
+    existing_content = release_path.read_text()
+    lines = existing_content.split('\n')
+
+    # Find where the generated content starts (look for "## Active Releases" heading)
+    static_lines = []
+    for i, line in enumerate(lines):
+        if line.startswith('## Active Releases') or line.startswith('## Release Timeline'):
+            break
+        static_lines.append(line)
+
+    # Write static content plus new generated content
+    release_path.write_text('\n'.join(static_lines).rstrip() + '\n\n' + active_content)
+    print(f"  Updated: {release_path}")
 
     if archived_data is not None:
-        archived_table = generate_release_table(archived_data)
+        archived_table = generate_release_table(archived_data, active_versions)
         archived_gantt = generate_mermaid_gantt(archived_data)
         archived_timeline = get_timeline_section(archived_gantt, "Archived Releases Timeline")
 
-        archived_content = build_release_page(
-            "Archived Releases",
-            "The table below lists releases that have reached their end of maintenance and are no longer actively supported. If you use one of these versions, migrate to the latest maintained release as soon as possible. For details about the release lifecycle, see [Release Lifecycle](release-lifecycle.md).",
-            f"## Out of Maintenance Releases\n\n{archived_table}",
+        archived_content = append_release_page(
+            archived_table,
             archived_timeline,
             "archived",
         )
 
-        (releases_dir / "archived-releases.md").write_text(archived_content)
-        print(f"  Created: {releases_dir / 'archived-releases.md'}")
+        release_file = "archived-releases.md"
+        release_path = (releases_dir / release_file)
+
+        # Read existing file and keep only frontmatter and static content
+        existing_content = release_path.read_text()
+        lines = existing_content.split('\n')
+
+        # Find where the generated content starts (look for "## Out of Maintenance" heading)
+        static_lines = []
+        for i, line in enumerate(lines):
+            if line.startswith('## Out of Maintenance') or line.startswith('## Archived Releases Timeline'):
+                break
+            static_lines.append(line)
+
+        # Write static content plus new generated content
+        release_path.write_text('\n'.join(static_lines).rstrip() + '\n\n' + archived_content)
+        print(f"  Updated: {release_path}")
     else:
         print("Warning: Could not fetch archived releases", file=sys.stderr)
 
