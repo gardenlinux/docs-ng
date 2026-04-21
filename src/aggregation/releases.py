@@ -192,46 +192,15 @@ def get_timeline_section(gantt_chart: str, title: str) -> str:
 """
 
 
-def build_release_page(title: str, intro: str, table: str, timeline: str, page_type: str = "maintained") -> str:
-    """Build release page content with frontmatter and sections."""
-    descriptions = {
-        "maintained": "Currently maintained Garden Linux releases with support dates and timelines.",
-        "archived": "Garden Linux releases that have reached end of maintenance and are no longer supported.",
-    }
-    orders = {
-        "maintained": 2,
-        "archived": 3,
-    }
+def append_release_page(table: str, timeline: str, page_type: str = "maintained") -> str:
+    """Append to an existing release page."""
 
-    further_reading = f"""
-
-## Further Reading
-
-- [Release Lifecycle](release-lifecycle.md) — Understanding Garden Linux release phases
-- [Maintained Releases](maintained-releases.md) — Currently supported releases
-- [Archived Releases](archived-releases.md) — Past releases no longer maintained
-- [Release Notes](release-notes/) — Detailed release-specific notes
-"""
-
-    description = descriptions.get(page_type, "")
-    order = orders.get(page_type, 2)
-
-    return f"""---
-title: "{title}"
-description: "{description}"
-order: {order}
----
-
-# {title}
-
-{intro}
-
-:::tip All data is sourced from [GLRD](../../how-to/glrd.html)
-:::
-
+    return f"""
 {table}{timeline}
 
-{further_reading}
+## Related Topics
+
+<RelatedTopics />
 
 """
 
@@ -254,32 +223,32 @@ def generate_release_docs(docs_dir: Path) -> bool:
     active_gantt = generate_mermaid_gantt(active_data)
     active_timeline = get_timeline_section(active_gantt, "Release Timeline")
 
-    active_content = build_release_page(
-        "Maintained Releases",
-        "The table below provides the current list of actively maintained Garden Linux releases. For details about the release lifecycle phases, see [Release Lifecycle](release-lifecycle.md).",
-        f"## Active Releases\n\n{active_table}",
+    active_content = append_release_page(
+        active_table,
         active_timeline,
         "maintained",
     )
 
-    (releases_dir / "maintained-releases.md").write_text(active_content)
-    print(f"  Created: {releases_dir / 'maintained-releases.md'}")
+    release_file = "maintained-releases.md"
+    release_path = (releases_dir / release_file)
+    release_path.write_text(release_path.read_text() + active_content)
+    print(f"  Updated: {release_path}")
 
     if archived_data is not None:
         archived_table = generate_release_table(archived_data)
         archived_gantt = generate_mermaid_gantt(archived_data)
         archived_timeline = get_timeline_section(archived_gantt, "Archived Releases Timeline")
 
-        archived_content = build_release_page(
-            "Archived Releases",
-            "The table below lists releases that have reached their end of maintenance and are no longer actively supported. If you use one of these versions, migrate to the latest maintained release as soon as possible. For details about the release lifecycle, see [Release Lifecycle](release-lifecycle.md).",
-            f"## Out of Maintenance Releases\n\n{archived_table}",
+        archived_content = append_release_page(
+            archived_table,
             archived_timeline,
             "archived",
         )
 
-        (releases_dir / "archived-releases.md").write_text(archived_content)
-        print(f"  Created: {releases_dir / 'archived-releases.md'}")
+        release_file = "archived-releases.md"
+        release_path = (releases_dir / release_file)
+        release_path.write_text(release_path.read_text() + archived_content)
+        print(f"  Updated: {release_path}")
     else:
         print("Warning: Could not fetch archived releases", file=sys.stderr)
 

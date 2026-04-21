@@ -6,7 +6,7 @@
       "docs_path": "docs",
       "target_path": "projects/gardenlinux",
       "ref": "docs-ng",
-      "commit": "fd8d380f8ff9423c8ca179fd890ef00a6a4a73a6",
+      "commit": "b9fd22712f3995b809a17f1ceb2dde6568218008",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
