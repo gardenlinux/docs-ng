@@ -20,12 +20,10 @@ use-cases & scenarios.
 
 Instead, it is built to serve as:
 
-- **Container runtime** — The preferred Kubernetes worker node for 90% of the
-  cloud applications deployed with Gardener
-- **Container base images** — Our solution for packaging applications according
+- **Container runtime for [Gardener](/explanation/use-cases#gardener-kubernetes-nodes) or [vanilla Kubernetes](/explanation/use-cases#vanilla-kubernetes-nodes)** — The preferred Kubernetes worker node for 90% of the cloud applications deployed with Gardener
+- **[Container base images](/explanation/use-cases#container-base-images)** — Our solution for packaging applications according
   to the OCI specification
-- **Virtual machine hypervisor host** — OS used to deploy hypervisor nodes to
-  run Kubernetes nodes
+- **[Virtualization host](/explanation/use-cases#virtualization-host)** — OS used to deploy hypervisor nodes to run Kubernetes nodes
 
 ## Documentation Overview
 
@@ -38,6 +36,7 @@ structure and helps you find the right section.
 | Your Situation                | Where to Go                                             |
 | ----------------------------- | ------------------------------------------------------- |
 | New to Garden Linux           | Start with [Tutorials](/tutorials/)                     |
+| Use Cases                     | Get to know [Use Cases](/explanation/use-cases)         |
 | Deploy on a specific platform | Go to [Platform-Specific Guides](/how-to/installation/) |
 | Understand concepts           | Read [Explanation](/explanation/)                       |
 | Look up specifications        | Search [Reference](/reference/)                         |
