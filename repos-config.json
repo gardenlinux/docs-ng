@@ -6,7 +6,7 @@
       "docs_path": "docs",
       "target_path": "projects/gardenlinux",
       "ref": "docs-ng",
-      "commit": "fed8c3a16f78e2de04c3aa3b69c97d7704fc19c0",
+      "commit": "a27f522ddddc5c2f61dbec6e5bc831a713fe076c",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
@@ -60,7 +60,7 @@
       "docs_path": "docs",
       "target_path": "projects/package-linux",
       "ref": "docs-ng",
-      "commit": "413b12c2a253f576983b2bc165b98b42044d8ffc",
+      "commit": "efd3f4ec64b01d5b7b76fd0e51ace99d4b9fc582",
       "media_directories": [
         ".media",
         "assets",

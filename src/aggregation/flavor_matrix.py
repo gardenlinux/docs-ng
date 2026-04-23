@@ -111,8 +111,12 @@ def generate_flavor_matrix_docs(
     for row in sorted(rows, key=lambda r: (r["flavor"], r["arch"])):
         explicit_links = ", ".join(link(f) for f in row["explicit"])
         recursive_links = ", ".join(link(f) for f in row["recursive"])
+        # Build anchor ID from the full flavor name (includes architecture)
+        anchor_id = f"{row['flavor']}-{row['arch']}"
+        # Display the flavor name without arch suffix (flavor_base)
+        display_name = f"`{row['flavor']}`"
         table_rows.append(
-            f"| {row['flavor']} | {row['arch']} | {explicit_links} | {recursive_links} |"
+            f"| <a id='{anchor_id}'></a> {display_name} | {row['arch']} | {explicit_links} | {recursive_links} |"
         )
 
     table = header + "\n" + "\n".join(table_rows)
@@ -133,8 +137,9 @@ def generate_flavor_matrix_docs(
     output_dir = docs_dir / "reference"
     output_dir.mkdir(parents=True, exist_ok=True)
     output_file = output_dir / "flavor-matrix.md"
+
     output_file.write_text(content)
-    print(f"  Created: {output_file}")
+    print(f"  Updated: {output_file}")
 
     print("Flavor matrix generation complete.")
     return True
