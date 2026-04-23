@@ -88,7 +88,7 @@ for precise technical details.
 **Start here**: [Reference](/reference/)
 
 Includes the [flavor matrix](/reference/flavor-matrix),
-[glossary](/reference/glossary), [kernel](/reference/kernel-builds.md),
+[glossary](/reference/glossary), [kernel flavors](/reference/kernel-flavors),
 [release information](/reference/releases/), Architecture Decision Records
 (ADRs) in the [ADR catalog](/reference/adr/), and
 [supporting tools documentation](/reference/supporting_tools/) (builder, Python
