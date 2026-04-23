@@ -211,7 +211,7 @@ Automated builds of Garden Linux that occur on a regular schedule from the lates
 
 ### OCI (OCI Image Format)
 
-OCI Image Format. A container image specification defined by the Open Container Initiative. Garden Linux provides OCI-formatted container images. See [First Boot as OCI image](../tutorials/container/first-boot-oci.md) and the [OCI platform guide](../how-to/installation/container/oci.md) for usage details.
+OCI Image Format. A container image specification defined by the Open Container Initiative. Garden Linux provides OCI-formatted container images. See [First Boot as OCI image](../tutorials/container/first-boot-oci.md) and the [OCI platform guide](../how-to/installation/container/index.md) for usage details.
 
 ### OpenSSL
 
