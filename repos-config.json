@@ -60,7 +60,7 @@
       "docs_path": "docs",
       "target_path": "projects/package-linux",
       "ref": "docs-ng",
-      "commit": "efd3f4ec64b01d5b7b76fd0e51ace99d4b9fc582",
+      "commit": "057e2cef82be30255ed68281ffd0452cfc1cb76c",
       "media_directories": [
         ".media",
         "assets",
