@@ -39,7 +39,7 @@ A platform target for Garden Linux images designed to run directly on physical h
 
 ### Builder
 
-The [gardenlinux/builder](https://github.com/gardenlinux/builder) component that creates customized Linux distributions. The builder is a separate project maintained by the Garden Linux team and is used to build Garden Linux images with specific flavors and features. See [Building Images documentation](../how-to/building-images.md) for practical guidance, [ADR-0020](./adr/0020-enforce-single-platform-by-default-in-builder.md) for details on platform enforcement in the builder, and [ADR-0031](./adr/0031-builder-glci-interface.md) for the builder-GLCI interface design.
+The [gardenlinux/builder](https://github.com/gardenlinux/builder) component that creates customized Linux distributions. The builder is a separate project maintained by the Garden Linux team and is used to build Garden Linux images with specific Flavors. See [Building Images documentation](../how-to/building-images.md) for practical guidance, [ADR-0020](./adr/0020-enforce-single-platform-by-default-in-builder.md) for details on platform enforcement in the builder, and [ADR-0031](./adr/0031-builder-glci-interface.md) for the builder-GLCI interface design.
 
 ### Build Flavor String
 
@@ -95,7 +95,7 @@ Refers to the [`_ephemeral`](https://github.com/gardenlinux/gardenlinux/blob/mai
 
 ### Feature
 
-A modular component that adds specific functionality to a Garden Linux image. Features are defined in the `features/` directory. Features prefixed with an underscore (`_`) are internal/private (e.g., [`_secureboot`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_secureboot/README.md), [`_dev`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_dev/README.md)), while features without a prefix are public (e.g., [`cis`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cis/README.md), [`gardener`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gardener/README.md), [`python`](https://github.com/gardenlinux/gardenlinux/blob/main/features/python/README.md)). See [Flavors and Features documentation](../explanation/flavors-and-features.md) for an overview, and [ADR-0032](./adr/0032-static-feature-test-coverage-analysis.md) for details on feature test coverage analysis.
+A modular component that adds specific functionality to a Garden Linux image. Features are defined in the `features/` directory. Features prefixed with an underscore (`_`) are internal/private (e.g., [`_secureboot`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_secureboot/README.md), [`_dev`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_dev/README.md)), while features without a prefix are public (e.g., [`cis`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cis/README.md), [`gardener`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gardener/README.md), [`python`](https://github.com/gardenlinux/gardenlinux/blob/main/features/python/README.md)). See [Flavors documentation](../explanation/flavors.md) for an overview, and [ADR-0032](./adr/0032-static-feature-test-coverage-analysis.md) for details on feature test coverage analysis.
 
 ### FedRAMP
 
@@ -111,7 +111,7 @@ A lightweight virtual machine monitor (VMM) for running microVMs. Garden Linux h
 
 ### Flavor
 
-A specific combination of a platform and one or more features that defines a complete Garden Linux image configuration. Flavors are expressed as hyphen-separated strings, e.g., `kvm-python_dev` or `aws-gardener_prod-amd64`. The platform must come first, and the architecture (if specified) must come last. See [Flavors and Features documentation](../explanation/flavors-and-features.md), [Choosing Flavors guide](../how-to/choosing-flavors.md), and [Flavor Matrix reference](./flavor-matrix.md) for more details.
+A specific combination of a platform and one or more features that defines a complete Garden Linux image configuration. Flavors are expressed as hyphen-separated strings, e.g., `kvm-python_dev` or `aws-gardener_prod-amd64`. The platform must come first, and the architecture (if specified) must come last. See [Flavors documentation](../explanation/flavors.md), [Choosing Flavors guide](../how-to/choosing-flavors.md), and [Flavor Matrix reference](./flavor-matrix.md) for more details.
 
 ---
 
@@ -119,7 +119,7 @@ A specific combination of a platform and one or more features that defines a com
 
 ### Garden Linux
 
-A Debian GNU/Linux derivative designed to provide small, auditable Linux images for cloud providers and bare-metal machines. Garden Linux is optimized for Gardener nodes and provides extensive customization through features. See [Design Decisions](../explanation/design-decisions.md), [Use Cases](../explanation/use-cases.md), and [Security Posture](../explanation/security-posture.md) for more information.
+A Debian GNU/Linux derivative designed to provide small, auditable Linux images for cloud providers and bare-metal machines. Garden Linux is optimized for Gardener nodes and provides extensive customization through features. See [Architectural Decisions](../explanation/architectural-decisions.md), [Use Cases](../explanation/use-cases.md), and [Security Posture](../explanation/security-posture.md) for more information.
 
 ### Gardener
 

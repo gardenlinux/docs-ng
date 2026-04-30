@@ -75,10 +75,10 @@ explain how Garden Linux works.
 **Start here**: [Explanation](/explanation/)
 
 Topics include [use cases](/explanation/use-cases),
-[flavors and features](/explanation/flavors-and-features),
+[Flavors](/explanation/flavors),
 [architecture](/explanation/architecture),
 [security posture](/explanation/security-posture), and
-[design decisions](/explanation/design-decisions).
+[design decisions](/explanation/architectural-decisions).
 
 ## Reference
 
