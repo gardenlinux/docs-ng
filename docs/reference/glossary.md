@@ -19,15 +19,15 @@ A document that captures an important architectural decision made about the Gard
 
 ### Architecture
 
-The processor architecture for which a Garden Linux image is built. Supported architectures include `amd64` (x86-64) and `arm64` (ARM 64-bit). The architecture can be specified as the last component of a build flavor string, e.g., `kvm-python-amd64`. See [Architecture documentation](../explanation/architecture.md) for details on Garden Linux system design.
+The processor architecture for which a Garden Linux image is built. Supported architectures include `amd64` (x86-64) and `arm64` (ARM 64-bit). The architecture can be specified as the last component of a build flavor string, e.g., `kvm-python-amd64`. See [Architecture documentation](/explanation/architecture.md) for details on Garden Linux system design.
 
 ### AWS
 
-Amazon Web Services. One of the major cloud platforms supported by Garden Linux. Garden Linux provides AWS-specific images through the [`aws`](https://github.com/gardenlinux/gardenlinux/blob/main/features/aws/README.md) platform feature with cloud-init integration and AWS-specific kernel modules. See [AWS platform guide](../how-to/installation/cloud/aws.md) and [AWS first boot tutorial](../tutorials/cloud/first-boot-aws.md) for usage details.
+Amazon Web Services. One of the major cloud platforms supported by Garden Linux. Garden Linux provides AWS-specific images through the [`aws`](https://github.com/gardenlinux/gardenlinux/blob/main/features/aws/README.md) platform feature with cloud-init integration and AWS-specific kernel modules. See [AWS platform guide](/how-to/installation/cloud/aws.md) and [AWS first boot tutorial](../tutorials/cloud/first-boot-aws.md) for usage details.
 
 ### Azure
 
-Microsoft Azure. A major cloud platform supported by Garden Linux through the [`azure`](https://github.com/gardenlinux/gardenlinux/blob/main/features/azure/README.md) platform feature with platform-specific image configurations and optimizations. See [Azure platform guide](../how-to/installation/cloud/azure.md) and [Azure first boot tutorial](../tutorials/cloud/first-boot-azure.md) for usage details.
+Microsoft Azure. A major cloud platform supported by Garden Linux through the [`azure`](https://github.com/gardenlinux/gardenlinux/blob/main/features/azure/README.md) platform feature with platform-specific image configurations and optimizations. See [Azure platform guide](/how-to/installation/cloud/azure.md) and [Azure first boot tutorial](../tutorials/cloud/first-boot-azure.md) for usage details.
 
 ---
 
@@ -35,11 +35,11 @@ Microsoft Azure. A major cloud platform supported by Garden Linux through the [`
 
 ### Bare Metal
 
-A platform target for Garden Linux images designed to run directly on physical hardware without a hypervisor through the [`baremetal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/baremetal/README.md) platform feature. Also referred to as [`metal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/metal/README.md) in build configurations. See [Bare Metal platform guide](../how-to/installation/on-premises/bare-metal.md) and [Bare Metal first boot tutorial](../tutorials/on-premises/first-boot-bare-metal.md) for usage details.
+A platform target for Garden Linux images designed to run directly on physical hardware without a hypervisor through the [`baremetal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/baremetal/README.md) platform feature. Also referred to as [`metal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/metal/README.md) in build configurations. See [Bare Metal platform guide](/how-to/installation/on-premises/bare-metal.md) and [Bare Metal first boot tutorial](../tutorials/on-premises/first-boot-bare-metal.md) for usage details.
 
 ### Builder
 
-The [gardenlinux/builder](https://github.com/gardenlinux/builder) component that creates customized Linux distributions. The builder is a separate project maintained by the Garden Linux team and is used to build Garden Linux images with specific Flavors. See [Building Images documentation](../how-to/building-images.md) for practical guidance, [ADR-0020](./adr/0020-enforce-single-platform-by-default-in-builder.md) for details on platform enforcement in the builder, and [ADR-0031](./adr/0031-builder-glci-interface.md) for the builder-GLCI interface design.
+The [gardenlinux/builder](https://github.com/gardenlinux/builder) component that creates customized Linux distributions. The builder is a separate project maintained by the Garden Linux team and is used to build Garden Linux images with specific Flavors. See [Building Images documentation](/how-to/building-images.md) for practical guidance, [ADR-0020](./adr/0020-enforce-single-platform-by-default-in-builder.md) for details on platform enforcement in the builder, and [ADR-0031](./adr/0031-builder-glci-interface.md) for the builder-GLCI interface design.
 
 ### Build Flavor String
 
@@ -95,7 +95,7 @@ Refers to the [`_ephemeral`](https://github.com/gardenlinux/gardenlinux/blob/mai
 
 ### Feature
 
-A modular component that adds specific functionality to a Garden Linux image. Features are defined in the `features/` directory. Features prefixed with an underscore (`_`) are internal/private (e.g., [`_secureboot`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_secureboot/README.md), [`_dev`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_dev/README.md)), while features without a prefix are public (e.g., [`cis`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cis/README.md), [`gardener`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gardener/README.md), [`python`](https://github.com/gardenlinux/gardenlinux/blob/main/features/python/README.md)). See [Flavors documentation](../explanation/flavors.md) for an overview, and [ADR-0032](./adr/0032-static-feature-test-coverage-analysis.md) for details on feature test coverage analysis.
+A modular component that adds specific functionality to a Garden Linux image. Features are defined in the `features/` directory. Features prefixed with an underscore (`_`) are internal/private (e.g., [`_secureboot`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_secureboot/README.md), [`_dev`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_dev/README.md)), while features without a prefix are public (e.g., [`cis`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cis/README.md), [`gardener`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gardener/README.md), [`python`](https://github.com/gardenlinux/gardenlinux/blob/main/features/python/README.md)). See [Flavors documentation](/explanation/flavors.md) for an overview, and [ADR-0032](./adr/0032-static-feature-test-coverage-analysis.md) for details on feature test coverage analysis.
 
 ### FedRAMP
 
@@ -111,7 +111,7 @@ A lightweight virtual machine monitor (VMM) for running microVMs. Garden Linux h
 
 ### Flavor
 
-A specific combination of a platform and one or more features that defines a complete Garden Linux image configuration. Flavors are expressed as hyphen-separated strings, e.g., `kvm-python_dev` or `aws-gardener_prod-amd64`. The platform must come first, and the architecture (if specified) must come last. See [Flavors documentation](../explanation/flavors.md), [Choosing Flavors guide](../how-to/choosing-flavors.md), and [Flavor Matrix reference](./flavor-matrix.md) for more details.
+A specific combination of a platform and one or more features that defines a complete Garden Linux image configuration. Flavors are expressed as hyphen-separated strings, e.g., `kvm-python_dev` or `aws-gardener_prod-amd64`. The platform must come first, and the architecture (if specified) must come last. See [Flavors documentation](/explanation/flavors.md), [Choosing Flavors guide](/how-to/choosing-flavors.md), and [Flavor Matrix reference](./flavor-matrix.md) for more details.
 
 ---
 
@@ -119,7 +119,7 @@ A specific combination of a platform and one or more features that defines a com
 
 ### Garden Linux
 
-A Debian GNU/Linux derivative designed to provide small, auditable Linux images for cloud providers and bare-metal machines. Garden Linux is optimized for Gardener nodes and provides extensive customization through features. See [Architectural Decisions](../explanation/architectural-decisions.md), [Use Cases](../explanation/use-cases.md), and [Security Posture](../explanation/security-posture.md) for more information.
+A Debian GNU/Linux derivative designed to provide small, auditable Linux images for cloud providers and bare-metal machines. Garden Linux is optimized for Gardener nodes and provides extensive customization through features. See [Architectural Decisions](/explanation/architectural-decisions.md), [Use Cases](/explanation/use-cases.md), and [Security Posture](/explanation/security-posture.md) for more information.
 
 ### Gardener
 
@@ -127,7 +127,7 @@ A Debian GNU/Linux derivative designed to provide small, auditable Linux images 
 
 ### GCP
 
-Google Cloud Platform. A major cloud platform supported by Garden Linux through the [`gcp`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gcp/README.md) platform feature with platform-specific configurations. See [GCP platform guide](../how-to/installation/cloud/gcp.md) and [GCP first boot tutorial](../tutorials/cloud/first-boot-gcp.md) for usage details.
+Google Cloud Platform. A major cloud platform supported by Garden Linux through the [`gcp`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gcp/README.md) platform feature with platform-specific configurations. See [GCP platform guide](/how-to/installation/cloud/gcp.md) and [GCP first boot tutorial](../tutorials/cloud/first-boot-gcp.md) for usage details.
 
 ### GitHub Actions
 
@@ -211,7 +211,7 @@ Automated builds of Garden Linux that occur on a regular schedule from the lates
 
 ### OCI (OCI Image Format)
 
-OCI Image Format. A container image specification defined by the Open Container Initiative. Garden Linux provides OCI-formatted container images. See [First Boot as OCI image](../tutorials/container/first-boot-oci.md) and the [OCI platform guide](../how-to/installation/container/index.md) for usage details.
+OCI Image Format. A container image specification defined by the Open Container Initiative. Garden Linux provides OCI-formatted container images. See [First Boot as OCI image](../tutorials/container/first-boot-oci.md) and the [OCI platform guide](/how-to/installation/container/index.md) for usage details.
 
 ### OpenSSL
 
@@ -263,7 +263,7 @@ Running Podman without requiring root privileges. Garden Linux builds use rootle
 
 ### Secure Boot
 
-A security feature that ensures only trusted software can boot on a system by verifying digital signatures. Garden Linux supports Secure Boot through the [`_secureboot`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_secureboot/README.md) feature. See [ADR-0005](./adr/0005-secure-boot-keys-glci.md) for details on Secure Boot keys in GLCI, and the [Secure Boot documentation](../how-to/secure-boot.md) for usage details.
+A security feature that ensures only trusted software can boot on a system by verifying digital signatures. Garden Linux supports Secure Boot through the [`_secureboot`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_secureboot/README.md) feature. See [ADR-0005](./adr/0005-secure-boot-keys-glci.md) for details on Secure Boot keys in GLCI, and the [Secure Boot documentation](/how-to/secure-boot.md) for usage details.
 
 ### SELinux
 

@@ -103,7 +103,7 @@ adding a feature, or improving documentation.
 
 Covers the documentation guide, development [workflow](/contributing/workflow),
 [security](/contributing/security) practices, and
-[testing](/contributing/testing/) (developing tests, running tests, test
+[testing](/contributing/testing) (developing tests, running tests, test
 coverage).
 
 ## Getting Help
