@@ -33,7 +33,7 @@ Following the [Diátaxis framework](https://diataxis.fr/), tutorials focus on pr
 
 Once you've completed your first tutorial, you can:
 
-- Explore [how-to guides](../how-to/index.md) for task-oriented instructions
-- Read [explanations](../explanation/index.md) to understand Garden Linux concepts and architecture
-- Review [reference documentation](../reference/index.md) for technical specifications
+- Explore [how-to guides](/how-to/index.md) for task-oriented instructions
+- Read [explanations](/explanation/index.md) to understand Garden Linux concepts and architecture
+- Review [reference documentation](/reference/index.md) for technical specifications
 - Learn about [contributing](../contributing/index.md) to Garden Linux

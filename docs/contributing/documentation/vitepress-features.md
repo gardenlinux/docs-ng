@@ -178,7 +178,7 @@ gantt
 ```
 
 **Real-world example:**
-See the [Maintained Releases](../../reference/releases/maintained-releases.md) page for a complete Gantt chart showing release maintenance phases.
+See the [Maintained Releases](/reference/releases/maintained-releases) page for a complete Gantt chart showing release maintenance phases.
 
 ## Container Syntax (Callouts)
 
