@@ -6,7 +6,7 @@
       "docs_path": "docs",
       "target_path": "projects/gardenlinux",
       "ref": "docs-ng",
-      "commit": "a6251a94a3e75d13f3a22ce826a2760b69165b94",
+      "commit": "7544e2f732ccd8fd5aa66a202925df575eca6247",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
@@ -60,7 +60,33 @@
       "docs_path": "docs",
       "target_path": "projects/package-linux",
       "ref": "docs-ng",
-      "commit": "057e2cef82be30255ed68281ffd0452cfc1cb76c",
+      "commit": "9570d0f81eae4e1e500dd3f36ea845a2dce14357",
+      "media_directories": [
+        ".media",
+        "assets",
+        "_static"
+      ]
+    },
+    {
+      "name": "package-build",
+      "url": "https://github.com/gardenlinux/package-build",
+      "docs_path": "docs",
+      "target_path": "projects/package-build",
+      "ref": "docs-ng",
+      "commit": "b4bce8b1dbb48cfedefdd866f3bc28d1c395c060",
+      "media_directories": [
+        ".media",
+        "assets",
+        "_static"
+      ]
+    },
+    {
+      "name": "repo",
+      "url": "https://github.com/gardenlinux/repo",
+      "docs_path": "docs",
+      "target_path": "projects/repo",
+      "ref": "docs-ng",
+      "commit": "4953feba27c5efd31421a883dec7c5bd61ac40f5",
       "media_directories": [
         ".media",
         "assets",

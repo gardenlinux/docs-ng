@@ -47,6 +47,22 @@
       "media_directories": [".media", "assets", "_static"]
     },
     {
+      "name": "package-build",
+      "url": "file://../package-build",
+      "docs_path": "docs",
+      "target_path": "projects/package-build",
+      "structure": "flat",
+      "media_directories": [".media", "assets", "_static"]
+    },
+    {
+      "name": "repo",
+      "url": "file://../repo",
+      "docs_path": "docs",
+      "target_path": "projects/repo",
+      "structure": "flat",
+      "media_directories": [".media", "assets", "_static"]
+    },
+    {
       "name": "glrd",
       "url": "file://../glrd",
       "docs_path": "docs",
