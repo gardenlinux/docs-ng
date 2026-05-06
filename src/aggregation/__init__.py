@@ -6,6 +6,7 @@ from .fetcher import DocsFetcher
 from .flavor_matrix import generate_flavor_matrix_docs
 from .models import AggregateResult, RepoConfig
 from .releases import generate_release_docs
+from .sphinx_builder import build_sphinx_markdown
 from .structure import (copy_targeted_docs, process_all_markdown,
                         transform_directory_structure)
 from .transformer import (ensure_frontmatter, parse_frontmatter,
@@ -33,4 +34,6 @@ __all__ = [
     "generate_release_docs",
     # Flavor Matrix
     "generate_flavor_matrix_docs",
+    # Sphinx builder
+    "build_sphinx_markdown",
 ]

@@ -20,7 +20,7 @@
         "contributing": "contributing"
       },
       "special_files": {},
-      "media_directories": [".media", "assets", "_static"]
+      "media_directories": [".media", "assets"]
     },
     {
       "name": "builder",
@@ -28,7 +28,7 @@
       "docs_path": "docs",
       "target_path": "projects/builder",
       "structure": "flat",
-      "media_directories": [".media", "assets", "_static"]
+      "media_directories": [".media", "assets"]
     },
     {
       "name": "python-gardenlinux-lib",
@@ -36,7 +36,11 @@
       "docs_path": "docs",
       "target_path": "projects/python-gardenlinux-lib",
       "structure": "sphinx",
-      "media_directories": [".media", "assets", "_static"]
+      "target_map": {
+        "cli.md": "reference/python-gardenlinux-lib-cli.md",
+        "api.md": "reference/python-gardenlinux-lib-api.md"
+      },
+      "media_directories": [".media", "assets"]
     },
     {
       "name": "package-linux",
@@ -44,7 +48,7 @@
       "docs_path": "docs",
       "target_path": "projects/package-linux",
       "structure": "flat",
-      "media_directories": [".media", "assets", "_static"]
+      "media_directories": [".media", "assets"]
     },
     {
       "name": "package-build",
@@ -52,7 +56,7 @@
       "docs_path": "docs",
       "target_path": "projects/package-build",
       "structure": "flat",
-      "media_directories": [".media", "assets", "_static"]
+      "media_directories": [".media", "assets"]
     },
     {
       "name": "repo",
@@ -60,7 +64,7 @@
       "docs_path": "docs",
       "target_path": "projects/repo",
       "structure": "flat",
-      "media_directories": [".media", "assets", "_static"]
+      "media_directories": [".media", "assets"]
     },
     {
       "name": "glrd",
@@ -68,7 +72,7 @@
       "docs_path": "docs",
       "target_path": "projects/glrd",
       "structure": "flat",
-      "media_directories": [".media", "assets", "_static"]
+      "media_directories": [".media", "assets"]
     }
   ]
 }

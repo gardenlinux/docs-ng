@@ -18,7 +18,8 @@ class RepoConfig:
     structure: Union[str, Dict[str, str]] = "flat"
     special_files: Dict[str, str] = field(default_factory=dict)
     media_directories: List[str] = field(default_factory=list)
-
+    target_map: Dict[str, str] = field(default_factory=dict)
+    
     @property
     def is_local(self) -> bool:
         """Check if this is a local file:// repository."""
@@ -56,6 +57,7 @@ class RepoConfig:
             structure=data.get("structure", "flat"),
             special_files=data.get("special_files", {}),
             media_directories=data.get("media_directories", []),
+            target_map=data.get("target_map", {}),
         )
 
 

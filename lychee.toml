@@ -26,6 +26,7 @@ exclude = [
   "^https://github\\.com/gardenlinux/python-gardenlinux-lib/blob/main/_static/",
   "^https://github\\.com/gardenlinux/docs-ng/blob/main/src/README\\.md$",
   "^https://github\\.com/gardenlinux/docs-ng/blob/main/tests/README\\.md$",
+  "^http://packages\\.gardenlinux\\.io/gardenlinux$",
 ]
 
 # Accept these status codes as valid
