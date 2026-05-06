@@ -67,12 +67,12 @@ const cloudPlatforms = [
   { name: 'Google Cloud', image: '.vitepress/theme/assets/cloud_platforms/Google_Cloud_logo.svg', url: '/how-to/installation/cloud/gcp' },
   { name: 'OpenStack', image: '.vitepress/theme/assets/cloud_platforms/The_OpenStack_logo.svg', url: '/how-to/installation/cloud/openstack' },
   { name: 'VMware', image: '.vitepress/theme/assets/cloud_platforms/Vmware.svg', url: '/how-to/vmware' },
-  { name: 'Baremetal', image: '.vitepress/theme/assets/download-icon.svg', url: '/how-to/installation/on-premises/bare-metal'}
+  { name: 'Bare Metal', image: '.vitepress/theme/assets/download-icon.svg', url: '/how-to/installation/on-premises/bare-metal'}
 ]
 const sponsors = [
   { name: 'NeoNephos Foundation', image: '.vitepress/theme/assets/neonephos_logo_dark.svg', url: 'https://neonephos.org' },
   { name: 'SAP', image: '.vitepress/theme/assets/SAP-Logo.svg', url: 'https://sap.com' },
-  { name: 'NextGenerationEU', image: '.vitepress/theme/assets/eu-support.png', url: 'https://example.com' },
+  { name: 'NextGenerationEU', image: '.vitepress/theme/assets/eu-support.png', url: 'https://next-generation-eu.europa.eu/' },
 ]
 </script>
 
