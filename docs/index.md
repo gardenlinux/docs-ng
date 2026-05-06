@@ -71,7 +71,7 @@ const cloudPlatforms = [
 ]
 const sponsors = [
   { name: 'NeoNephos Foundation', image: '.vitepress/theme/assets/neonephos_logo_dark.svg', url: 'https://neonephos.org' },
-  { name: 'SAP', image: '.vitepress/theme/assets/SAP-Logo.svg', url: 'https://example.com' },
+  { name: 'SAP', image: '.vitepress/theme/assets/SAP-Logo.svg', url: 'https://sap.com' },
   { name: 'NextGenerationEU', image: '.vitepress/theme/assets/eu-support.png', url: 'https://example.com' },
 ]
 </script>
