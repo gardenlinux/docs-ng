@@ -59,3 +59,40 @@ migration_issue: https://github.com/gardenlinux/gardenlinux/issues/4622
 migration_stakeholder: "@tmang0ld, @yeoldegrove, @ByteOtter"
 migration_approved: false
 ---
+
+<script setup>
+const cloudPlatforms = [
+  { name: 'Amazon Web Services', image: '.vitepress/theme/assets/cloud_platforms/AWS.svg', url: '/how-to/installation/cloud/aws' },
+  { name: 'Microsoft Azure', image: '.vitepress/theme/assets/cloud_platforms/Microsoft_Azure.svg', url: '/how-to/installation/cloud/azure' },
+  { name: 'Google Cloud', image: '.vitepress/theme/assets/cloud_platforms/Google_Cloud_logo.svg', url: '/how-to/installation/cloud/gcp' },
+  { name: 'OpenStack', image: '.vitepress/theme/assets/cloud_platforms/The_OpenStack_logo.svg', url: '/how-to/installation/cloud/openstack' },
+  { name: 'VMware', image: '.vitepress/theme/assets/cloud_platforms/Vmware.svg', url: '/how-to/vmware' },
+  { name: 'Baremetal', image: '.vitepress/theme/assets/download-icon.svg', url: '/how-to/installation/on-premises/bare-metal'}
+]
+const sponsors = [
+  { name: 'NeoNephos Foundation', image: '.vitepress/theme/assets/neonephos_logo_dark.svg', url: 'https://neonephos.org' },
+  { name: 'SAP', image: '.vitepress/theme/assets/SAP-Logo.svg', url: 'https://example.com' },
+  { name: 'NextGenerationEU', image: '.vitepress/theme/assets/eu-support.png', url: 'https://example.com' },
+]
+</script>
+
+<!-- Cloud Platforms Carousel -->
+<Carousel 
+  title="Wherever You Are. Garden Linux Is With You." 
+  :items="cloudPlatforms"
+  :slides-per-view="3"
+  :space-between="30"
+  :autoplay="4000"
+  :grayscale="false"
+/>
+
+<!-- Sponsors Carousel -->
+<Carousel 
+  title="Our Sponsors" 
+  :items="sponsors"
+  :slides-per-view="3"
+  :space-between="20"
+  :autoplay="2500"
+  :pagination="false"
+  :grayscale="false"
+/>
