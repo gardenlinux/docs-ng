@@ -62,17 +62,17 @@ migration_approved: false
 
 <script setup>
 const cloudPlatforms = [
-  { name: 'Amazon Web Services', image: 'public/assets/cloud_platforms/AWS.svg', url: '/how-to/installation/cloud/aws' },
-  { name: 'Microsoft Azure', image: 'public/assets/cloud_platforms/Microsoft_Azure.svg', url: '/how-to/installation/cloud/azure' },
-  { name: 'Google Cloud', image: 'public/assets/cloud_platforms/Google_Cloud_logo.svg', url: '/how-to/installation/cloud/gcp' },
-  { name: 'OpenStack', image: 'public/assets/cloud_platforms/The_OpenStack_logo.svg', url: '/how-to/installation/cloud/openstack' },
-  { name: 'VMware', image: 'public/assets/cloud_platforms/Vmware.svg', url: '/how-to/vmware' },
-  { name: 'Bare Metal', image: 'public/assets/download-icon.svg', url: '/how-to/installation/on-premises/bare-metal'}
+  { name: 'Amazon Web Services', image: '/assets/cloud_platforms/AWS.svg', url: '/how-to/installation/cloud/aws' },
+  { name: 'Microsoft Azure', image: '/assets/cloud_platforms/Microsoft_Azure.svg', url: '/how-to/installation/cloud/azure' },
+  { name: 'Google Cloud', image: '/assets/cloud_platforms/Google_Cloud_logo.svg', url: '/how-to/installation/cloud/gcp' },
+  { name: 'OpenStack', image: '/assets/cloud_platforms/The_OpenStack_logo.svg', url: '/how-to/installation/cloud/openstack' },
+  { name: 'VMware', image: '/assets/cloud_platforms/Vmware.svg', url: '/how-to/vmware' },
+  { name: 'Bare Metal', image: '/assets/download-icon.svg', url: '/how-to/installation/on-premises/bare-metal'}
 ]
 const sponsors = [
-  { name: 'NeoNephos Foundation', image: 'public/assets/neonephos_logo_dark.svg', url: 'https://neonephos.org' },
-  { name: 'SAP', image: 'public/assets/SAP-Logo.svg', url: 'https://sap.com' },
-  { name: 'NextGenerationEU', image: 'public/assets/eu-support.png', url: 'https://next-generation-eu.europa.eu/' },
+  { name: 'NeoNephos Foundation', image: '/assets/neonephos_logo.svg', url: 'https://neonephos.org' },
+  { name: 'SAP', image: '/assets/SAP-Logo.svg', url: 'https://sap.com' },
+  { name: 'NextGenerationEU', image: '/assets/eu-support.png', url: 'https://next-generation-eu.europa.eu/' },
 ]
 </script>
 
