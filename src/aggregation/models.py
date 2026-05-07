@@ -12,7 +12,7 @@ class RepoConfig:
     url: str
     docs_path: str
     target_path: str
-    ref: str | None = None
+    ref: str
     commit: str | None = None
     root_files: List[str] = field(default_factory=list)
     structure: Union[str, Dict[str, str]] = "flat"
@@ -50,7 +50,7 @@ class RepoConfig:
             url=data["url"],
             docs_path=data["docs_path"],
             target_path=data["target_path"],
-            ref=data.get("ref"),
+            ref=data.get("ref") or "main",
             commit=data.get("commit"),
             root_files=data.get("root_files", []),
             structure=data.get("structure", "flat"),

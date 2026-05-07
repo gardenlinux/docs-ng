@@ -156,6 +156,9 @@ def copy_targeted_docs(
                     "target"
                 )
 
+                if target_path is None:
+                    continue
+
                 # Strip leading 'docs/' if present
                 if target_path.startswith("docs/"):
                     target_path = target_path[5:]
