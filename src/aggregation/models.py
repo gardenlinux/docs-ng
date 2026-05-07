@@ -1,7 +1,7 @@
 """Data models for documentation aggregation."""
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Union
 
 
 @dataclass
@@ -13,7 +13,7 @@ class RepoConfig:
     docs_path: str
     target_path: str
     ref: str | None = None
-    commit: Optional[str] = None
+    commit: str | None = None
     root_files: List[str] = field(default_factory=list)
     structure: Union[str, Dict[str, str]] = "flat"
     special_files: Dict[str, str] = field(default_factory=dict)
@@ -65,4 +65,4 @@ class AggregateResult:
 
     repo_name: str
     success: bool
-    resolved_commit: Optional[str] = None
+    resolved_commit: str | None = None

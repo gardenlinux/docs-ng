@@ -2,7 +2,7 @@
 
 import shutil
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import List
 
 from .transformer import (ensure_frontmatter, fix_broken_project_links,
                           parse_frontmatter, rewrite_links)
@@ -12,8 +12,8 @@ def transform_directory_structure(
     source_dir: str,
     target_dir: str,
     structure_map,
-    special_files: Optional[Dict] = None,
-    media_dirs: Optional[List[str]] = None,
+    special_files: dict | None = None,
+    media_dirs: List[str] | None = None,
 ) -> None:
     """
     Transform directory structure based on mapping.
@@ -83,8 +83,8 @@ def copy_targeted_docs(
     source_dir: str,
     docs_dir: str,
     repo_name: str,
-    media_dirs: Optional[List[str]] = None,
-    root_files: Optional[List[str]] = None,
+    media_dirs: List[str] | None = None,
+    root_files: List[str] | None = None,
 ) -> None:
     """
     Copy markdown files with 'github_target_path:' frontmatter to their specified locations.

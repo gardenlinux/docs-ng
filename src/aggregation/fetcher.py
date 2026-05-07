@@ -5,7 +5,7 @@ import subprocess
 import sys
 import tempfile
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Tuple
 
 from .models import AggregateResult, RepoConfig
 
@@ -63,7 +63,7 @@ class DocsFetcher:
         self,
         repo: RepoConfig,
         output_dir: Path,
-    ) -> Tuple[bool, Optional[str]]:
+    ) -> Tuple[bool, str | None]:
         """Fetch from remote repository using git sparse checkout."""
         temp_dir = Path(tempfile.mkdtemp())
 

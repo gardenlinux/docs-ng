@@ -2,7 +2,7 @@
 
 import re
 from pathlib import Path
-from typing import Dict, Optional, Tuple
+from typing import Dict, Tuple
 
 
 def rewrite_links(
@@ -197,7 +197,7 @@ def quote_yaml_value(value: str) -> str:
     return value
 
 
-def parse_frontmatter(content: str) -> Tuple[Optional[Dict[str, str]], str]:
+def parse_frontmatter(content: str) -> Tuple[Dict[str, str] | None, str]:
     """
     Parse YAML frontmatter from markdown content.
 
