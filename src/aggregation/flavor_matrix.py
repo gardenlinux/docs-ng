@@ -1,14 +1,13 @@
 """Generate flavor matrix documentation from flavors.yaml and feature dependencies."""
 
 from pathlib import Path
-from typing import Optional
 
 import yaml
 from gardenlinux.features import Parser as FeaturesParser
 from gardenlinux.flavors.parser import Parser as FlavorsParser
 
 
-def get_flavor_list(gardenlinux_repo_dir: Path) -> Optional[dict]:
+def get_flavor_list(gardenlinux_repo_dir: Path) -> dict | None:
     """Get flavor list by parsing flavors.yaml directly."""
     flavors_file = gardenlinux_repo_dir / "flavors.yaml"
 
@@ -122,6 +121,7 @@ def generate_flavor_matrix_docs(docs_dir: Path, gardenlinux_repo_dir: Path) -> b
 
     # Step 5: Append table to existing aggregated file (keeps frontmatter and content)
     output_file = docs_dir / "reference" / "flavor-matrix.md"
+    content: str = ""
     if output_file.exists():
         try:
             existing_content = output_file.read_text()
@@ -132,6 +132,11 @@ def generate_flavor_matrix_docs(docs_dir: Path, gardenlinux_repo_dir: Path) -> b
 """
         except Exception as e:
             print(f"Warning: Could not read existing file: {e}")
+
+    if not content:
+        print(
+            f"Warning: Read existing file '{output_file}', but file contents are empty!"
+        )
 
     output_dir = docs_dir / "reference"
     output_dir.mkdir(parents=True, exist_ok=True)
