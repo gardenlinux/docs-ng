@@ -33,7 +33,7 @@
       "docs_path": "docs",
       "target_path": "projects/builder",
       "ref": "docs-ng",
-      "commit": "9a9a7e0ed3b0507e360c37dc2acd5d4d9ce36020",
+      "commit": "e958b565933d6dbdd14bf0ed82f20fe84e42663f",
       "media_directories": [
         ".media",
         "assets",
