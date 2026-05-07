@@ -6,6 +6,8 @@ import { createMermaidRenderer } from 'vitepress-mermaid-renderer'
 import './style.css'
 import SectionIndex from './components/SectionIndex.vue'
 import RelatedTopics from './components/RelatedTopics.vue'
+import Carousel from './components/Carousel.vue'
+import VPFooter from './components/VPFooter.vue'
 
 export default {
   extends: DefaultTheme,
@@ -28,10 +30,13 @@ export default {
       }
     )
 
-    return h(DefaultTheme.Layout)
+    return h(DefaultTheme.Layout, null, {
+      "layout-bottom": () => h(VPFooter),
+    })
   },
   enhanceApp({ app }) {
     app.component('SectionIndex', SectionIndex)
     app.component('RelatedTopics', RelatedTopics)
+    app.component('Carousel', Carousel)
   },
 } satisfies Theme

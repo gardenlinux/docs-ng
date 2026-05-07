@@ -59,3 +59,40 @@ migration_issue: https://github.com/gardenlinux/gardenlinux/issues/4622
 migration_stakeholder: "@tmang0ld, @yeoldegrove, @ByteOtter"
 migration_approved: false
 ---
+
+<script setup>
+const cloudPlatforms = [
+  { name: 'Amazon Web Services', image: '/assets/cloud_platforms/AWS.svg', url: '/how-to/installation/cloud/aws' },
+  { name: 'Microsoft Azure', image: '/assets/cloud_platforms/Microsoft_Azure.svg', url: '/how-to/installation/cloud/azure' },
+  { name: 'Google Cloud', image: '/assets/cloud_platforms/Google_Cloud_logo.svg', url: '/how-to/installation/cloud/gcp' },
+  { name: 'OpenStack', image: '/assets/cloud_platforms/The_OpenStack_logo.svg', url: '/how-to/installation/cloud/openstack' },
+  { name: 'VMware', image: '/assets/cloud_platforms/Vmware.svg', url: '/how-to/vmware' },
+  { name: 'Bare Metal', image: '/assets/download-icon.svg', url: '/how-to/installation/on-premises/bare-metal'}
+]
+const sponsors = [
+  { name: 'NeoNephos Foundation', image: '/assets/neonephos_logo.svg', url: 'https://neonephos.org' },
+  { name: 'SAP', image: '/assets/SAP-Logo.svg', url: 'https://sap.com' },
+  { name: 'NextGenerationEU', image: '/assets/eu-support.png', url: 'https://next-generation-eu.europa.eu/' },
+]
+</script>
+
+<!-- Cloud Platforms Carousel -->
+<Carousel 
+  title="Wherever You Are. Garden Linux Is With You." 
+  :items="cloudPlatforms"
+  :slides-per-view="3"
+  :space-between="30"
+  :autoplay="2500"
+  :grayscale="false"
+/>
+
+<!-- Sponsors Carousel -->
+<Carousel 
+  title="Our Sponsors" 
+  :items="sponsors"
+  :slides-per-view="3"
+  :space-between="20"
+  :autoplay="2500"
+  :pagination="false"
+  :grayscale="false"
+/>
