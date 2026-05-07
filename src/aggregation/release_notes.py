@@ -7,10 +7,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 
-from .glrd import (
-    run_glrd_json,
-    get_active_minor_versions
-)
+from .glrd import get_active_minor_versions
 from .transformer import cleanup_github_markdown
 
 GITHUB_API_URL = "https://api.github.com/repos/gardenlinux/gardenlinux/releases"
@@ -31,14 +28,14 @@ def parse_version(tag: str) -> tuple:
         1592.18.0 -> (1592, 18, 0)
     """
     # Remove leading 'v' if present
-    tag = tag.lstrip('v')
+    tag = tag.lstrip("v")
 
     # Split by dots and convert to integers
-    parts = tag.split('.')
+    parts = tag.split(".")
     version_nums = []
     for part in parts:
         # Extract numeric part (handle cases like 2150.1.0, 576.3.0)
-        match = re.match(r'(\d+)', part)
+        match = re.match(r"(\d+)", part)
         if match:
             version_nums.append(int(match.group(1)))
         else:
@@ -54,9 +51,7 @@ def parse_version(tag: str) -> tuple:
 def sort_by_version(releases: list) -> list:
     """Sort releases by semantic version (highest first)."""
     return sorted(
-        releases,
-        key=lambda r: parse_version(r.get("tag_name", "0")),
-        reverse=True
+        releases, key=lambda r: parse_version(r.get("tag_name", "0")), reverse=True
     )
 
 
@@ -69,7 +64,12 @@ def fetch_github_releases(per_page: int = 100) -> list:
     while page <= max_pages and len(all_releases) < MAX_RELEASES:
         try:
             result = subprocess.run(
-                ["curl", "-s", "-L", f"{GITHUB_API_URL}?per_page={per_page}&page={page}"],
+                [
+                    "curl",
+                    "-s",
+                    "-L",
+                    f"{GITHUB_API_URL}?per_page={per_page}&page={page}",
+                ],
                 capture_output=True,
                 text=True,
                 check=False,
@@ -154,7 +154,10 @@ def generate_release_notes_docs(docs_dir: Path) -> bool:
     print("Querying GLRD for release status...")
     active_versions = get_active_minor_versions()
     if not active_versions:
-        print("Warning: GLRD query failed, defaulting all releases to archived", file=sys.stderr)
+        print(
+            "Warning: GLRD query failed, defaulting all releases to archived",
+            file=sys.stderr,
+        )
 
     # Filter releases (skip drafts)
     filtered = []
@@ -179,12 +182,14 @@ def generate_release_notes_docs(docs_dir: Path) -> bool:
         date = format_release_date(release.get("published_at", ""))
 
         # Make version heading h1 (replace ## VersionName with # VersionName)
-        content = re.sub(r'^##\s+' + re.escape(name) + r'$', '# ' + name, content, flags=re.MULTILINE)
+        content = re.sub(
+            r"^##\s+" + re.escape(name) + r"$", "# " + name, content, flags=re.MULTILINE
+        )
 
         # Determine if this release is archived
         # A release is active ONLY if it's explicitly in the active_versions dict
         # All other releases are archived
-        tag_without_v = tag_name.lstrip('v')
+        tag_without_v = tag_name.lstrip("v")
         is_archived = tag_without_v not in active_versions
 
         # Order: highest version = 1, second = 2, etc.
@@ -221,13 +226,15 @@ related_topics:
 
         filepath.write_text(page_content)
 
-        release_list.append({
-            "tag": tag_name,
-            "name": name,
-            "filename": filename,
-            "date": format_release_date(release.get("published_at", "")),
-            "is_archived": is_archived,
-        })
+        release_list.append(
+            {
+                "tag": tag_name,
+                "name": name,
+                "filename": filename,
+                "date": format_release_date(release.get("published_at", "")),
+                "is_archived": is_archived,
+            }
+        )
         print(f"  Created: {filepath.relative_to(docs_dir)}")
 
     print("Release notes generation complete.")

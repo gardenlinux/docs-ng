@@ -1,10 +1,9 @@
 """Generate flavor matrix documentation from flavors.yaml and feature dependencies."""
 
-import re
-import yaml
 from pathlib import Path
-from typing import Optional, List, Tuple
+from typing import Optional
 
+import yaml
 from gardenlinux.features import Parser as FeaturesParser
 from gardenlinux.flavors.parser import Parser as FlavorsParser
 
@@ -38,9 +37,7 @@ def get_flavor_list(gardenlinux_repo_dir: Path) -> Optional[dict]:
         return None
 
 
-def generate_flavor_matrix_docs(
-    docs_dir: Path, gardenlinux_repo_dir: Path
-) -> bool:
+def generate_flavor_matrix_docs(docs_dir: Path, gardenlinux_repo_dir: Path) -> bool:
     """
     Generate flavor matrix page from flavors.yaml and feature dependencies.
 
@@ -66,7 +63,9 @@ def generate_flavor_matrix_docs(
         return False
 
     try:
-        features_parser = FeaturesParser(str(features_dir))  # Default feature_dir_name is "features"
+        features_parser = FeaturesParser(
+            str(features_dir)
+        )  # Default feature_dir_name is "features"
     except Exception as e:
         print(f"Failed to initialize features parser: {e}")
         return False

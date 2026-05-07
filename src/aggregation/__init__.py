@@ -1,23 +1,15 @@
 """Aggregation package for docs-ng documentation aggregation."""
 
 # Re-export commonly used functions for backward compatibility with tests
-from .transformer import (
-    rewrite_links,
-    ensure_frontmatter,
-    quote_yaml_value,
-    parse_frontmatter,
-)
-
-from .models import RepoConfig, AggregateResult
 from .config import load_config, save_config
 from .fetcher import DocsFetcher
-from .structure import (
-    transform_directory_structure,
-    copy_targeted_docs,
-    process_all_markdown,
-)
-from .releases import generate_release_docs
 from .flavor_matrix import generate_flavor_matrix_docs
+from .models import AggregateResult, RepoConfig
+from .releases import generate_release_docs
+from .structure import (copy_targeted_docs, process_all_markdown,
+                        transform_directory_structure)
+from .transformer import (ensure_frontmatter, parse_frontmatter,
+                          quote_yaml_value, rewrite_links)
 
 __all__ = [
     # Models

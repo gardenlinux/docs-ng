@@ -1,22 +1,10 @@
 """Generate release documentation from GLRD."""
 
-import json
-import subprocess
 import sys
 from pathlib import Path
-from typing import Optional
 
-from .constants import (
-    GANTT_THEME,
-    RELEASES_TAG_URL,
-    COMMITS_URL,
-    LIFECYCLE_LINKS,
-)
-
-from .glrd import (
-    run_glrd_json,
-    get_active_minor_versions
-)
+from .constants import COMMITS_URL, GANTT_THEME, LIFECYCLE_LINKS
+from .glrd import get_active_minor_versions, run_glrd_json
 
 
 def format_version(release: dict, active_versions: set[str]) -> tuple[str, str]:
@@ -38,7 +26,9 @@ def format_version(release: dict, active_versions: set[str]) -> tuple[str, str]:
 
     if "major" in version_obj and "minor" in version_obj:
         if "patch" in version_obj:
-            version_str = f"{version_obj['major']}.{version_obj['minor']}.{version_obj['patch']}"
+            version_str = (
+                f"{version_obj['major']}.{version_obj['minor']}.{version_obj['patch']}"
+            )
         else:
             version_str = f"{version_obj['major']}.{version_obj['minor']}"
     elif "major" in version_obj:
@@ -52,7 +42,9 @@ def format_version(release: dict, active_versions: set[str]) -> tuple[str, str]:
         is_active = version_str in active_versions
 
         if is_active:
-            version_link = f"[{version_str}](release-notes/{version_str.replace('.', '-')}.html)"
+            version_link = (
+                f"[{version_str}](release-notes/{version_str.replace('.', '-')}.html)"
+            )
         else:
             version_link = f"[{version_str}](release-notes/archived/{version_str.replace('.', '-')}.html)"
     else:
@@ -192,7 +184,9 @@ def get_timeline_section(gantt_chart: str, title: str) -> str:
 """
 
 
-def append_release_page(table: str, timeline: str, page_type: str = "maintained") -> str:
+def append_release_page(
+    table: str, timeline: str, page_type: str = "maintained"
+) -> str:
     """Append to an existing release page."""
 
     return f"""
@@ -220,7 +214,10 @@ def generate_release_docs(docs_dir: Path) -> bool:
     archived_data = run_glrd_json(["--archived"])
 
     if active_data is None:
-        print("Warning: Could not fetch active releases - skipping generation", file=sys.stderr)
+        print(
+            "Warning: Could not fetch active releases - skipping generation",
+            file=sys.stderr,
+        )
         return False
 
     active_table = generate_release_table(active_data, active_versions)
@@ -234,28 +231,32 @@ def generate_release_docs(docs_dir: Path) -> bool:
     )
 
     release_file = "maintained-releases.md"
-    release_path = (releases_dir / release_file)
+    release_path = releases_dir / release_file
 
     # Read existing file and keep only frontmatter and static content
     # (everything before the generated tables)
     existing_content = release_path.read_text()
-    lines = existing_content.split('\n')
+    lines = existing_content.split("\n")
 
     # Find where the generated content starts (look for "## Active Releases" heading)
     static_lines = []
     for i, line in enumerate(lines):
-        if line.startswith('## Active Releases') or line.startswith('## Release Timeline'):
+        if line.startswith("## Active Releases") or line.startswith(
+            "## Release Timeline"
+        ):
             break
         static_lines.append(line)
 
     # Write static content plus new generated content
-    release_path.write_text('\n'.join(static_lines).rstrip() + '\n\n' + active_content)
+    release_path.write_text("\n".join(static_lines).rstrip() + "\n\n" + active_content)
     print(f"  Updated: {release_path}")
 
     if archived_data is not None:
         archived_table = generate_release_table(archived_data, active_versions)
         archived_gantt = generate_mermaid_gantt(archived_data)
-        archived_timeline = get_timeline_section(archived_gantt, "Archived Releases Timeline")
+        archived_timeline = get_timeline_section(
+            archived_gantt, "Archived Releases Timeline"
+        )
 
         archived_content = append_release_page(
             archived_table,
@@ -264,21 +265,25 @@ def generate_release_docs(docs_dir: Path) -> bool:
         )
 
         release_file = "archived-releases.md"
-        release_path = (releases_dir / release_file)
+        release_path = releases_dir / release_file
 
         # Read existing file and keep only frontmatter and static content
         existing_content = release_path.read_text()
-        lines = existing_content.split('\n')
+        lines = existing_content.split("\n")
 
         # Find where the generated content starts (look for "## Out of Maintenance" heading)
         static_lines = []
         for i, line in enumerate(lines):
-            if line.startswith('## Out of Maintenance') or line.startswith('## Archived Releases Timeline'):
+            if line.startswith("## Out of Maintenance") or line.startswith(
+                "## Archived Releases Timeline"
+            ):
                 break
             static_lines.append(line)
 
         # Write static content plus new generated content
-        release_path.write_text('\n'.join(static_lines).rstrip() + '\n\n' + archived_content)
+        release_path.write_text(
+            "\n".join(static_lines).rstrip() + "\n\n" + archived_content
+        )
         print(f"  Updated: {release_path}")
     else:
         print("Warning: Could not fetch archived releases", file=sys.stderr)
