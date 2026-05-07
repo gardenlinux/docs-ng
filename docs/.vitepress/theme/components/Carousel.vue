@@ -301,7 +301,6 @@ onBeforeUnmount(() => {
   border-radius: 50%;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2px solid var(--vp-c-divider);
 }
 
 .swiper :deep(.swiper-button-prev::after),
