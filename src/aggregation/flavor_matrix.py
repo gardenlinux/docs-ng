@@ -1,15 +1,13 @@
 """Generate flavor matrix documentation from flavors.yaml and feature dependencies."""
 
-import re
-import yaml
 from pathlib import Path
-from typing import Optional, List, Tuple
 
+import yaml
 from gardenlinux.features import Parser as FeaturesParser
 from gardenlinux.flavors.parser import Parser as FlavorsParser
 
 
-def get_flavor_list(gardenlinux_repo_dir: Path) -> Optional[dict]:
+def get_flavor_list(gardenlinux_repo_dir: Path) -> dict | None:
     """Get flavor list by parsing flavors.yaml directly."""
     flavors_file = gardenlinux_repo_dir / "flavors.yaml"
 
@@ -38,9 +36,7 @@ def get_flavor_list(gardenlinux_repo_dir: Path) -> Optional[dict]:
         return None
 
 
-def generate_flavor_matrix_docs(
-    docs_dir: Path, gardenlinux_repo_dir: Path
-) -> bool:
+def generate_flavor_matrix_docs(docs_dir: Path, gardenlinux_repo_dir: Path) -> bool:
     """
     Generate flavor matrix page from flavors.yaml and feature dependencies.
 
@@ -66,7 +62,9 @@ def generate_flavor_matrix_docs(
         return False
 
     try:
-        features_parser = FeaturesParser(str(features_dir))  # Default feature_dir_name is "features"
+        features_parser = FeaturesParser(
+            str(features_dir)
+        )  # Default feature_dir_name is "features"
     except Exception as e:
         print(f"Failed to initialize features parser: {e}")
         return False
@@ -123,6 +121,7 @@ def generate_flavor_matrix_docs(
 
     # Step 5: Append table to existing aggregated file (keeps frontmatter and content)
     output_file = docs_dir / "reference" / "flavor-matrix.md"
+    content: str = ""
     if output_file.exists():
         try:
             existing_content = output_file.read_text()
@@ -133,6 +132,11 @@ def generate_flavor_matrix_docs(
 """
         except Exception as e:
             print(f"Warning: Could not read existing file: {e}")
+
+    if not content:
+        print(
+            f"Warning: Read existing file '{output_file}', but file contents are empty!"
+        )
 
     output_dir = docs_dir / "reference"
     output_dir.mkdir(parents=True, exist_ok=True)

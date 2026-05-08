@@ -3,9 +3,9 @@
 import json
 import subprocess
 import sys
-from typing import Optional
 
-def run_glrd_json(args: list[str]) -> Optional[dict]:
+
+def run_glrd_json(args: list[str]) -> dict | None:
     """Run glrd command with JSON output and return parsed data."""
     try:
         result = subprocess.run(
