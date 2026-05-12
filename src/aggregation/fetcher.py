@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Tuple
 
 from .models import AggregateResult, RepoConfig
+from .sphinx_builder import build_sphinx_markdown
 
 
 def _convert_to_git_pattern(pattern: str) -> str:
@@ -120,12 +121,22 @@ class DocsFetcher:
             )
             resolved_commit = result.stdout.strip()
             print(f"  Resolved commit: {resolved_commit}")
-
             # Copy docs to output directory
+            # Copy docs to output directory (or build Sphinx Markdown first)
             docs_source = temp_dir / repo.docs_path
             if docs_source.exists():
-                print(f"  Copying docs to {output_dir}")
-                self._copy_docs(docs_source, output_dir)
+                if repo.structure == "sphinx":
+                    print(f"  Building Sphinx Markdown from {repo.docs_path}/")
+                    sphinx_ok = build_sphinx_markdown(
+                        temp_dir, repo.docs_path, output_dir,
+                        target_map=repo.target_map or None,
+                    )
+                    if not sphinx_ok:
+                        print(f"  Warning: Sphinx build failed; falling back to raw docs copy")
+                        self._copy_docs(docs_source, output_dir)
+                else:
+                    print(f"  Copying docs to {output_dir}")
+                    self._copy_docs(docs_source, output_dir)
             else:
                 print(
                     f"  Warning: docs_path '{repo.docs_path}' not found in repository"
@@ -174,12 +185,22 @@ class DocsFetcher:
                     file=sys.stderr,
                 )
                 return False
-
-            # Copy docs directory
+            
+            # Copy docs directory (or build Sphinx Markdown first)
             docs_source = repo_abs_path / repo.docs_path
             if docs_source.exists():
-                print(f"  Copying docs from {repo.docs_path}/")
-                self._copy_docs(docs_source, output_dir)
+                if repo.structure == "sphinx":
+                    print(f"  Building Sphinx Markdown from {repo.docs_path}/")
+                    sphinx_ok = build_sphinx_markdown(
+                        repo_abs_path, repo.docs_path, output_dir,
+                        target_map=repo.target_map or None,
+                    )
+                    if not sphinx_ok:
+                        print(f"  Warning: Sphinx build failed; falling back to raw docs copy")
+                        self._copy_docs(docs_source, output_dir)
+                else:
+                    print(f"  Copying docs from {repo.docs_path}/")
+                    self._copy_docs(docs_source, output_dir)
             else:
                 print(
                     f"  Warning: docs_path '{repo.docs_path}' not found in local repository"

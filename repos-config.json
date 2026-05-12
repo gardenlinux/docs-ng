@@ -21,11 +21,7 @@
         "reference": "reference",
         "contributing": "contributing"
       },
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "media_directories": [".media", "assets"]
     },
     {
       "name": "builder",
@@ -46,13 +42,13 @@
       "docs_path": "docs",
       "target_path": "projects/python-gardenlinux-lib",
       "ref": "docs-ng",
-      "commit": "73a16adcc674e43ad9b811c399fa5af1b698d62f",
+      "commit": "86c57e91171a2b64680be06606f5cfe28abcb5ca",
       "structure": "sphinx",
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "target_map": {
+        "cli.md": "reference/python-gardenlinux-lib-cli.md",
+        "api.md": "reference/python-gardenlinux-lib-api.md"
+      },
+      "media_directories": [".media", "assets"]
     },
     {
       "name": "package-linux",
@@ -61,11 +57,7 @@
       "target_path": "projects/package-linux",
       "ref": "docs-ng",
       "commit": "9570d0f81eae4e1e500dd3f36ea845a2dce14357",
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "media_directories": [".media", "assets"]
     },
     {
       "name": "package-build",
@@ -74,11 +66,7 @@
       "target_path": "projects/package-build",
       "ref": "docs-ng",
       "commit": "b4bce8b1dbb48cfedefdd866f3bc28d1c395c060",
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "media_directories": [".media", "assets"]
     },
     {
       "name": "repo",
@@ -87,11 +75,7 @@
       "target_path": "projects/repo",
       "ref": "docs-ng",
       "commit": "4953feba27c5efd31421a883dec7c5bd61ac40f5",
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "media_directories": [".media", "assets"]
     },
     {
       "name": "glrd",
@@ -100,11 +84,7 @@
       "target_path": "projects/glrd",
       "ref": "docs-ng",
       "commit": "b5262e0bf409065ee1b9d62f4d0270695d9081a2",
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "media_directories": [".media", "assets"]
     }
   ]
 }
