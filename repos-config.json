@@ -6,7 +6,7 @@
       "docs_path": "docs",
       "target_path": "projects/gardenlinux",
       "ref": "docs-ng",
-      "commit": "7db39613c6fe50815fb6e7ca6f881ead91c43337",
+      "commit": "04aa3a6b8fa02a8b7684de1ae311b8169d0bc211",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
@@ -21,7 +21,10 @@
         "reference": "reference",
         "contributing": "contributing"
       },
-      "media_directories": [".media", "assets"]
+      "media_directories": [
+        ".media",
+        "assets"
+      ]
     },
     {
       "name": "builder",
@@ -29,7 +32,7 @@
       "docs_path": "docs",
       "target_path": "projects/builder",
       "ref": "docs-ng",
-      "commit": "e958b565933d6dbdd14bf0ed82f20fe84e42663f",
+      "commit": "ef6b09f8bd78975dde6e9cff4e1707c798af03a3",
       "media_directories": [
         ".media",
         "assets",
@@ -42,13 +45,16 @@
       "docs_path": "docs",
       "target_path": "projects/python-gardenlinux-lib",
       "ref": "docs-ng",
-      "commit": "86c57e91171a2b64680be06606f5cfe28abcb5ca",
+      "commit": "995886a39a0ca93e9710a97acb3995dc93c99c87",
       "structure": "sphinx",
+      "media_directories": [
+        ".media",
+        "assets"
+      ],
       "target_map": {
         "cli.md": "reference/python-gardenlinux-lib-cli.md",
         "api.md": "reference/python-gardenlinux-lib-api.md"
-      },
-      "media_directories": [".media", "assets"]
+      }
     },
     {
       "name": "package-linux",
@@ -57,7 +63,10 @@
       "target_path": "projects/package-linux",
       "ref": "docs-ng",
       "commit": "9570d0f81eae4e1e500dd3f36ea845a2dce14357",
-      "media_directories": [".media", "assets"]
+      "media_directories": [
+        ".media",
+        "assets"
+      ]
     },
     {
       "name": "package-build",
@@ -66,7 +75,10 @@
       "target_path": "projects/package-build",
       "ref": "docs-ng",
       "commit": "b4bce8b1dbb48cfedefdd866f3bc28d1c395c060",
-      "media_directories": [".media", "assets"]
+      "media_directories": [
+        ".media",
+        "assets"
+      ]
     },
     {
       "name": "repo",
@@ -75,7 +87,10 @@
       "target_path": "projects/repo",
       "ref": "docs-ng",
       "commit": "4953feba27c5efd31421a883dec7c5bd61ac40f5",
-      "media_directories": [".media", "assets"]
+      "media_directories": [
+        ".media",
+        "assets"
+      ]
     },
     {
       "name": "glrd",
@@ -84,7 +99,10 @@
       "target_path": "projects/glrd",
       "ref": "docs-ng",
       "commit": "b5262e0bf409065ee1b9d62f4d0270695d9081a2",
-      "media_directories": [".media", "assets"]
+      "media_directories": [
+        ".media",
+        "assets"
+      ]
     }
   ]
 }

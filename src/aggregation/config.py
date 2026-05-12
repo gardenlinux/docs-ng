@@ -65,6 +65,7 @@ def save_config(config_path: str, repos: List[RepoConfig]) -> None:
                     if repo.media_directories
                     else {}
                 ),
+                **({"target_map": repo.target_map} if repo.target_map else {}),
             }
             for repo in repos
         ]
