@@ -2,7 +2,7 @@
 title: "Introduction"
 description: "How Garden Linux documentation is organized"
 order: 1
-migration_status: "adapt"
+migration_status: "done"
 migration_issue: https://github.com/gardenlinux/gardenlinux/issues/4622
 migration_stakeholder: "@tmang0ld, @yeoldegrove, @ByteOtter"
 migration_approved: false
