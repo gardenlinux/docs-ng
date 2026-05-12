@@ -2,9 +2,7 @@
 title: Tutorials
 description: Learning-oriented guides that take you through a series of steps to complete a project
 order: 2
-migration_status: "new"
-migration_source: ""
-migration_issue: ""
+migration_status: "done"
 migration_stakeholder: "@tmang0ld, @yeoldegrove, @ByteOtter"
 migration_approved: false
 ---
