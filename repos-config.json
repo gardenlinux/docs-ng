@@ -5,8 +5,8 @@
       "url": "https://github.com/gardenlinux/gardenlinux",
       "docs_path": "docs",
       "target_path": "projects/gardenlinux",
-      "ref": "docs-ng",
-      "commit": "609ee3cf5f593b9d413e0809ba6856b96df1707c",
+      "ref": "docs/pxe_iso",
+      "commit": "60f8de7d140f9310fabc5d5491a6e061881732a4",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
