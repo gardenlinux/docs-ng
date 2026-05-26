@@ -2,13 +2,10 @@
 
 `docs-ng` is the primary documentation aggregation framework and hosting hub.
 
+The documentation is hosted at https://gardenlinux-docs.netlify.app
+
 This repository contains all source code of our custom aggregation system, as
 well as any relevant documentation related to the topic of documenting.
-
-If you are looking for documentation of a specific project within the Garden
-Linux organization, check the `docs/` directory in the repository you are
-looking for using the search function or the hosted website at
-https://gardenlinux-docs.netlify.app.
 
 ## Documentation
 
