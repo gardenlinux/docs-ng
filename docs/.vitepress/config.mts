@@ -20,7 +20,7 @@ async function buildPageMap(pagesDir: string): Promise<Record<string, { title: s
     if (skipDirs.includes(dirName)) {
       return;
     }
-    
+
     try {
       const entries = await readdir(dir, { withFileTypes: true });
       for (const entry of entries) {
@@ -130,6 +130,10 @@ export default defineConfig({
   ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
+    outline: {
+      level: [2, 3],
+      label: 'On this page'
+    },
     logo: {
       light: `/gardenlinux-logo.svg`,
       dark: `/gardenlinux-logo.svg`,
@@ -226,14 +230,14 @@ export default defineConfig({
     // Build page map - NOT cached globally due to VitePress config execution issues
     const pagesDir = siteConfig.root;
     const pageMap = await buildPageMap(pagesDir);
-    
+
     // Resolve related_topics if present
     const relatedTopics = pageData.frontmatter?.related_topics;
     if (relatedTopics && Array.isArray(relatedTopics)) {
       // Get current page URL
       let currentPageUrl = "/" + pageData.relativePath.replace(/\.md$/, ".html");
       currentPageUrl = currentPageUrl.replace(/\/index\.html$/, "/");
-      
+
       pageData.frontmatter.resolvedRelated = relatedTopics
         .map((ref: string) => {
           // Normalize the file path to URL
