@@ -32,7 +32,7 @@
       "docs_path": "docs",
       "target_path": "projects/builder",
       "ref": "docs-ng",
-      "commit": "ef6b09f8bd78975dde6e9cff4e1707c798af03a3",
+      "commit": "b4ef334934f108f2aa1a2b3430a6d25a6dd89c26",
       "media_directories": [
         ".media",
         "assets",
@@ -45,7 +45,7 @@
       "docs_path": "docs",
       "target_path": "projects/python-gardenlinux-lib",
       "ref": "docs-ng",
-      "commit": "995886a39a0ca93e9710a97acb3995dc93c99c87",
+      "commit": "24d5a0eb5e683f61ada7033584c1b6b7df798e06",
       "structure": "sphinx",
       "media_directories": [
         ".media",
@@ -62,7 +62,7 @@
       "docs_path": "docs",
       "target_path": "projects/package-linux",
       "ref": "docs-ng",
-      "commit": "9570d0f81eae4e1e500dd3f36ea845a2dce14357",
+      "commit": "a402f6ff869717137590b883c2a28a17c27d907b",
       "media_directories": [
         ".media",
         "assets"
@@ -74,7 +74,7 @@
       "docs_path": "docs",
       "target_path": "projects/package-build",
       "ref": "docs-ng",
-      "commit": "b4bce8b1dbb48cfedefdd866f3bc28d1c395c060",
+      "commit": "b37eed4f0133e0b51079d87f67332ac9e12dc110",
       "media_directories": [
         ".media",
         "assets"
@@ -86,7 +86,7 @@
       "docs_path": "docs",
       "target_path": "projects/repo",
       "ref": "docs-ng",
-      "commit": "4953feba27c5efd31421a883dec7c5bd61ac40f5",
+      "commit": "96491381c64b7c9f7ebee33841ae409ffc9dcf94",
       "media_directories": [
         ".media",
         "assets"
@@ -98,7 +98,7 @@
       "docs_path": "docs",
       "target_path": "projects/glrd",
       "ref": "docs-ng",
-      "commit": "b5262e0bf409065ee1b9d62f4d0270695d9081a2",
+      "commit": "4969f8dadcb777e53e4928083797b0f9eb15c775",
       "media_directories": [
         ".media",
         "assets"
