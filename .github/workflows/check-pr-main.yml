@@ -1,0 +1,40 @@
+name: Validate repos-config.json
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'repos-config.json'
+
+jobs:
+  validate:
+    name: Check for non-main refs
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Validate repos-config.json
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const fs = require('fs');
+            const config = JSON.parse(fs.readFileSync('repos-config.json', 'utf8'));
+            const ALLOWED_REFS = new Set(['main', 'master']);
+
+            const errors = [];
+            for (const repo of config.repos) {
+              const ref = repo.ref || '';
+              if (!ALLOWED_REFS.has(ref) && !ref.startsWith('v') && !ref.startsWith('release-')) {
+                errors.push(`  - ${repo.name}: ref='${ref}' (expected 'main' or a tag)`);
+              }
+            }
+
+            if (errors.length > 0) {
+              core.setFailed(
+                `repos-config.json contains non-main branch references:\n${errors.join('\n')}\n\n` +
+                `PRs cannot be merged until all repos reference main branches or tags.`
+              );
+            } else {
+              core.info('All repos reference main branches or tags');
+            }

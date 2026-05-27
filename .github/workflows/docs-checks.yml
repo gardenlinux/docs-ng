@@ -1,0 +1,150 @@
+name: Documentation Quality Checks
+
+on:
+  workflow_call:
+    inputs:
+      override-repo:
+        description: 'Repository name to override (e.g., gardenlinux)'
+        required: false
+        type: string
+      override-ref:
+        description: 'Git ref to use for the overridden repo'
+        required: false
+        type: string
+      override-commit:
+        description: 'Git commit SHA to use for the overridden repo'
+        required: false
+        type: string
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: gardenlinux/docs-ng
+          # TODO: remove
+          ref: feat/reusable_ci_workflows
+
+      - name: Set up Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # pin@v6.2.0
+        with:
+          python-version: "3.13"
+
+      - name: Install Python dependencies
+        run: |
+          pip install git+https://github.com/gardenlinux/glrd.git@v4.1.0
+          pip install git+https://github.com/gardenlinux/python-gardenlinux-lib.git@0.10.20
+          pip install -r requirements.txt
+
+      - name: Run aggregate
+        run: |
+          OVERRIDE_ARGS=""
+          if [ -n "${{ inputs.override-repo }}" ]; then
+            OVERRIDE_ARGS="--repo ${{ inputs.override-repo }}"
+            if [ -n "${{ inputs.override-ref }}" ]; then
+              OVERRIDE_ARGS="$OVERRIDE_ARGS --override-ref ${{ inputs.override-ref }}"
+            fi
+            if [ -n "${{ inputs.override-commit }}" ]; then
+              OVERRIDE_ARGS="$OVERRIDE_ARGS --override-commit ${{ inputs.override-commit }}"
+            fi
+          fi
+          python3 src/aggregate.py $OVERRIDE_ARGS
+
+      - name: Upload aggregated docs
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: aggregated-docs
+          path: docs/
+          retention-days: 1
+
+  linkcheck:
+    needs: aggregate
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: gardenlinux/docs-ng
+
+      - name: Download aggregated docs
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: aggregated-docs
+          path: docs/
+
+      # installing lychee to call it via make target is hard
+      - name: Run link check
+        uses: lycheeverse/lychee-action@8646ba30535128ac92d33dfc9133794bfdd9b411 # v2.8.0
+        with:
+          args: docs/**/*.md --config lychee.toml --root-dir "$(pwd)/docs/"
+
+  spelling:
+    needs: aggregate
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: gardenlinux/docs-ng
+
+      - name: Download aggregated docs
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: aggregated-docs
+          path: docs/
+
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Set up Python
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # pin@v6.2.0
+        with:
+          python-version: "3.13"
+
+      - name: Install dependencies
+        run: |
+          pnpm install
+          pip install -r requirements.txt
+
+      - name: Run spelling check
+        run: make spelling
+
+  woke:
+    needs: aggregate
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          repository: gardenlinux/docs-ng
+
+      - name: Download aggregated docs
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: aggregated-docs
+          path: docs/
+
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v5.0.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: |
+          pnpm install
+          go install github.com/get-woke/woke@latest
+
+      - name: Run inclusive language check
+        run: |
+          export PATH=$PATH:$HOME/go/bin
+          make woke

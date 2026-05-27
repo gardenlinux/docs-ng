@@ -114,6 +114,9 @@ Examples:
   # Aggregate specific repository
   %(prog)s --repo gardenlinux
 
+  # Aggregate with ref/commit override (for CI from external repos)
+  %(prog)s --repo gardenlinux --override-ref feature/my-docs --override-commit abc123def
+
   # Update commit locks (fetch and update config with resolved commit hashes)
   %(prog)s --update-locks
         """,
@@ -137,6 +140,14 @@ Examples:
         "--update-locks",
         action="store_true",
         help="Update commit locks: fetch and update config with resolved commit hashes",
+    )
+    parser.add_argument(
+        "--override-ref",
+        help="Override ref for the repo specified by --repo",
+    )
+    parser.add_argument(
+        "--override-commit",
+        help="Override commit for the repo specified by --repo",
     )
 
     args = parser.parse_args()
@@ -170,6 +181,20 @@ Examples:
     print()
 
     repos = load_config(str(config_path))
+
+    # Apply overrides if specified
+    if args.repo and (args.override_ref or args.override_commit):
+        for repo in repos:
+            if repo.name == args.repo:
+                if args.override_ref:
+                    repo.ref = args.override_ref
+                    print(f"Override ref for {repo.name}: {args.override_ref}")
+                if args.override_commit:
+                    repo.commit = args.override_commit
+                    print(f"Override commit for {repo.name}: {args.override_commit}")
+                break
+        else:
+            print(f"WARNING: Repository '{args.repo}' not found for override")
 
     # Create temporary directory for fetched docs
     with tempfile.TemporaryDirectory() as temp_dir_str:
