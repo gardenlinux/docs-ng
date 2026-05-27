@@ -5,8 +5,8 @@
       "url": "https://github.com/gardenlinux/gardenlinux",
       "docs_path": "docs",
       "target_path": "projects/gardenlinux",
-      "ref": "docs-ng",
-      "commit": "85a50cbc54a5856008b3b457938b6a0cd3f98e45",
+      "ref": "feat/docs_ci",
+      "commit": "c073def73f7cc7eb8efe28cf14a347e7b3074ebe",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
