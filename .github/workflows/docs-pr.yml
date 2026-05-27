@@ -1,0 +1,131 @@
+name: Create/Update Docs PR
+
+on:
+  repository_dispatch:
+    types: [docs-pr]
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: 'Repository name (e.g., gardenlinux)'
+        required: true
+        type: string
+      pr_number:
+        description: 'PR number in source repo'
+        required: true
+        type: string
+      commit_sha:
+        description: 'Commit SHA from source repo'
+        required: true
+        type: string
+      ref:
+        description: 'Git ref/branch from source repo'
+        required: true
+        type: string
+      event:
+        description: 'Event type (pr_success or merged)'
+        required: true
+        type: choice
+        options:
+          - pr_success
+          - merged
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout docs-ng
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Configure git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Extract payload
+        id: payload
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            let payload;
+            if (context.eventName === 'workflow_dispatch') {
+              payload = context.payload.inputs;
+            } else {
+              payload = context.payload.client_payload;
+            }
+            core.setOutput('repo', payload.repo);
+            core.setOutput('pr_number', payload.pr_number);
+            core.setOutput('commit_sha', payload.commit_sha);
+            core.setOutput('ref', payload.ref);
+            core.setOutput('event', payload.event);
+
+      - name: Create or update branch
+        run: |
+          BRANCH="auto/${{ steps.payload.outputs.repo }}/${{ steps.payload.outputs.pr_number }}"
+          git fetch origin main
+          git checkout -B "$BRANCH" origin/main
+
+      - name: Update repos-config.json
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const fs = require('fs');
+            const repoName = '${{ steps.payload.outputs.repo }}';
+            const commitSha = '${{ steps.payload.outputs.commit_sha }}';
+            const ref = '${{ steps.payload.outputs.ref }}';
+            const event = '${{ steps.payload.outputs.event }}';
+
+            const config = JSON.parse(fs.readFileSync('repos-config.json', 'utf8'));
+
+            for (const repo of config.repos) {
+              if (repo.name === repoName) {
+                repo.commit = commitSha;
+                // If merged, update ref to main; otherwise keep PR branch
+                repo.ref = event === 'merged' ? 'main' : ref;
+                break;
+              }
+            }
+
+            fs.writeFileSync('repos-config.json', JSON.stringify(config, null, 2) + '\n');
+            core.info(`Updated ${repoName}: ref=${ref}, commit=${commitSha}`);
+
+      - name: Commit and push
+        run: |
+          git add repos-config.json
+          git commit -m "docs(${{ steps.payload.outputs.repo }}): update commit lock to ${{ steps.payload.outputs.commit_sha }}"
+          git push -f origin "auto/${{ steps.payload.outputs.repo }}/${{ steps.payload.outputs.pr_number }}"
+
+      - name: Create or update PR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="auto/${{ steps.payload.outputs.repo }}/${{ steps.payload.outputs.pr_number }}"
+          PR_NUMBER="${{ steps.payload.outputs.pr_number }}"
+          REPO="${{ steps.payload.outputs.repo }}"
+          EVENT="${{ steps.payload.outputs.event }}"
+
+          # Check if PR already exists
+          EXISTING_PR=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number' || echo "")
+
+          if [ -n "$EXISTING_PR" ]; then
+            echo "PR #$EXISTING_PR already exists, updating..."
+            if [ "$EVENT" = "merged" ]; then
+              gh pr ready "$EXISTING_PR"
+            fi
+          else
+            echo "Creating new draft PR..."
+            gh pr create \
+              --draft \
+              --title "docs($REPO): Update commit lock from PR #$PR_NUMBER" \
+              --body "## Summary
+
+          Automated PR to update the commit lock for \`$REPO\` repository.
+
+          - **Source PR:** https://github.com/gardenlinux/$REPO/pull/$PR_NUMBER
+          - **Commit:** \`${{ steps.payload.outputs.commit_sha }}\`
+          - **Status:** $( [ "$EVENT" = "merged" ] && echo 'Ready for review' || echo 'Draft (waiting for source PR to merge)' )
+
+          This PR was automatically created by the docs-check workflow."
+          fi
