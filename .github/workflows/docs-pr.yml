@@ -41,8 +41,8 @@ jobs:
 
       - name: Configure git
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "Garden Linux Bot"
+          git config user.email gardenlinux[bot]@users.noreply.github.com
 
       - name: Extract payload
         id: payload
