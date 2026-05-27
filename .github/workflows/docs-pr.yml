@@ -98,6 +98,7 @@ jobs:
           git push -f origin "auto/${{ steps.payload.outputs.repo }}/${{ steps.payload.outputs.pr_number }}"
 
       - name: Create or update PR
+        id: create_pr
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -114,9 +115,10 @@ jobs:
             if [ "$EVENT" = "merged" ]; then
               gh pr ready "$EXISTING_PR"
             fi
+            PR_URL=$(gh pr view "$EXISTING_PR" --json url --jq '.url')
           else
             echo "Creating new draft PR..."
-            gh pr create \
+            PR_URL=$(gh pr create \
               --draft \
               --title "docs($REPO): Update commit lock from PR #$PR_NUMBER" \
               --body "## Summary
@@ -127,5 +129,32 @@ jobs:
           - **Commit:** \`${{ steps.payload.outputs.commit_sha }}\`
           - **Status:** $( [ "$EVENT" = "merged" ] && echo 'Ready for review' || echo 'Draft (waiting for source PR to merge)' )
 
-          This PR was automatically created by the docs-check workflow."
+          This PR was automatically created by the docs-check workflow.")
           fi
+          
+          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
+          echo "Created/Updated PR: $PR_URL"
+
+      - name: Trigger docs-checks workflow
+        if: steps.create_pr.outputs.pr_url != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH="auto/${{ steps.payload.outputs.repo }}/${{ steps.payload.outputs.pr_number }}"
+          
+          echo "Triggering docs-checks workflow for branch: $BRANCH"
+          gh workflow run docs-checks.yml \
+            --ref "$BRANCH" \
+            -f override-repo="${{ steps.payload.outputs.repo }}" \
+            -f override-ref="${{ steps.payload.outputs.ref }}" \
+            -f override-commit="${{ steps.payload.outputs.commit_sha }}"
+
+      - name: Comment on original PR
+        if: steps.create_pr.outputs.pr_url != '' && steps.payload.outputs.pr_number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Posting comment on original PR..."
+          gh pr comment "${{ steps.payload.outputs.pr_number }}" \
+            --repo "gardenlinux/${{ steps.payload.outputs.repo }}" \
+            --body "📚 Documentation PR created: ${{ steps.create_pr.outputs.pr_url }}"
