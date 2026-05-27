@@ -15,6 +15,20 @@ on:
         description: 'Git commit SHA to use for the overridden repo'
         required: false
         type: string
+  workflow_dispatch:
+    inputs:
+      override-repo:
+        description: 'Repository name to override (e.g., gardenlinux)'
+        required: false
+        type: string
+      override-ref:
+        description: 'Git ref to use for the overridden repo'
+        required: false
+        type: string
+      override-commit:
+        description: 'Git commit SHA to use for the overridden repo'
+        required: false
+        type: string
   pull_request:
     branches: [main]
   push:
@@ -27,8 +41,6 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           repository: gardenlinux/docs-ng
-          # TODO: remove
-          ref: feat/reusable_ci_workflows
 
       - name: Set up Python
         uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # pin@v6.2.0
