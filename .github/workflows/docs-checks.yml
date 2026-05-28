@@ -15,20 +15,6 @@ on:
         description: 'Git commit SHA to use for the overridden repo'
         required: false
         type: string
-  workflow_dispatch:
-    inputs:
-      override-repo:
-        description: 'Repository name to override (e.g., gardenlinux)'
-        required: false
-        type: string
-      override-ref:
-        description: 'Git ref to use for the overridden repo'
-        required: false
-        type: string
-      override-commit:
-        description: 'Git commit SHA to use for the overridden repo'
-        required: false
-        type: string
   pull_request:
     branches: [main]
   push:
