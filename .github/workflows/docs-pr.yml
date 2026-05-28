@@ -33,16 +33,24 @@ jobs:
   create-pr:
     runs-on: ubuntu-24.04
     steps:
+      - name: Generate GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          app-id: ${{ secrets.DOCS_BOT_APP_ID }}
+          private-key: ${{ secrets.DOCS_BOT_PRIVATE_KEY }}
+          repositories: docs-ng,${{ github.event.client_payload.repo || inputs.repo }}
+
       - name: Checkout docs-ng
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.app-token.outputs.token }}
           fetch-depth: 0
 
       - name: Configure git
         run: |
-          git config user.name "Garden Linux Bot"
-          git config user.email gardenlinux[bot]@users.noreply.github.com
+          git config user.name "gardenlinux-docs-bot[bot]"
+          git config user.email "${{ secrets.DOCS_BOT_APP_ID }}+gardenlinux-docs-bot[bot]@users.noreply.github.com"
 
       - name: Extract payload
         id: payload
@@ -98,63 +106,115 @@ jobs:
           git push -f origin "auto/${{ steps.payload.outputs.repo }}/${{ steps.payload.outputs.pr_number }}"
 
       - name: Create or update PR
-        id: create_pr
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          BRANCH="auto/${{ steps.payload.outputs.repo }}/${{ steps.payload.outputs.pr_number }}"
-          PR_NUMBER="${{ steps.payload.outputs.pr_number }}"
-          REPO="${{ steps.payload.outputs.repo }}"
-          EVENT="${{ steps.payload.outputs.event }}"
+        id: docs_pr
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const branch = `auto/${{ steps.payload.outputs.repo }}/${{ steps.payload.outputs.pr_number }}`;
+            const prNumber = '${{ steps.payload.outputs.pr_number }}';
+            const repo = '${{ steps.payload.outputs.repo }}';
+            const event = '${{ steps.payload.outputs.event }}';
+            const commitSha = '${{ steps.payload.outputs.commit_sha }}';
 
-          # Check if PR already exists
-          EXISTING_PR=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number' || echo "")
+            // Check if PR already exists
+            const { data: existingPRs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${branch}`,
+              state: 'open'
+            });
 
-          if [ -n "$EXISTING_PR" ]; then
-            echo "PR #$EXISTING_PR already exists, updating..."
-            if [ "$EVENT" = "merged" ]; then
-              gh pr ready "$EXISTING_PR"
-            fi
-            PR_URL=$(gh pr view "$EXISTING_PR" --json url --jq '.url')
-          else
-            echo "Creating new draft PR..."
-            PR_URL=$(gh pr create \
-              --draft \
-              --title "docs($REPO): Update commit lock from PR #$PR_NUMBER" \
-              --body "## Summary
+            let prUrl;
+            let docsPrNumber;
 
-          Automated PR to update the commit lock for \`$REPO\` repository.
+            if (existingPRs.length > 0) {
+              const existingPR = existingPRs[0];
+              core.info(`PR #${existingPR.number} already exists, updating...`);
+              
+              // If merged, mark PR as ready (remove draft status)
+              if (event === 'merged') {
+                await github.rest.pulls.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  pull_number: existingPR.number,
+                  draft: false
+                });
+              }
+              prUrl = existingPR.html_url;
+              docsPrNumber = existingPR.number;
+            } else {
+              core.info('Creating new draft PR...');
+              const statusText = event === 'merged' ? 'Ready for review' : 'Draft (waiting for source PR to merge)';
+              
+              const { data: newPR } = await github.rest.pulls.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                head: branch,
+                base: 'main',
+                draft: true,
+                title: `docs(${repo}): Update commit lock from PR #${prNumber}`,
+                body: `## Summary
 
-          - **Source PR:** https://github.com/gardenlinux/$REPO/pull/$PR_NUMBER
-          - **Commit:** \`${{ steps.payload.outputs.commit_sha }}\`
-          - **Status:** $( [ "$EVENT" = "merged" ] && echo 'Ready for review' || echo 'Draft (waiting for source PR to merge)' )
+            Automated PR to update the commit lock for \`${repo}\` repository.
 
-          This PR was automatically created by the docs-check workflow.")
-          fi
-          
-          echo "pr_url=$PR_URL" >> "$GITHUB_OUTPUT"
-          echo "Created/Updated PR: $PR_URL"
+            - **Source PR:** https://github.com/gardenlinux/${repo}/pull/${prNumber}
+            - **Commit:** \`${commitSha}\`
+            - **Status:** ${statusText}
 
-      - name: Trigger docs-checks workflow
-        if: steps.create_pr.outputs.pr_url != ''
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          BRANCH="auto/${{ steps.payload.outputs.repo }}/${{ steps.payload.outputs.pr_number }}"
-          
-          echo "Triggering docs-checks workflow for branch: $BRANCH"
-          gh workflow run docs-checks.yml \
-            --ref "$BRANCH" \
-            -f override-repo="${{ steps.payload.outputs.repo }}" \
-            -f override-ref="${{ steps.payload.outputs.ref }}" \
-            -f override-commit="${{ steps.payload.outputs.commit_sha }}"
+            This PR was automatically created by the docs-check workflow.`
+              });
+              prUrl = newPR.html_url;
+              docsPrNumber = newPR.number;
+            }
 
-      - name: Comment on original PR
-        if: steps.create_pr.outputs.pr_url != '' && steps.payload.outputs.pr_number != ''
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          echo "Posting comment on original PR..."
-          gh pr comment "${{ steps.payload.outputs.pr_number }}" \
-            --repo "gardenlinux/${{ steps.payload.outputs.repo }}" \
-            --body "📚 Documentation PR created: ${{ steps.create_pr.outputs.pr_url }}"
+            core.setOutput('pr_url', prUrl);
+            core.setOutput('docs_pr_number', docsPrNumber);
+
+      - name: Comment on source PR
+        if: steps.payload.outputs.pr_number != ''
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          github-token: ${{ steps.app-token.outputs.token }}
+          script: |
+            const prNumber = parseInt('${{ steps.payload.outputs.pr_number }}');
+            const repo = '${{ steps.payload.outputs.repo }}';
+            const prUrl = '${{ steps.docs_pr.outputs.pr_url }}';
+            const docsPrNumber = '${{ steps.docs_pr.outputs.docs_pr_number }}';
+
+            const commentBody = `📚 **Documentation Preview PR:** ${prUrl}
+            😎 **Deploy Preview:** https://deploy-preview-${docsPrNumber}--gardenlinux-docs.netlify.app
+
+            A PR has been created/updated to preview the documentation changes from this PR.`;
+
+            // Find existing bot comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: 'gardenlinux',
+              repo: repo,
+              issue_number: prNumber
+            });
+
+            const botComment = comments.find(comment =>
+              comment.body.includes('📚 **Documentation Preview PR:**') &&
+              comment.user.type === 'Bot'
+            );
+
+            if (botComment) {
+              // Update existing comment
+              await github.rest.issues.updateComment({
+                owner: 'gardenlinux',
+                repo: repo,
+                comment_id: botComment.id,
+                body: commentBody
+              });
+              core.info(`Updated existing comment #${botComment.id}`);
+            } else {
+              // Create new comment
+              await github.rest.issues.createComment({
+                owner: 'gardenlinux',
+                repo: repo,
+                issue_number: prNumber,
+                body: commentBody
+              });
+              core.info('Created new comment');
+            }
