@@ -20,21 +20,22 @@ jobs:
           script: |
             const fs = require('fs');
             const config = JSON.parse(fs.readFileSync('repos-config.json', 'utf8'));
-            const ALLOWED_REFS = new Set(['main', 'master']);
+            const ALLOWED_REFS = new Set(['main', 'docs-ng']);
 
             const errors = [];
             for (const repo of config.repos) {
               const ref = repo.ref || '';
-              if (!ALLOWED_REFS.has(ref) && !ref.startsWith('v') && !ref.startsWith('release-')) {
-                errors.push(`  - ${repo.name}: ref='${ref}' (expected 'main' or a tag)`);
+              const semverRegex = /^\d+\.\d+\.\d+$/;
+              if (!ALLOWED_REFS.has(ref) && !semverRegex.test(ref)) {
+                errors.push(`  - ${repo.name}: ref='${ref}' (expected 'main' or a release version)`);
               }
             }
 
             if (errors.length > 0) {
               core.setFailed(
-                `repos-config.json contains non-main branch references:\n${errors.join('\n')}\n\n` +
-                `PRs cannot be merged until all repos reference main branches or tags.`
+                `repos-config.json contains non-main branch or non release version references:\n${errors.join('\n')}\n\n` +
+                `PRs cannot be merged until all repos reference main branches or release versions.`
               );
             } else {
-              core.info('All repos reference main branches or tags');
+              core.info('All repos reference main branches or release versions');
             }
