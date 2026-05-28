@@ -90,8 +90,8 @@ jobs:
             for (const repo of config.repos) {
               if (repo.name === repoName) {
                 repo.commit = commitSha;
-                // If merged, update ref to main; otherwise keep PR branch
-                repo.ref = event === 'merged' ? 'main' : ref;
+                // Always use the ref from the payload (for merged PRs, this is the base branch)
+                repo.ref = ref;
                 break;
               }
             }
@@ -131,7 +131,7 @@ jobs:
             if (existingPRs.length > 0) {
               const existingPR = existingPRs[0];
               core.info(`PR #${existingPR.number} already exists, updating...`);
-              
+
               // If merged, mark PR as ready (remove draft status)
               if (event === 'merged') {
                 await github.rest.pulls.update({
@@ -146,7 +146,7 @@ jobs:
             } else {
               core.info('Creating new draft PR...');
               const statusText = event === 'merged' ? 'Ready for review' : 'Draft (waiting for source PR to merge)';
-              
+
               const { data: newPR } = await github.rest.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
