@@ -3,8 +3,6 @@ name: Validate repos-config.json
 on:
   pull_request:
     branches: [main]
-    paths:
-      - 'repos-config.json'
 
 jobs:
   validate:
