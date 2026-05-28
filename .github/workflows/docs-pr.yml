@@ -87,13 +87,20 @@ jobs:
 
             const config = JSON.parse(fs.readFileSync('repos-config.json', 'utf8'));
 
+            let found = false;
             for (const repo of config.repos) {
               if (repo.name === repoName) {
                 repo.commit = commitSha;
                 // Always use the ref from the payload (for merged PRs, this is the base branch)
                 repo.ref = ref;
+                found = true;
                 break;
               }
+            }
+
+            if (!found) {
+              core.setFailed(`Repository '${repoName}' not found in repos-config.json. Available repos: ${config.repos.map(r => r.name).join(', ')}`);
+              return;
             }
 
             fs.writeFileSync('repos-config.json', JSON.stringify(config, null, 2) + '\n');
@@ -132,27 +139,39 @@ jobs:
               const existingPR = existingPRs[0];
               core.info(`PR #${existingPR.number} already exists, updating...`);
 
-              // If merged, mark PR as ready (remove draft status)
-              if (event === 'merged') {
-                await github.rest.pulls.update({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  pull_number: existingPR.number,
-                  draft: false
-                });
-              }
+              const isDraft = event !== 'merged';
+              const statusText = isDraft ? 'Draft (waiting for source PR to merge)' : 'Ready for review';
+
+              // Update PR with latest status, draft setting, and body
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: existingPR.number,
+                draft: isDraft,
+                body: `## Summary
+
+Automated PR to update the commit lock for \`${repo}\` repository.
+
+- **Source PR:** https://github.com/gardenlinux/${repo}/pull/${prNumber}
+- **Commit:** \`${commitSha}\`
+- **Status:** ${statusText}
+
+This PR was automatically created by the docs-check workflow.`
+              });
+
               prUrl = existingPR.html_url;
               docsPrNumber = existingPR.number;
             } else {
               core.info('Creating new draft PR...');
-              const statusText = event === 'merged' ? 'Ready for review' : 'Draft (waiting for source PR to merge)';
+              const isDraft = event !== 'merged';
+              const statusText = isDraft ? 'Draft (waiting for source PR to merge)' : 'Ready for review';
 
               const { data: newPR } = await github.rest.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 head: branch,
                 base: 'main',
-                draft: true,
+                draft: isDraft,
                 title: `docs(${repo}): Update commit lock from PR #${prNumber}`,
                 body: `## Summary
 
