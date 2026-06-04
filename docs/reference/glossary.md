@@ -35,7 +35,7 @@ Microsoft Azure. A major cloud platform supported by Garden Linux through the [`
 
 ### Bare Metal
 
-A platform target for Garden Linux images designed to run directly on physical hardware without a hypervisor through the [`baremetal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/baremetal/README.md) platform feature. Also referred to as [`metal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/metal/README.md) in build configurations. See [Bare Metal platform guide](/how-to/installation/on-premises/bare-metal.md) and [Bare Metal first boot tutorial](../tutorials/on-premises/first-boot-bare-metal.md) for usage details.
+A platform target for Garden Linux images designed to run directly on physical hardware without a hypervisor through the [`baremetal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/baremetal/README.md) platform feature. Also referred to as [`metal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/metal/README.md) in build configurations. See [On-Premies Installation](/how-to/installation/on-premises/) and [Bare Metal first boot tutorial](../tutorials/on-premises/first-boot-bare-metal.md) for usage details.
 
 ### Builder
 

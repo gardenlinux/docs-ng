@@ -67,7 +67,7 @@ const cloudPlatforms = [
   { name: 'Google Cloud', image: '/assets/cloud_platforms/Google_Cloud_logo.svg', url: '/how-to/installation/cloud/gcp' },
   { name: 'OpenStack', image: '/assets/cloud_platforms/The_OpenStack_logo.svg', url: '/how-to/installation/cloud/openstack' },
   { name: 'VMware', image: '/assets/cloud_platforms/Vmware.svg', url: '/how-to/vmware' },
-  { name: 'Bare Metal', image: '/assets/download-icon.svg', url: '/how-to/installation/on-premises/bare-metal'}
+  { name: 'Bare Metal', image: '/assets/download-icon.svg', url: '/how-to/installation/bare-metal'}
 ]
 const sponsors = [
   { name: 'NeoNephos Foundation', image: '/assets/neonephos_logo.svg', url: 'https://neonephos.org' },
