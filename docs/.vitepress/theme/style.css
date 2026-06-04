@@ -90,6 +90,12 @@ img[src="/search.png"] {
   padding-bottom: 10px;
 }
 
+/* Sidebar: Add indentation for children of level-0 (2nd level items) */
+#VPSidebarNav .VPSidebarItem.level-0 > .items {
+  padding-left: 16px;
+  border-left: 1px solid var(--vp-c-divider);
+}
+
 /* GitHub social link styling */
 .VPSocialLink[href*="github"] {
   color: var(--vp-c-text-1);
