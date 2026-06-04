@@ -143,20 +143,24 @@ jobs:
               const statusText = isDraft ? 'Draft (waiting for source PR to merge)' : 'Ready for review';
 
               // Update PR with latest status, draft setting, and body
+              const updateBody = [
+                '## Summary',
+                '',
+                `Automated PR to update the commit lock for \`${repo}\` repository.`,
+                '',
+                `- **Source PR:** https://github.com/gardenlinux/${repo}/pull/${prNumber}`,
+                `- **Commit:** \`${commitSha}\``,
+                `- **Status:** ${statusText}`,
+                '',
+                'This PR was automatically created by the docs-check workflow.'
+              ].join('\n');
+
               await github.rest.pulls.update({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: existingPR.number,
                 draft: isDraft,
-                body: `## Summary
-
-Automated PR to update the commit lock for \`${repo}\` repository.
-
-- **Source PR:** https://github.com/gardenlinux/${repo}/pull/${prNumber}
-- **Commit:** \`${commitSha}\`
-- **Status:** ${statusText}
-
-This PR was automatically created by the docs-check workflow.`
+                body: updateBody
               });
 
               prUrl = existingPR.html_url;
@@ -166,6 +170,18 @@ This PR was automatically created by the docs-check workflow.`
               const isDraft = event !== 'merged';
               const statusText = isDraft ? 'Draft (waiting for source PR to merge)' : 'Ready for review';
 
+              const createBody = [
+                '## Summary',
+                '',
+                `Automated PR to update the commit lock for \`${repo}\` repository.`,
+                '',
+                `- **Source PR:** https://github.com/gardenlinux/${repo}/pull/${prNumber}`,
+                `- **Commit:** \`${commitSha}\``,
+                `- **Status:** ${statusText}`,
+                '',
+                'This PR was automatically created by the docs-check workflow.'
+              ].join('\n');
+
               const { data: newPR } = await github.rest.pulls.create({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
@@ -173,15 +189,7 @@ This PR was automatically created by the docs-check workflow.`
                 base: 'main',
                 draft: isDraft,
                 title: `docs(${repo}): Update commit lock from PR #${prNumber}`,
-                body: `## Summary
-
-            Automated PR to update the commit lock for \`${repo}\` repository.
-
-            - **Source PR:** https://github.com/gardenlinux/${repo}/pull/${prNumber}
-            - **Commit:** \`${commitSha}\`
-            - **Status:** ${statusText}
-
-            This PR was automatically created by the docs-check workflow.`
+                body: createBody
               });
               prUrl = newPR.html_url;
               docsPrNumber = newPR.number;
