@@ -54,6 +54,7 @@ class TestRepoConfig:
             url="file://../gardenlinux",
             docs_path="docs",
             target_path="projects/gardenlinux",
+            ref="",
         )
         assert repo.is_local is True
         assert repo.is_remote is False
@@ -77,6 +78,7 @@ class TestRepoConfig:
             url="file://../gardenlinux",
             docs_path="docs",
             target_path="projects/gardenlinux",
+            ref="",
         )
         assert repo.local_path == "../gardenlinux"
     
@@ -87,6 +89,7 @@ class TestRepoConfig:
             url="file://../gardenlinux",
             docs_path="docs",
             target_path="projects/gardenlinux",
+            ref="",
         )
         repo.validate()  # Should not raise
     
@@ -97,6 +100,7 @@ class TestRepoConfig:
             url="https://github.com/test/repo",
             docs_path="docs",
             target_path="projects/test",
+            ref="",
         )
         with pytest.raises(ValueError, match="must have 'ref' field"):
             repo.validate()
@@ -108,9 +112,56 @@ class TestRepoConfig:
             url="ftp://example.com/repo",
             docs_path="docs",
             target_path="projects/test",
+            ref="",
         )
         with pytest.raises(ValueError, match="Invalid URL scheme"):
             repo.validate()
+
+
+    def test_from_dict_defaults_ref_to_main(self):
+        """Test that from_dict defaults ref to 'main' when key is absent."""
+        data = {
+            "name": "local-repo",
+            "url": "file://../some-repo",
+            "docs_path": "docs",
+            "target_path": "projects/some-repo",
+        }
+        repo = RepoConfig.from_dict(data)
+        assert repo.ref == "main"
+
+    def test_from_dict_explicit_empty_ref_falls_back_to_main(self):
+        """Test that from_dict defaults empty ref to 'main' (the 'or main' behavior)."""
+        data = {
+            "name": "local-repo",
+            "url": "file://../some-repo",
+            "docs_path": "docs",
+            "target_path": "projects/some-repo",
+            "ref": "",
+        }
+        repo = RepoConfig.from_dict(data)
+        assert repo.ref == "main"
+
+    def test_validate_remote_with_ref_passes(self):
+        """Test that remote repos with a valid ref pass validation."""
+        repo = RepoConfig(
+            name="remote",
+            url="https://github.com/test/repo",
+            docs_path="docs",
+            target_path="projects/test",
+            ref="main",
+        )
+        repo.validate()  # Should not raise
+
+    def test_local_path_with_absolute_url(self):
+        """Test local_path strips file:// from an absolute path."""
+        repo = RepoConfig(
+            name="local",
+            url="file:///abs/path/to/repo",
+            docs_path="docs",
+            target_path="projects/repo",
+            ref="",
+        )
+        assert repo.local_path == "/abs/path/to/repo"
 
 
 class TestAggregateResult:

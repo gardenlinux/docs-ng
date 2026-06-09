@@ -7,6 +7,22 @@ import pytest
 from aggregation import DocsFetcher, RepoConfig, process_all_markdown
 
 
+# ---------------------------------------------------------------------------
+# Shared helpers
+# ---------------------------------------------------------------------------
+
+def _make_output_dir(tmp_path: Path) -> Path:
+    """Create and return a fresh output directory under tmp_path."""
+    output_dir = tmp_path / "output"
+    output_dir.mkdir(exist_ok=True)
+    return output_dir
+
+
+def _make_fetcher(project_root: Path) -> DocsFetcher:
+    """Return a DocsFetcher anchored at project_root."""
+    return DocsFetcher(project_root)
+
+
 class TestDocsFetcher:
     """Integration tests for DocsFetcher."""
     
@@ -31,14 +47,11 @@ class TestDocsFetcher:
             url=f"file://{repo_path}",
             docs_path="docs",
             target_path="projects/test-repo",
+            ref="",
         )
         
-        # Fetch the docs
-        output_dir = tmp_path / "output"
-        output_dir.mkdir()
-        
-        fetcher = DocsFetcher(tmp_path)
-        result = fetcher.fetch(repo, output_dir)
+        output_dir = _make_output_dir(tmp_path)
+        result = _make_fetcher(tmp_path).fetch(repo, output_dir)
         
         # Verify success
         assert result.success is True
@@ -51,6 +64,87 @@ class TestDocsFetcher:
         
         # Verify content
         assert "Test Documentation" in (output_dir / "index.md").read_text()
+
+    def test_fetch_local_missing_docs_path(self, tmp_path, capsys):
+        """Test that a missing docs_path results in success=True, no files copied, and a warning."""
+        repo_path = tmp_path / "mock-repo"
+        repo_path.mkdir(parents=True)
+        # Intentionally do NOT create a 'docs' directory
+
+        repo = RepoConfig(
+            name="test-repo",
+            url=f"file://{repo_path}",
+            docs_path="docs",  # Does not exist
+            target_path="projects/test-repo",
+            ref="",
+        )
+
+        output_dir = _make_output_dir(tmp_path)
+        result = _make_fetcher(tmp_path).fetch(repo, output_dir)
+
+        # Fetch should still report success (warning is printed but not fatal)
+        assert result.success is True
+        # Output directory should be empty (nothing was copied)
+        assert list(output_dir.iterdir()) == []
+        # A warning about the missing docs_path must have been emitted to stdout
+        captured = capsys.readouterr()
+        assert "Warning" in captured.out
+        assert "docs" in captured.out
+
+    def test_fetch_local_with_root_files_glob(self, tmp_path):
+        """Test that root_files with a glob pattern copies only matched files."""
+        repo_path = tmp_path / "mock-repo"
+        features_dir = repo_path / "features" / "foo"
+        features_dir.mkdir(parents=True)
+        (features_dir / "bar.md").write_text("# Feature Bar")
+        (features_dir / "baz.md").write_text("# Feature Baz")
+        # A file that should NOT match the glob
+        (repo_path / "CHANGELOG.md").write_text("# Changes")
+
+        repo = RepoConfig(
+            name="test-repo",
+            url=f"file://{repo_path}",
+            docs_path="nonexistent-docs",  # No standard docs; only root_files
+            target_path="projects/test-repo",
+            ref="",
+            root_files=["features/foo/*.md"],
+        )
+
+        output_dir = _make_output_dir(tmp_path)
+        result = _make_fetcher(tmp_path).fetch(repo, output_dir)
+
+        assert result.success is True
+        # Glob-matched files should be present at their relative paths
+        assert (output_dir / "features" / "foo" / "bar.md").exists()
+        assert (output_dir / "features" / "foo" / "baz.md").exists()
+        # Non-matching file should NOT be present
+        assert not (output_dir / "CHANGELOG.md").exists()
+
+    def test_fetch_local_resolves_relative_path(self, tmp_path):
+        """Test that a relative file:// URL is resolved against project_root."""
+        # Simulate a sibling-directory layout: project_root and mock-repo are siblings
+        project_root = tmp_path / "docs-ng"
+        project_root.mkdir()
+
+        repo_path = tmp_path / "mock-repo"
+        docs_path = repo_path / "docs"
+        docs_path.mkdir(parents=True)
+        (docs_path / "index.md").write_text("# Hello from relative repo")
+
+        repo = RepoConfig(
+            name="relative-repo",
+            url="file://../mock-repo",
+            docs_path="docs",
+            target_path="projects/relative-repo",
+            ref="",
+        )
+
+        output_dir = _make_output_dir(tmp_path)
+        result = _make_fetcher(project_root).fetch(repo, output_dir)
+
+        assert result.success is True
+        assert (output_dir / "index.md").exists()
+        assert "Hello from relative repo" in (output_dir / "index.md").read_text()
 
 
 class TestMarkdownProcessing:

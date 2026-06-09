@@ -144,6 +144,7 @@ class TestSaveConfig:
                 url="file://../repo2",
                 docs_path="docs",
                 target_path="projects/repo2",
+                ref="",
             ),
         ]
         config_file = tmp_path / "config.json"
@@ -223,3 +224,103 @@ class TestSaveConfig:
         assert loaded_repos[0].url == original_repos[0].url
         assert loaded_repos[0].commit == original_repos[0].commit
         assert loaded_repos[0].root_files == original_repos[0].root_files
+
+    def test_load_config_rejects_invalid_scheme(self, tmp_path):
+        """Test that a repo with an invalid URL scheme causes SystemExit via validate()."""
+        config_data = {
+            "repos": [
+                {
+                    "name": "bad",
+                    "url": "ftp://example.com/repo",
+                    "docs_path": "docs",
+                    "target_path": "projects/bad",
+                    "ref": "main",
+                }
+            ]
+        }
+        config_file = tmp_path / "config.json"
+        config_file.write_text(json.dumps(config_data))
+
+        with pytest.raises(SystemExit):
+            load_config(str(config_file))
+
+    def test_save_preserves_structure_dict(self, tmp_path):
+        """Test that a dict structure survives a save/load round trip."""
+        structure_map = {"old_dir": "new_dir", "another": "different"}
+        repos = [
+            RepoConfig(
+                name="test-repo",
+                url="https://github.com/test/repo",
+                docs_path="docs",
+                target_path="projects/test",
+                ref="main",
+                structure=structure_map,
+            )
+        ]
+        config_file = tmp_path / "config.json"
+
+        save_config(str(config_file), repos)
+        loaded_repos = load_config(str(config_file))
+
+        assert loaded_repos[0].structure == structure_map
+
+    def test_save_omits_default_structure_flat(self, tmp_path):
+        """Test that structure='flat' is not written to the JSON output."""
+        repos = [
+            RepoConfig(
+                name="test-repo",
+                url="https://github.com/test/repo",
+                docs_path="docs",
+                target_path="projects/test",
+                ref="main",
+            )
+        ]
+        config_file = tmp_path / "config.json"
+
+        save_config(str(config_file), repos)
+
+        with open(config_file) as f:
+            data = json.load(f)
+
+        assert "structure" not in data["repos"][0]
+
+    def test_save_preserves_target_map_and_special_files(self, tmp_path):
+        """Test that target_map and special_files survive a save/load round trip."""
+        repos = [
+            RepoConfig(
+                name="test-repo",
+                url="https://github.com/test/repo",
+                docs_path="docs",
+                target_path="projects/test",
+                ref="main",
+                target_map={"src/api.md": "api/index.md"},
+                special_files={"CHANGELOG.md": "reference/"},
+            )
+        ]
+        config_file = tmp_path / "config.json"
+
+        save_config(str(config_file), repos)
+        loaded_repos = load_config(str(config_file))
+
+        assert loaded_repos[0].target_map == {"src/api.md": "api/index.md"}
+        assert loaded_repos[0].special_files == {"CHANGELOG.md": "reference/"}
+
+    def test_save_local_repo_omits_empty_ref(self, tmp_path):
+        """Test that local repos with ref='' do not emit a 'ref' key in JSON."""
+        repos = [
+            RepoConfig(
+                name="local-repo",
+                url="file://../some-repo",
+                docs_path="docs",
+                target_path="projects/some-repo",
+                ref="",
+            )
+        ]
+        config_file = tmp_path / "config.json"
+
+        save_config(str(config_file), repos)
+
+        with open(config_file) as f:
+            data = json.load(f)
+
+        assert "ref" not in data["repos"][0]
