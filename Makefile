@@ -9,9 +9,9 @@ help:
 	@echo "    preview                - Preview production build locally"
 	@echo ""
 	@echo "  Testing:"
-	@echo "    test                   - Run full test suite (38 tests: unit + integration)"
-	@echo "    test-unit              - Run unit tests only (35 tests)"
-	@echo "    test-integration       - Run integration tests only (3 tests)"
+	@echo "    test                   - Run full test suite (unit + integration)"
+	@echo "    test-unit              - Run unit tests only"
+	@echo "    test-integration       - Run integration tests only"
 	@echo ""
 	@echo "  Quality Checks:"
 	@echo "    check                  - Run all quality checks (spelling, links, inclusive language)"
@@ -35,7 +35,7 @@ install:
 	pnpm install
 	pip install git+https://github.com/gardenlinux/glrd.git@v4.1.0
 	pip install git+https://github.com/gardenlinux/python-gardenlinux-lib.git@0.10.20
-	pip install -r requirements.txt	
+	pip install -r requirements.txt
 
 dev:
 	pnpm run docs:dev

@@ -1,11 +1,14 @@
 """Unit tests for aggregation.transformer module."""
 
 import pytest
+from pathlib import Path
 from aggregation import (
-    rewrite_links,
-    quote_yaml_value,
     ensure_frontmatter,
+    parse_frontmatter,
+    quote_yaml_value,
+    rewrite_links,
 )
+from aggregation.transformer import fix_broken_project_links
 
 
 class TestRewriteLinks:
@@ -41,11 +44,19 @@ class TestRewriteLinks:
         result = rewrite_links(content, "gardenlinux", "introduction/index.md")
         assert "/projects/gardenlinux/.media/image.png" in result
     
-    def test_absolute_paths_to_github(self):
-        """Test that absolute paths outside docs/ link to GitHub."""
-        content = "[File](/README.md)"
-        result = rewrite_links(content, "gardenlinux", "")
-        assert "https://github.com/gardenlinux/gardenlinux/blob/main/README.md" in result
+    def test_relative_link_with_anchor(self):
+        """Test that relative links with anchors preserve the anchor."""
+        content = "[Guide](./guide.md#section-one)"
+        result = rewrite_links(content, "gardenlinux", "docs/index.md")
+        assert "section-one" in result
+        assert "/projects/gardenlinux" in result
+
+    def test_dotdot_outside_docs_falls_back_to_github(self):
+        """Test that ../ links going outside docs/ fall back to GitHub."""
+        # File is at the root (depth 1); two levels up would escape docs/
+        content = "[File](../../README.md)"
+        result = rewrite_links(content, "gardenlinux", "subdir/index.md")
+        assert "github.com/gardenlinux/gardenlinux/blob/main" in result
 
 
 class TestQuoteYamlValue:
@@ -113,3 +124,66 @@ class TestEnsureFrontmatter:
         assert '"Test: Example"' in result
         assert "John Doe" in result
         assert '"tag1, tag2"' in result
+
+
+class TestParseFrontmatter:
+    """Tests for parse_frontmatter function."""
+
+    def test_no_frontmatter_returns_none_and_original(self):
+        """Content without frontmatter returns (None, original_content)."""
+        content = "# Title\n\nSome body text."
+        fm, body = parse_frontmatter(content)
+        assert fm is None
+        assert body == content
+
+    def test_valid_frontmatter_is_parsed(self):
+        """Valid frontmatter is returned as a dict; body is the remainder."""
+        content = "---\ntitle: Hello\nauthor: Alice\n---\n\n# Body"
+        fm, body = parse_frontmatter(content)
+        assert isinstance(fm, dict)
+        assert fm["title"] == "Hello"
+        assert fm["author"] == "Alice"
+        assert "# Body" in body
+
+    def test_quoted_values_are_stripped(self):
+        """Quoted frontmatter values have their surrounding quotes stripped."""
+        content = '---\ntitle: "Quoted Title"\n---\n\nBody'
+        fm, _ = parse_frontmatter(content)
+        assert fm is not None
+        assert fm["title"] == "Quoted Title"
+
+    def test_malformed_frontmatter_returns_none_gracefully(self):
+        """Frontmatter that opens with --- but never closes returns (None, original)."""
+        content = "---\ntitle: Oops\n# no closing fence"
+        fm, body = parse_frontmatter(content)
+        assert fm is None
+        assert body == content
+
+
+class TestFixBrokenProjectLinks:
+    """Tests for fix_broken_project_links function."""
+
+    def test_existing_file_link_is_kept(self, tmp_path):
+        """A /projects/repo/ link whose target exists is left unchanged."""
+        (tmp_path / "guide.md").write_text("# Guide")
+        content = "[Guide](/projects/myrepo/guide)"
+        result = fix_broken_project_links(content, "myrepo", str(tmp_path))
+        assert result == content
+
+    def test_missing_file_link_redirects_to_github(self, tmp_path):
+        """A /projects/repo/ link whose target is missing becomes a GitHub link."""
+        content = "[Missing](/projects/myrepo/does-not-exist)"
+        result = fix_broken_project_links(content, "myrepo", str(tmp_path))
+        assert result == "[Missing](https://github.com/gardenlinux/myrepo/blob/main/does-not-exist)"
+
+    def test_external_link_is_not_touched(self, tmp_path):
+        """External links are left unchanged regardless of target existence."""
+        content = "[External](https://example.com/page)"
+        result = fix_broken_project_links(content, "myrepo", str(tmp_path))
+        assert result == content
+
+    def test_other_project_link_is_not_touched(self, tmp_path):
+        """Links to other repos under /projects/ are not modified."""
+        content = "[Other](/projects/other-repo/some-page)"
+        result = fix_broken_project_links(content, "myrepo", str(tmp_path))
+        assert result == content
