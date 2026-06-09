@@ -15,6 +15,8 @@ docs/**/assets
 # Section directories - aggregated content is ignored, index.md and selected files are tracked
 !docs/.vitepress/theme/assets/
 docs/contributing/**
+!docs/contributing/assets/
+!docs/contributing/assets/**
 !docs/contributing/index.md
 !docs/contributing/documentation/
 !docs/contributing/documentation/**

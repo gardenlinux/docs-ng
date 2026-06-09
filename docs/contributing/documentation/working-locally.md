@@ -1,12 +1,15 @@
 ---
 title: "Contributing to the Garden Linux Documentation"
 description: "Learn how to contribute to Garden Linux documentation — working with the aggregation system locally"
+order: 5
 related_topics:
   - /contributing/documentation/documentation_workflow.md
   - /contributing/documentation/writing_good_docs.md
   - /contributing/documentation/aggregation-architecture.md
   - /contributing/documentation/adding-repos.md
-  - /contributing/documentation/working-locally.md
+  - /contributing/documentation/ci-architecture.md
+  - /contributing/documentation/ci-workflows-reference.md
+  - /contributing/documentation/configuration.md
   - /contributing/documentation/technical.md
   - /contributing/documentation/testing.md
   - /contributing/documentation/vitepress-features.md
@@ -17,9 +20,6 @@ related_topics:
 Garden Linux documentation is published at
 **https://gardenlinux-docs.netlify.app/** and combines content from multiple
 repositories into a unified documentation site.
-
-> **Source Repository:**
-> [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
 
 ## Working with the Documentation System Locally
 

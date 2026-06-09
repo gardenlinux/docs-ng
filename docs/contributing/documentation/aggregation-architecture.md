@@ -1,12 +1,15 @@
 ---
 title: "Documentation Aggregation Architecture"
 description: "Deep dive into how the documentation aggregation system works"
+order: 3
 related_topics:
   - /contributing/documentation/documentation_workflow.md
   - /contributing/documentation/writing_good_docs.md
-  - /contributing/documentation/aggregation-architecture.md
   - /contributing/documentation/adding-repos.md
   - /contributing/documentation/working-locally.md
+  - /contributing/documentation/ci-architecture.md
+  - /contributing/documentation/ci-workflows-reference.md
+  - /contributing/documentation/configuration.md
   - /contributing/documentation/technical.md
   - /contributing/documentation/testing.md
   - /contributing/documentation/vitepress-features.md
@@ -16,9 +19,6 @@ related_topics:
 
 Deep dive into the design and implementation of the documentation aggregation
 system.
-
-> **Source Repository:**
-> [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
 
 ## System Overview
 
