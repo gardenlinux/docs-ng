@@ -1,1 +1,0 @@
-../docs/reference/documentation/technical.md
