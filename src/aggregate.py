@@ -273,7 +273,7 @@ Examples:
 
     print("\nNext steps:")
     print("  1. Review the changes in docs/projects/")
-    print("  2. Run 'make dev' or 'pnpm run docs:dev' to preview")
+    print("  2. Run 'make run' or 'pnpm run docs:dev' to preview")
     print("  3. Commit the changes if satisfied")
 
     return 0 if fail_count == 0 else 1

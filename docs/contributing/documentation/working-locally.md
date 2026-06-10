@@ -75,7 +75,7 @@ This copies documentation from local repositories without using git.
 ### Step 4: Start the Development Server
 
 ```bash
-make dev
+make run
 ```
 
 The documentation site will be available at `http://localhost:5173`.
@@ -146,7 +146,7 @@ If you encounter issues, try a clean build:
 ```bash
 make clean
 make aggregate
-make dev
+make run
 ```
 
 ### Check Dependencies
