@@ -1,4 +1,4 @@
-.PHONY: help run dev build preview aggregate aggregate-repo test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration check spelling linkcheck woke
+.PHONY: help run build preview aggregate aggregate-repo test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration check spelling linkcheck woke
 
 help:
 	@echo "Garden Linux Documentation Hub - Available targets:"
@@ -37,7 +37,7 @@ install:
 	pip install git+https://github.com/gardenlinux/python-gardenlinux-lib.git@0.10.20
 	pip install -r requirements.txt
 
-dev:
+run:
 	pnpm run docs:dev
 
 build: install clean aggregate
