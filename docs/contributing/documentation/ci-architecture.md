@@ -63,12 +63,7 @@ Each repository listed in `repos-config.json` contains `docs-check.yml` workflow
 ### `gardenlinux-docs-bot` GitHub App
 
 A GitHub App with write access to both `docs-ng` and the aggregated repositories.
-It is used to:
-
-- generate short-lived tokens that allow cross-repository API calls without
-  using a personal access token,
-- open and update draft PRs in `docs-ng`, and
-- post preview comments back on aggregated repo PRs.
+It's responsible for generating short-lived tokens that allow cross-repository API calls without using a personal access token, opening and updating draft PRs in `docs-ng` and posting comments back to the PRs in the aggregated repo which include links to the Netlify preview.
 
 Required secrets (configured in each aggregated repository):
 
