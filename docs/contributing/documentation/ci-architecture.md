@@ -124,7 +124,7 @@ flowchart TD
     P -->|no, more commits| A
 ```
 
-## Sequence Diagrams
+## CI Flow Scenarios
 
 ### Scenario A — PR opened or synchronized in an aggregated repo
 
