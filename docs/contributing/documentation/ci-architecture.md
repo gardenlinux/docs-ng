@@ -126,7 +126,7 @@ flowchart TD
 
 ## CI Flow Scenarios
 
-### Scenario A — PR opened or synchronized in an aggregated repo
+### **Scenario A**: PR opened or synchronized in an aggregated repo
 
 The following diagram shows the event sequence when a contributor opens a new
 PR (or pushes additional commits to an open PR) in an aggregated repository.
