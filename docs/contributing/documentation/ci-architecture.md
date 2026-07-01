@@ -79,7 +79,7 @@ for every open PR. The `docs-pr.yml` workflow posts the preview URL as a
 comment on the originating aggregated repo PR so reviewers do not have to navigate
 to `docs-ng` manually.
 
-## High-Level Flow
+## Build Flow
 
 The diagram below shows the path from a documentation change in an aggregated
 repository through to a merged commit lock update in `docs-ng`.
