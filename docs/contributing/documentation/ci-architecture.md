@@ -164,7 +164,7 @@ sequenceDiagram
     Dev-->>SrcRepo: sees preview link in PR comment
 ```
 
-### Scenario B — Source PR merged
+### **Scenario B**: Source PR merged
 
 When the source PR is merged, `docs-check.yml` fires again with
 `action: closed` and `merged: true`. The quality checks are skipped; only the
