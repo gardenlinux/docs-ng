@@ -17,6 +17,10 @@ This glossary provides definitions for Garden Linux-specific terminology. To con
 
 A document that captures an important architectural decision made about the Garden Linux system. ADRs provide context, rationale, and consequences of decisions. Garden Linux stores ADRs in the [reference/adr](./adr/index.md) section. See [ADR-0001](./adr/0001-record-architecture-decisions.md) for more background on why Garden Linux uses ADRs, and [Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) by Michael Nygard for the original concept.
 
+### AppArmor
+
+A Linux Security Module (LSM) that provides mandatory access control (MAC) by confining programs to a limited set of resources using per-program profiles. Garden Linux uses AppArmor as its default LSM for platforms requiring Kubernetes compatibility (for example, nodes running the [`gardener`](/reference/features/gardener) or [`khost`](/reference/features/khost) features). Some compliance features such as [`cis`](/reference/features/cis) replace AppArmor with SELinux instead. See [**SELinux**](#selinux) for the alternative LSM.
+
 ### Architecture
 
 The processor architecture for which a Garden Linux image is built. Supported architectures include `amd64` (x86-64) and `arm64` (ARM 64-bit). The architecture is the second component of a flavor, e.g., `kvm-python-amd64` is a flavor (see [**Flavor**](#flavor)). See [Architecture documentation](/explanation/architecture.md) for details on Garden Linux system design.
@@ -69,6 +73,13 @@ Example: `aws-gardener_prod-amd64-1877.3`. See [ADR 0035](/reference/adr/0035-cn
 
 A framework providing security configuration benchmarks. Garden Linux offers optional CIS compliance through the [`cis`](/reference/features/cis) feature and related sub-features ([`cisAudit`](/reference/features/cisAudit), [`cisModprobe`](/reference/features/cisModprobe), [`cisOS`](/reference/features/cisOS), [`cisPackages`](/reference/features/cisPackages), [`cisPartition`](/reference/features/cisPartition), [`cisSshd`](/reference/features/cisSshd), [`cisSysctl`](/reference/features/cisSysctl)). See [ADR-0017](./adr/0017-feature-cis-to-retain-shell-scripts.md) for details on the CIS feature implementation and [ADR-0029](./adr/0029-cis-selinux-permissive.md) regarding SELinux in permissive mode for CIS compliance.
 
+### chost (Container Host)
+
+The [`chost`](/reference/features/chost) element feature adjusts Garden Linux to support running container and Kubernetes workloads. It installs and configures `containerd` and related packages. The [`khost`](/reference/features/khost) (Kubernetes Host) feature extends `chost` with additional Kubernetes-specific configuration. See [**khost (Kubernetes Host)**](#khost-kubernetes-host) and [**containerd**](#containerd).
+
+### Cloud Image
+
+A Garden Linux image optimized for cloud platforms (AWS, Azure, GCP, etc.) with cloud-init support and platform-specific configurations.
 
 ### CNAME (Canonical Name)
 
@@ -80,13 +91,13 @@ cname = {feature-encoding}
 
 Example: `aws-gardener_prod`. The `GARDENLINUX_CNAME` entry in `/etc/os-release` contains the cname. See [ADR 0035](/reference/adr/0035-cname-flavor-artifact-naming) for the authoritative definition and [**GARDENLINUX_CNAME**](#gardenlinux_cname) for the environment variable.
 
-### Cloud Image
-
-A Garden Linux image optimized for cloud platforms (AWS, Azure, GCP, etc.) with cloud-init support and platform-specific configurations.
-
 ### Container Image
 
 A Garden Linux image packaged for use with container runtimes. Available through GitHub Packages at `ghcr.io/gardenlinux/gardenlinux`.
+
+### containerd
+
+An industry-standard container runtime that manages the lifecycle of containers on a host. Garden Linux includes `containerd` in the [`chost`](/reference/features/chost), [`khost`](/reference/features/khost), and [`gardener`](/reference/features/gardener) element features. Individual Garden Linux releases of `containerd` are maintained in the [gardenlinux/package-containerd](https://github.com/gardenlinux/package-containerd) repository. See [**chost (Container Host)**](#chost-container-host) and [**khost (Kubernetes Host)**](#khost-kubernetes-host).
 
 ---
 
@@ -95,6 +106,10 @@ A Garden Linux image packaged for use with container runtimes. Available through
 ### Debian
 
 The upstream Linux distribution on which Garden Linux is based. Garden Linux is a Debian GNU/Linux derivative that provides customized, auditable images with a focus on cloud and security features.
+
+### debootstrap
+
+A tool that installs a Debian base system into a subdirectory of another, already installed system. The Garden Linux builder uses `debootstrap` to create the initial root filesystem for every image, bootstrapping the `minbase` variant as the foundation for the [`base`](/reference/features/base) feature layer.
 
 ### Dependabot
 
@@ -194,6 +209,9 @@ GitHub's continuous integration and deployment platform. Garden Linux uses GitHu
 
 Garden Linux Continuous Integration. The CI pipeline that runs Garden Linux build, test, and publish workflows on GitHub Actions. GLCI consumes build artifacts and metadata uploaded to Amazon S3 by the builder, then runs automated tests against those artifacts. After successful testing, GLCI registers a release entry in the [Garden Linux Release Database (GLRD)](#glrd-garden-linux-release-database) and publishes images to the GitHub Container Registry and cloud provider image galleries. See [ADR-0031](./adr/0031-builder-glci-interface.md) for the builder-GLCI interface design and the [GitHub Workflows explanation](/explanation/github-workflows) for a detailed pipeline overview.
 
+### GLRD (Garden Linux Release Database)
+
+The Garden Linux Release Database. A system that tracks Garden Linux releases and their associated metadata — including version, commit, S3 artifact locations, and image identifiers for cloud platforms. GLRD entries are created automatically by the GLCI publish pipeline: `nightly` entries are created from main-branch builds, and `minor` entries are created from release-branch builds. The build requirements workflow resolves the correct artifact version and commit ID by querying GLRD. The database is hosted in the [gardenlinux/glrd](https://github.com/gardenlinux/glrd) repository. See [**GLCI**](#glci) and the [GitHub Workflows explanation](/explanation/github-workflows).
 
 ### GLVD
 
@@ -285,11 +303,19 @@ The cryptographic library used by Garden Linux. Garden Linux uses OpenSSL 3.5 by
 
 ### OpenStack
 
-An open-source cloud computing platform. Garden Linux provides OpenStack-specific images through the [`openstack`](https://github.com/gardenlinux/gardenlinux/blob/main/features/openstack/README.md) platform feature.
+An open-source cloud computing platform. Garden Linux provides OpenStack-specific images through the [`openstack`](/reference/features/openstack) platform feature.
+
+### OpenTofu
+
+An open-source infrastructure-as-code tool (a community fork of Terraform) used by the Garden Linux test suite to provision cloud infrastructure for platform tests. When running cloud-based tests, the `tests-ng` framework calls OpenTofu to deploy the image under test to the target cloud provider and tears down the resources after the test run completes. See [**tests-ng**](#tests-ng) and [OpenTofu documentation](https://opentofu.org).
 
 ---
 
 ## P
+
+### package-build
+
+The [gardenlinux/package-build](https://github.com/gardenlinux/package-build) repository providing the tooling and scripts used to build Garden Linux custom packages. Individual packages are maintained in separate `package-*` repositories (for example, `package-containerd`, `package-openssh`), each of which uses the common tooling from `package-build` to produce APT-installable `.deb` artifacts. See [Garden Linux Packaging explanation](/explanation/packaging) and [**repo-debian-snapshot**](#repo-debian-snapshot) for the snapshot repository used as a build input.
 
 ### Patch Version
 
@@ -319,6 +345,10 @@ The [python-gardenlinux-lib](https://github.com/gardenlinux/python-gardenlinux-l
 
 A stable, versioned distribution of Garden Linux following semantic versioning. Releases are published on [GitHub Releases](https://github.com/gardenlinux/gardenlinux/releases) and GitHub Packages. See [ADR-0011](./adr/0011-garden-linux-versioning.md) for the versioning strategy and [ADR-0015](./adr/0015-no-backports-from-stable.md) for the policy on backports from stable branches.
 
+### repo-debian-snapshot
+
+The [gardenlinux/repo-debian-snapshot](https://github.com/gardenlinux/repo-debian-snapshot) repository that creates and maintains timestamped snapshots of the Debian testing repository. These snapshots are used as the APT source for Garden Linux builds, ensuring reproducibility: every build references a fixed, immutable snapshot rather than a live Debian mirror. Snapshots are hosted on Amazon S3 and mirrored to the GitHub Container Registry. See [Repository Infrastructure explanation](/explanation/repo-infrastructure).
+
 ### Rootless Podman
 
 Running Podman without requiring root privileges. Garden Linux builds use rootless Podman by default, enhancing security by avoiding privileged operations during the build process.
@@ -326,6 +356,10 @@ Running Podman without requiring root privileges. Garden Linux builds use rootle
 ---
 
 ## S
+
+### sapmachine
+
+An OpenJDK release maintained and supported by SAP. Garden Linux provides `sapmachine` as the [`sapmachine`](/reference/features/sapmachine) element feature, which installs the SapMachine Java runtime. The feature depends on [`_curl`](/reference/features/_curl) for package retrieval. See [SapMachine project](https://sap.github.io/SapMachine/).
 
 ### Secure Boot
 
@@ -370,6 +404,10 @@ An extension to Secure Boot that provides additional system integrity verificati
 ### Unit Tests
 
 Automated tests that validate the correct functionality of a Garden Linux image after it's created. Unit tests verify that the image contains expected packages, configurations, and behaviors. See [ADR-0013](./adr/0013-discontinue-packages-musthave-tests.md) for the decision to discontinue certain package must-have tests, and [ADR-0025](./adr/0025-disable-debsums-tests.md) for the decision to disable debsums tests.
+
+### USI (Unified System Image)
+
+A boot approach where the Linux kernel, initramfs, and root filesystem are combined into a single Unified Kernel Image (UKI) with an embedded EROFS root disk. The [`_usi`](/reference/features/_usi) flag feature enables this mode in Garden Linux. USI images boot without a separate root partition and include the [`_nocrypt`](/reference/features/_nocrypt) and [`_unsigned`](/reference/features/_unsigned) features by default; they are incompatible with the [`_legacy`](/reference/features/_legacy) feature.
 
 ---
 
