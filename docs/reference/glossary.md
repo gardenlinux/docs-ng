@@ -19,7 +19,17 @@ A document that captures an important architectural decision made about the Gard
 
 ### Architecture
 
-The processor architecture for which a Garden Linux image is built. Supported architectures include `amd64` (x86-64) and `arm64` (ARM 64-bit). The architecture can be specified as the last component of a build flavor string, e.g., `kvm-python-amd64`. See [Architecture documentation](/explanation/architecture.md) for details on Garden Linux system design.
+The processor architecture for which a Garden Linux image is built. Supported architectures include `amd64` (x86-64) and `arm64` (ARM 64-bit). The architecture is the second component of a flavor, e.g., `kvm-python-amd64` is a flavor (see [**Flavor**](#flavor)). See [Architecture documentation](/explanation/architecture.md) for details on Garden Linux system design.
+
+### Artifact Base Name
+
+The **artifact base name** is the versioned flavor qualified with a short commit hash:
+
+```
+{cname}-{arch}-{version}-{short_commit}
+```
+
+Example: `aws-gardener_prod-amd64-1877.3-a1b2c3d4`. The artifact base name is the prefix of every output file produced by the builder under `.build/` and the key used for S3 artifact storage. It uniquely identifies a specific build run. See [ADR 0035](/reference/adr/0035-cname-flavor-artifact-naming) for the authoritative definition.
 
 ### AWS
 
@@ -35,15 +45,21 @@ Microsoft Azure. A major cloud platform supported by Garden Linux through the [`
 
 ### Bare Metal
 
-A platform target for Garden Linux images designed to run directly on physical hardware without a hypervisor through the [`baremetal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/baremetal/README.md) platform feature. Also referred to as [`metal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/metal/README.md) in build configurations. See [On-Premies Installation](/how-to/installation/on-premises/) and [Bare Metal first boot tutorial](../tutorials/on-premises/first-boot-bare-metal.md) for usage details.
+A platform target for Garden Linux images designed to run directly on physical hardware without a hypervisor. The `baremetal` feature is of type `platform`. The `metal` feature (which is of type `element`) provides standard kernel modules and physical hardware components and is distinct from `baremetal`. See [On-Premises Installation](/how-to/installation/on-premises/) and [Bare Metal first boot tutorial](../tutorials/on-premises/first-boot-bare-metal.md) for usage details. For the platform/element distinction, see [**Platform**](#platform) and [**Element**](#element).
 
 ### Builder
 
 The [gardenlinux/builder](https://github.com/gardenlinux/builder) component that creates customized Linux distributions. The builder is a separate project maintained by the Garden Linux team and is used to build Garden Linux images with specific Flavors. See [Building Images documentation](/how-to/building-images.md) for practical guidance, [ADR-0020](./adr/0020-enforce-single-platform-by-default-in-builder.md) for details on platform enforcement in the builder, and [ADR-0031](./adr/0031-builder-glci-interface.md) for the builder-GLCI interface design.
 
-### Build Flavor String
+### Versioned Flavor
 
-The hyphenated string used with the `./build` command that specifies the platform, features, and optionally the architecture for a Garden Linux image. Format: `${platform}-${feature1}-${feature2}-${arch}`. Examples: `kvm-python_dev`, `aws-gardener_prod-amd64`.
+A **versioned flavor** is the flavor qualified with a version — the string passed to the `./build` script to invoke a build:
+
+```
+{cname}-{arch}-{version}
+```
+
+Example: `aws-gardener_prod-amd64-1877.3`. See [ADR 0035](/reference/adr/0035-cname-flavor-artifact-naming) for the authoritative definition.
 
 ---
 
@@ -52,6 +68,16 @@ The hyphenated string used with the `./build` command that specifies the platfor
 ### CIS (Center for Internet Security)
 
 A framework providing security configuration benchmarks. Garden Linux offers optional CIS compliance through the [`cis`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cis/README.md) feature and related sub-features ([`cisAudit`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisAudit/README.md), [`cisModprobe`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisModprobe/README.md), [`cisOS`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisOS/README.md), [`cisPackages`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisPackages/README.md), [`cisPartition`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisPartition/README.md), [`cisSshd`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisSshd/README.md), [`cisSysctl`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cisSysctl/README.md)). See [ADR-0017](./adr/0017-feature-cis-to-retain-shell-scripts.md) for details on the CIS feature implementation and [ADR-0029](./adr/0029-cis-selinux-permissive.md) regarding SELinux in permissive mode for CIS compliance.
+
+### CNAME (Canonical Name)
+
+The **cname** is the minimal, canonically-sorted encoding of the feature set — and only the feature set. Architecture, version, and commit are not part of the cname:
+
+```
+cname = {feature-encoding}
+```
+
+Example: `aws-gardener_prod`. The `GARDENLINUX_CNAME` entry in `/etc/os-release` contains the cname. See [ADR 0035](/reference/adr/0035-cname-flavor-artifact-naming) for the authoritative definition and [**GARDENLINUX_CNAME**](#gardenlinux_cname) for the environment variable.
 
 ### Cloud Image
 
@@ -85,6 +111,10 @@ The initramfs infrastructure used by Garden Linux to generate the initial RAM fi
 
 ## E
 
+### Element
+
+A feature of type `element` represents a functional component or capability added on top of a platform feature. Elements are composable — multiple elements may be present in a single build. Examples: `cis`, `fedramp`, `firewall`, `gardener`, `metal`, `server`. See [ADR 0034](/reference/adr/0034-feature-terminology) for the authoritative definition.
+
 ### Ephemeral
 
 Refers to the [`_ephemeral`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_ephemeral/README.md) feature that configures Garden Linux for stateless operation where no persistent state is maintained between reboots.
@@ -95,7 +125,11 @@ Refers to the [`_ephemeral`](https://github.com/gardenlinux/gardenlinux/blob/mai
 
 ### Feature
 
-A modular component that adds specific functionality to a Garden Linux image. Features are defined in the `features/` directory. Features prefixed with an underscore (`_`) are internal/private (e.g., [`_secureboot`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_secureboot/README.md), [`_dev`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_dev/README.md)), while features without a prefix are public (e.g., [`cis`](https://github.com/gardenlinux/gardenlinux/blob/main/features/cis/README.md), [`gardener`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gardener/README.md), [`python`](https://github.com/gardenlinux/gardenlinux/blob/main/features/python/README.md)). See [Flavors documentation](/explanation/flavors.md) for an overview, and [ADR-0032](./adr/0032-static-feature-test-coverage-analysis.md) for details on feature test coverage analysis.
+A modular component that adds specific functionality to a Garden Linux image. Features are defined in the `features/` directory. Every feature has exactly one type — `platform`, `element`, or `flag` — declared in its `info.yaml`. Features prefixed with an underscore (`_`) are of type `flag` (e.g., [`_prod`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_prod/README.md), [`_fips`](https://github.com/gardenlinux/gardenlinux/blob/main/features/_fips/README.md)); the `_` prefix marks the feature as a flag, not as "internal" or "private". Features without a prefix are either `platform` or `element` types (e.g., [`aws`](https://github.com/gardenlinux/gardenlinux/blob/main/features/aws/README.md), [`gardener`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gardener/README.md)). See [ADR 0034](/reference/adr/0034-feature-terminology) for the authoritative type definitions, [Flavors documentation](/explanation/flavors.md) for an overview, and [ADR-0032](./adr/0032-static-feature-test-coverage-analysis.md) for details on feature test coverage analysis.
+
+### Feature Set
+
+The **feature set** of a build is the complete set of features present after dependency graph resolution — the transitive closure of all included features minus all excluded ones. The **minimal feature set** is the subset of the feature set whose members are not pulled in transitively by any other selected feature; the [cname](#cname-canonical-name) is derived from this minimal set. See [ADR 0034](/reference/adr/0034-feature-terminology) and [ADR 0035](/reference/adr/0035-cname-flavor-artifact-naming) for details.
 
 ### FedRAMP
 
@@ -109,9 +143,23 @@ Federal Information Processing Standards. The [`_fips`](https://github.com/garde
 
 A lightweight virtual machine monitor (VMM) for running microVMs. Garden Linux historically supported Firecracker as a platform. See [ADR-0012](./adr/0012-remove-firecracker-feature.md) for details on why Firecracker support was discontinued.
 
+### Flag
+
+A feature of type `flag` represents a lightweight modifier. Flags are identified by a leading underscore (`_`) in their name (e.g., `_prod`, `_fips`, `_trustedboot`). They are intended for minor behavioral changes that do not warrant a full element and should not include other features. See [ADR 0034](/reference/adr/0034-feature-terminology) for the authoritative definition.
+
 ### Flavor
 
-A specific combination of a platform and one or more features that defines a complete Garden Linux image configuration. Flavors are expressed as hyphen-separated strings, e.g., `kvm-python_dev` or `aws-gardener_prod-amd64`. The platform must come first, and the architecture (if specified) must come last. See [Flavors documentation](/explanation/flavors.md), [Choosing Flavors guide](/how-to/choosing-flavors.md), and [Flavor Matrix reference](./flavor-matrix.md) for more details.
+A **flavor** is the cname qualified with a target architecture:
+
+```
+{cname}-{arch}
+```
+
+Example: `aws-gardener_prod-amd64`. The flavor identifies what is being built for which architecture, independent of any particular release version. It is the natural unit for entries in `flavors.yaml` and CI job naming. See [ADR 0035](/reference/adr/0035-cname-flavor-artifact-naming) for the authoritative definition, [Flavors documentation](/explanation/flavors.md), [Choosing Flavors guide](/how-to/choosing-flavors.md), and [Flavor Matrix reference](./flavor-matrix.md) for more details.
+
+### Frankenstein
+
+A **frankenstein image** is a build that contains more than one `platform` feature. This is not a supported configuration. The builder enforces the single-platform rule by default; use `--allow-frankenstein` to override. When multiple platform features are present, `GARDENLINUX_PLATFORM` is set to the literal string `frankenstein`. See [ADR 0034](/reference/adr/0034-feature-terminology) and [ADR-0020](./adr/0020-enforce-single-platform-by-default-in-builder.md).
 
 ---
 
@@ -124,6 +172,14 @@ A Debian GNU/Linux derivative designed to provide small, auditable Linux images 
 ### Gardener
 
 [Gardener](https://gardener.cloud/) is a Kubernetes-based platform for managing clusters across multiple cloud providers. Garden Linux is the recommended operating system for Gardener worker nodes through the [`gardener`](https://github.com/gardenlinux/gardenlinux/blob/main/features/gardener/README.md) feature.
+
+### GARDENLINUX_CNAME
+
+The `GARDENLINUX_CNAME` key in `/etc/os-release`. It contains the [cname](#cname-canonical-name) — the feature encoding only, without architecture, version, or commit hash. Example: `aws-gardener_prod`. See [ADR 0035](/reference/adr/0035-cname-flavor-artifact-naming) for the authoritative definition.
+
+### GARDENLINUX_PLATFORM
+
+The `GARDENLINUX_PLATFORM` key in `/etc/os-release`. It contains the single authoritative platform identifier for the image (e.g., `aws`, `kvm`, `baremetal`). It is derived from the resolved feature set: if exactly one `platform` feature is present, `GARDENLINUX_PLATFORM` is set to that feature's name; if more than one platform feature is present (frankenstein build), it is set to the literal string `frankenstein`. It is the value to use for all platform-routing decisions. See [ADR 0034](/reference/adr/0034-feature-terminology) for the authoritative definition.
 
 ### GCP
 
@@ -191,7 +247,11 @@ The first number in Garden Linux's semantic versioning scheme (e.g., the "2017" 
 
 ### Metal
 
-See **Bare Metal**.
+The [`metal`](https://github.com/gardenlinux/gardenlinux/blob/main/features/metal/README.md) feature is of type `element`. It provides standard kernel modules and physical hardware components for use on top of a platform feature. It is distinct from `baremetal`, which is the `platform` feature for running Garden Linux directly on physical hardware. See [**Bare Metal**](#bare-metal) and [**Element**](#element).
+
+### Minimal Feature Set
+
+The **minimal feature set** is the subset of the resolved feature set whose members are not pulled in transitively by any other selected feature. The [cname](#cname-canonical-name) is derived from the minimal feature set. See [ADR 0035](/reference/adr/0035-cname-flavor-artifact-naming) for details.
 
 ### Minor Version
 
@@ -231,7 +291,7 @@ The third number in Garden Linux's semantic versioning scheme (e.g., the "0" in 
 
 ### Platform
 
-The target deployment environment for a Garden Linux image. Platforms include cloud providers (AWS, Azure, GCP), virtualization technologies (KVM, VMware), and physical hardware (bare metal). The platform is always the first component in a build flavor string. See [ADR-0020](./adr/0020-enforce-single-platform-by-default-in-builder.md) for details on platform enforcement.
+A feature of type `platform` represents the deployment target — the combination of hardware, firmware, and cloud or hypervisor environment the image is intended to run on. A well-formed build must contain exactly one platform feature. Examples: `aws`, `azure`, `baremetal`, `container`, `gcp`, `kvm`. The single authoritative platform identifier for a running image is available in `GARDENLINUX_PLATFORM` in `/etc/os-release`. See [ADR 0034](/reference/adr/0034-feature-terminology) for the authoritative definition, [ADR-0020](./adr/0020-enforce-single-platform-by-default-in-builder.md) for the single-platform enforcement rule, and [**GARDENLINUX_PLATFORM**](#gardenlinux_platform).
 
 ### Podman
 
