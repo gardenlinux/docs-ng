@@ -27,7 +27,7 @@ The documentation CI pipeline serves three guarantees:
 2. **Preview**: contributors and reviewers can inspect exactly how a pull
    request's documentation changes will look on the live site, via a Netlify
    deploy preview attached to an automated draft PR in `docs-ng`.
-3. **Always latest docs**: once a PR of an aggregrated repository (source PR) is merged, the `repos-config.json`
+3. **Always latest docs**: once a PR of an aggregated repository (source PR) is merged, the `repos-config.json`
    commit lock for that repository is automatically updated so the published
    site reflects the latest content without any manual intervention.
 
