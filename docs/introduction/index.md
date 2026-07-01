@@ -10,10 +10,16 @@ migration_approved: false
 
 # Garden Linux
 
-## Mission Statement
+## Mission and Scope
 
-Garden Linux (GL) is a Debian Linux derivative built with three main goals:
-fully open source, ease-of-use & purpose-optimized!
+The mission of the project is to develop a minimal, immutable, API-driven
+operating system layer for automated, Kubernetes-centric platforms.
+
+The scope of the Project includes collaborative development under the Project
+Licenses, as defined in the project’s code repositories supporting the mission,
+including documentation, testing, integration and the creation of other artifacts
+that aid the development, deployment, operation or adoption of the open source
+project.
 
 It is **not** a general-purpose Operating System targeting all possible
 use-cases & scenarios.
