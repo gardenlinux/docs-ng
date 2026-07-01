@@ -21,13 +21,13 @@ related_topics:
 
 The documentation CI pipeline serves three guarantees:
 
-1. **Quality** — every documentation change in any aggregated repository is
+1. **Quality**: every documentation change in any aggregated repository is
    validated for broken links, spelling errors, and inclusive language _before_
    it can influence the published site.
-2. **Preview** — contributors and reviewers can inspect exactly how a pull
+2. **Preview**: contributors and reviewers can inspect exactly how a pull
    request's documentation changes will look on the live site, via a Netlify
    deploy preview attached to an automated draft PR in `docs-ng`.
-3. **Always latest docs** — once a PR of an agregrated repository (source PR) is merged, the `repos-config.json`
+3. **Always latest docs**: once a PR of an aggregrated repository (source PR) is merged, the `repos-config.json`
    commit lock for that repository is automatically updated so the published
    site reflects the latest content without any manual intervention.
 
