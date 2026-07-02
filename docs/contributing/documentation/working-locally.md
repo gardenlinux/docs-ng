@@ -102,8 +102,24 @@ This creates a production build in `docs/.vitepress/dist/`.
 
 ### Updating a Single Repository
 
+To re-aggregate only one repository without re-fetching all others:
+
 ```bash
-make aggregate-repo REPO=gardenlinux
+make aggregate-repo-single REPO=gardenlinux
+```
+
+To re-aggregate a single repository at a specific ref or commit:
+
+```bash
+make aggregate-repo-single REPO=gardenlinux REF=feature/my-branch
+make aggregate-repo-single REPO=gardenlinux REF=feature/my-branch COMMIT=abc123def
+```
+
+To apply a ref or commit override to one repository while re-aggregating all
+repos (for example, to test a feature branch across the full docs tree):
+
+```bash
+make aggregate-repo REPO=gardenlinux REF=feature/my-branch
 ```
 
 ### Updating Lock Files

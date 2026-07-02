@@ -152,8 +152,8 @@ ls -la docs/how-to/
 For production, lock to a specific commit:
 
 ```bash
-# This fetches the latest and updates repos-config.json
-make aggregate-update-repo REPO=new-repo
+# This fetches only the new repo and updates repos-config.json with its commit hash
+make aggregate-update-repo-single REPO=new-repo
 ```
 
 Or manually add the commit hash:
