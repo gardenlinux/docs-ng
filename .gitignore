@@ -7,7 +7,6 @@ shell.nix
 .envrc
 
 # added by aggregation
-docs/projects
 docs/**/.media
 docs/**/_static
 docs/**/assets

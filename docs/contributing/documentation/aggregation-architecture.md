@@ -90,16 +90,15 @@ source repositories into a unified VitePress documentation site.
 
 1. **Link Rewriting:** Transform relative links to work across repository
    boundaries
-   - Intra-repo links: Maintained relative to project mirror
-   - Cross-repo links: Rewritten to absolute paths
+   - Links that escape the docs tree via `../`: Redirected to GitHub
+   - Absolute `/` links: Redirected to GitHub
+   - Relative and `./` links: Left unchanged for VitePress to resolve natively
    - External links: Preserved as-is
 
 2. **Front-matter Handling:** Ensure all documents have proper front-matter
    - Add missing front-matter blocks
    - Quote YAML values safely
    - Preserve existing metadata
-
-3. **Project Link Validation:** Fix broken links to project mirrors
 
 ### 3. Structure Stage (`structure.py`)
 
@@ -109,16 +108,11 @@ source repositories into a unified VitePress documentation site.
 
 1. **Targeted Documentation:** Copy files with `github_target_path` to specified
    locations
-2. **Directory Mapping:** Transform source directories according to `structure`
-   config
+2. **Internal Link Verification:** Fail aggregation if any shipped file links
+   to a source-repo file that was not itself shipped (hard-fail to catch
+   unmigrated links early)
 3. **Media Copying:** Discover and copy media directories
-4. **Markdown Processing:** Apply transformations to all markdown files
-
-**Structure Types:**
-
-- **Flat:** Copy all files as-is
-- **Sphinx:** Handle Sphinx documentation structure
-- **Custom Mapping:** Map source directories to Diataxis categories
+4. **Markdown Processing:** Apply front-matter fixes to all copied files
 
 ## Key Mechanisms
 
@@ -141,17 +135,8 @@ github_target_path: "docs/how-to/example.md"
 4. Apply markdown transformations
 
 This allows fine-grained control over where content appears in the final site.
-
-### Project Mirrors
-
-In addition to targeted docs, the entire `docs/` directory from each repo is
-mirrored under `docs/projects/<repo-name>/`:
-
-**Purpose:**
-
-- Preserve complete repository documentation
-- Provide fallback for untargeted content
-- Enable browsing of raw source structure
+All source-repo files that are not tagged with `github_target_path` are
+excluded from the built site entirely.
 
 ### Media Directory Handling
 
@@ -215,12 +200,6 @@ This fetches the latest from `ref` and updates commit locks.
 - **Testability:** Easy to test individual stages
 - **Extensibility:** New transformations added without affecting fetch/structure
 
-### Why Project Mirrors?
-
-- **Completeness:** No documentation is lost
-- **Development:** Easier to debug and understand source structure
-- **Backwards Compatibility:** Existing links to source repos still work
-
 ## Data Flow
 
 ### Repository → Temporary Directory
@@ -243,11 +222,8 @@ Temp Directory                 Docs Output
 ├── tutorials/                 docs/
 │   └── guide.md                   ├── tutorials/
 │       (github_target_path)       │   └── guide.md (targeted)
-├── how-to/                        ├── how-to/
-└── reference/                     └── projects/repo-name/
-                                       ├── tutorials/ (mirror)
-                                       ├── how-to/ (mirror)
-                                       └── reference/ (mirror)
+├── how-to/                        └── how-to/
+└── reference/                         (targeted files only)
 ```
 
 ## Performance Characteristics
@@ -265,7 +241,7 @@ Temp Directory                 Docs Output
 ### Structure Stage
 
 - **Targeted copy:** O(n) where n = files with github_target_path
-- **Directory mapping:** O(n) where n = total files
+- **Link verification:** O(n * l) where l = avg links per file
 - **Media copy:** O(m) where m = media files
 
 ### Overall

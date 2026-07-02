@@ -9,17 +9,20 @@ def rewrite_links(
     content: str,
     repo_name: str,
     file_rel_path: str = "",
-    base_path: str = "/projects",
     github_base: str = "https://github.com/gardenlinux",
 ) -> str:
     """
     Rewrite internal markdown links to work with VitePress structure.
 
+    Only rewrites links that escape the docs tree (going too many levels up
+    via ../), redirecting them to the corresponding GitHub URL.  All other
+    links — relative, absolute /..., or ./ — are left unchanged for VitePress
+    to resolve natively.
+
     Args:
         content: The markdown content
         repo_name: Name of the repository
         file_rel_path: Relative path of the file within the repo
-        base_path: Base path for projects
         github_base: Base URL for GitHub organization
 
     Returns:
@@ -50,95 +53,33 @@ def rewrite_links(
         if link.startswith("#"):
             return match.group(0)
 
-        # Skip if already a /projects/ link
-        if link.startswith(f"{base_path}/"):
+        # Handle ../ links that go outside docs/ — redirect to GitHub
+        if link.startswith("../"):
+            levels_up = link.count("../")
+            stripped_link = link.replace("../", "").replace(".md", "")
+
+            if file_dir:
+                dir_depth = len(file_dir.split("/"))
+                if levels_up > dir_depth:
+                    new_link = (
+                        f"{github_base}/{repo_name}/blob/main/{stripped_link}"
+                    )
+                    return f"[{text}]({new_link})"
+
+            # Inside docs tree: leave relative link unchanged for VitePress
             return match.group(0)
 
-        # Handle relative paths for .media directory
-        if ".media/" in link:
-            media_part = link
-            while media_part.startswith("../"):
-                media_part = media_part[3:]
-            media_part = media_part.replace("./", "")
-            new_link = f"{base_path}/{repo_name}/{media_part}"
-            return f"[{text}]({new_link})"
-
-        # Handle relative links
-        if link.startswith("../") or link.startswith("./"):
-            stripped_link = link.replace(".md", "")
-
-            # For ./ links (same directory)
-            if link.startswith("./"):
-                stripped_link = stripped_link.replace("./", "")
-                if file_dir:
-                    new_link = f"{base_path}/{repo_name}/{file_dir}/{stripped_link}"
-                else:
-                    new_link = f"{base_path}/{repo_name}/{stripped_link}"
-            else:
-                # For ../ links, check if they go outside docs/
-                levels_up = link.count("../")
-                stripped_link = stripped_link.replace("../", "")
-
-                # Check if we go outside docs/
-                if file_dir:
-                    dir_depth = len(file_dir.split("/"))
-                    if levels_up > dir_depth:
-                        # Link to GitHub
-                        new_link = (
-                            f"{github_base}/{repo_name}/blob/main/{stripped_link}"
-                        )
-                        return f"[{text}]({new_link})"
-
-                # Remove numbered prefixes
-                stripped_link = re.sub(r"\d+_(\w+)", r"\1", stripped_link)
-                new_link = f"{base_path}/{repo_name}/{stripped_link}"
-
-            return f"[{text}]({new_link})"
-
-        # Handle absolute paths from root
+        # Handle absolute paths from root — redirect to GitHub
         if link.startswith("/"):
-            if link.startswith(f"{base_path}/"):
-                return match.group(0)
             # Link to file outside docs/ - point to GitHub
             stripped_link = link.lstrip("/")
             new_link = f"{github_base}/{repo_name}/blob/main/{stripped_link}"
-            return f"[{text}]({new_link})"
-
-        # Handle simple filenames (same directory)
-        if "/" not in link:
-            stripped_link = link.replace(".md", "")
-            if file_dir:
-                new_link = f"{base_path}/{repo_name}/{file_dir}/{stripped_link}"
-            else:
-                new_link = f"{base_path}/{repo_name}/{stripped_link}"
             return f"[{text}]({new_link})"
 
         return match.group(0)
 
     # Apply transform to markdown links
     content = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", replace_link, content)
-
-    # Handle HTML media links
-    def replace_html_media_link(match):
-        attr_name = match.group(1)
-        link = match.group(2)
-
-        if link.startswith(f"{base_path}/"):
-            return match.group(0)
-        if ".media/" in link:
-            media_part = link
-            while media_part.startswith("../"):
-                media_part = media_part[3:]
-            media_part = media_part.replace("./", "")
-            new_link = f"{base_path}/{repo_name}/{media_part}"
-            return f'{attr_name}="{new_link}"'
-        return match.group(0)
-
-    content = re.sub(
-        r'(src|srcset)="([^"]*\.media/[^"]*)"',
-        replace_html_media_link,
-        content,
-    )
 
     return content
 
@@ -292,63 +233,6 @@ def ensure_frontmatter(content: str) -> str:
         except Exception:
             print("  [Warning] Couldn't parse existing frontmatter!")
 
-    return content
-
-
-def fix_broken_project_links(
-    content: str,
-    repo_name: str,
-    target_dir: str,
-    base_path: str = "/projects",
-    github_base: str = "https://github.com/gardenlinux",
-) -> str:
-    """
-    Fix links in /projects/ that point to non-existent files.
-    Replace with GitHub links.
-
-    Args:
-        content: Markdown content
-        repo_name: Repository name
-        target_dir: Target directory path
-        base_path: Base path for projects
-        github_base: GitHub base URL
-
-    Returns:
-        Content with fixed links
-    """
-    target_path = Path(target_dir)
-
-    def check_and_fix_link(match):
-        text = match.group(1)
-        link = match.group(2)
-
-        # Only process /projects/{repo}/ links
-        if not link.startswith(f"{base_path}/{repo_name}/"):
-            return match.group(0)
-
-        # Extract the path after /projects/{repo}/
-        rel_path = link[len(f"{base_path}/{repo_name}/") :]
-
-        potential_file = target_path / f"{rel_path}.md"
-        potential_index = target_path / rel_path / "index.md"
-        potential_dir = target_path / rel_path
-
-        # If file exists, or directory exists with index.md, keep the link
-        if (
-            potential_file.exists()
-            or potential_index.exists()
-            or (
-                potential_dir.exists()
-                and potential_dir.is_dir()
-                and (potential_dir / "index.md").exists()
-            )
-        ):
-            return match.group(0)
-
-        github_link = f"{github_base}/{repo_name}/blob/main/{rel_path}"
-        return f"[{text}]({github_link})"
-
-    content = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", check_and_fix_link, content)
     return content
 
 

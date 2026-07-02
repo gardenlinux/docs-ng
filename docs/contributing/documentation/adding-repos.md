@@ -35,7 +35,6 @@ Edit `repos-config.json` and add a new entry to the `repos` array:
   "name": "new-repo",
   "url": "https://github.com/gardenlinux/new-repo",
   "docs_path": "docs",
-  "target_path": "projects/new-repo",
   "ref": "main",
   "structure": "flat"
 }
@@ -46,7 +45,6 @@ Edit `repos-config.json` and add a new entry to the `repos` array:
 - **`name`**: Unique identifier for the repository
 - **`url`**: Git URL or `file://` path for local development
 - **`docs_path`**: Path to docs directory within the repository
-- **`target_path`**: Where to place mirrored docs (usually `projects/<name>`)
 - **`ref`**: Git branch or tag to fetch from
 
 ### Optional Fields
@@ -54,40 +52,9 @@ Edit `repos-config.json` and add a new entry to the `repos` array:
 - **`commit`**: Lock to a specific commit hash for reproducibility
 - **`root_files`**: List of root-level files to copy (e.g.,
   `["README.md", "CONTRIBUTING.md"]`)
-- **`structure`**: Directory mapping strategy (see below)
+- **`structure`**: Directory mapping strategy (`"flat"` or `"sphinx"`; see below)
 - **`media_directories`**: List of media directories to copy (e.g.,
   `[".media", "_static", "assets"]`)
-
-## Step 2: Choose a Structure Strategy
-
-### Flat Structure
-
-Copy all files as-is without reorganization:
-
-```json
-"structure": "flat"
-```
-
-### Sphinx Structure
-
-For Sphinx-generated documentation:
-
-```json
-"structure": "sphinx"
-```
-
-### Custom Mapping
-
-Map source directories to Diataxis categories:
-
-```json
-"structure": {
-  "tutorials": "tutorials",
-  "guides": "how-to",
-  "concepts": "explanation",
-  "api": "reference"
-}
-```
 
 ## Step 3: Configure Targeted Documentation
 
@@ -105,10 +72,29 @@ github_target_path: "docs/how-to/example-guide.md"
 Content here...
 ```
 
-Files with `github_target_path` will be copied to that exact location, not to
-`projects/<repo-name>/`.
+Files with `github_target_path` will be copied to that exact location in the
+site. Source-repo files without `github_target_path` are excluded from the
+built site entirely.
 
-## Step 4: Test with Local Configuration
+## Step 2: Choose a Structure Strategy
+
+### Flat Structure
+
+Copy all docs files as-is without reorganization:
+
+```json
+"structure": "flat"
+```
+
+### Sphinx Structure
+
+For Sphinx-generated documentation:
+
+```json
+"structure": "sphinx"
+```
+
+## Step 3: Test with Local Configuration
 
 Create or edit `repos-config.local.json` for local testing:
 
@@ -117,10 +103,7 @@ Create or edit `repos-config.local.json` for local testing:
   "repos": [
     {
       "name": "new-repo",
-      "url": "file://../new-repo",
-      "docs_path": "docs",
-      "target_path": "projects/new-repo",
-      "structure": "flat"
+      "url": "file://../new-repo"
     }
   ]
 }
@@ -132,22 +115,16 @@ Then test aggregation:
 make aggregate-local
 ```
 
-## Step 5: Verify the Output
+## Step 4: Verify the Output
 
-Check that files are in the correct locations:
-
-```bash
-ls -la docs/projects/new-repo/
-```
-
-If using `github_target_path`, verify targeted files:
+Check that targeted files landed in the correct Diataxis section:
 
 ```bash
 ls -la docs/tutorials/
 ls -la docs/how-to/
 ```
 
-## Step 6: Lock the Commit (Production)
+## Step 5: Lock the Commit (Production)
 
 For production, lock to a specific commit:
 
@@ -163,7 +140,6 @@ Or manually add the commit hash:
   "name": "new-repo",
   "url": "https://github.com/gardenlinux/new-repo",
   "docs_path": "docs",
-  "target_path": "projects/new-repo",
   "ref": "main",
   "commit": "abc123def456...",
   "structure": "flat"
@@ -204,20 +180,6 @@ Copy root-level files (like README.md or CONTRIBUTING.md):
 These files can also have `github_target_path` front-matter for targeted
 placement.
 
-### Special Files
-
-Handle non-standard files:
-
-```json
-{
-  "name": "new-repo",
-  "special_files": {
-    "GUIDE.md": "how-to",
-    "CONCEPTS.md": "explanation"
-  }
-}
-```
-
 ## Complete Example
 
 Here's a complete configuration:
@@ -227,22 +189,15 @@ Here's a complete configuration:
   "name": "example-tool",
   "url": "https://github.com/gardenlinux/example-tool",
   "docs_path": "documentation",
-  "target_path": "projects/example-tool",
   "ref": "docs-ng",
   "commit": "1234567890abcdef",
   "root_files": ["README.md"],
-  "structure": {
-    "getting-started": "tutorials",
-    "guides": "how-to",
-    "concepts": "explanation",
-    "api-reference": "reference"
-  },
-  "media_directories": [".media", "images"],
-  "special_files": {
-    "CHANGELOG.md": "reference"
-  }
+  "structure": "flat",
+  "media_directories": [".media", "images"]
 }
 ```
+
+The `docs_path` field defaults to `"docs"` and may be omitted when the documentation lives in a `docs/` directory.
 
 ## Troubleshooting
 

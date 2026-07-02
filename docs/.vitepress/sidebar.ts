@@ -13,7 +13,6 @@ export function generateDocumentationSidebar(): any {
     useTitleFromFrontmatter: true,
     useFolderLinkFromIndexFile: true,
     useFolderTitleFromIndexFile: true,
-    excludePattern: ['projects'],
     sortMenusByFrontmatterOrder: true,
     frontmatterOrderDefaultValue: 999,
     prefixSeparator: '/',

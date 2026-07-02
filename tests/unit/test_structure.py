@@ -3,112 +3,210 @@
 from pathlib import Path
 
 import pytest
-from aggregation.structure import transform_directory_structure
+from aggregation.structure import copy_targeted_docs, verify_internal_links
 
 
-class TestTransformDirectoryStructure:
-    """Tests for transform_directory_structure function."""
+class TestCopyTargetedDocs:
+    """Tests for copy_targeted_docs function."""
 
-    def test_dict_map_renames_directories(self, tmp_path):
-        """Directories are renamed according to the dict structure map."""
+    def test_copies_file_with_github_target_path(self, tmp_path):
+        """Files with github_target_path are copied to the specified location."""
         source = tmp_path / "source"
-        (source / "01_intro").mkdir(parents=True)
-        (source / "01_intro" / "index.md").write_text("# Intro")
-        (source / "02_guide").mkdir()
-        (source / "02_guide" / "guide.md").write_text("# Guide")
+        source.mkdir()
+        docs = tmp_path / "docs"
+        docs.mkdir()
 
-        target = tmp_path / "target"
+        content = (
+            "---\n"
+            "title: Example\n"
+            "github_target_path: docs/how-to/example.md\n"
+            "---\n\n# Example\n"
+        )
+        (source / "example.md").write_text(content)
 
-        transform_directory_structure(
-            str(source),
-            str(target),
-            structure_map={"01_intro": "intro", "02_guide": "guide"},
+        copy_targeted_docs(str(source), str(docs), "myrepo")
+
+        assert (docs / "how-to" / "example.md").exists()
+
+    def test_skips_file_without_github_target_path(self, tmp_path):
+        """Files without github_target_path are not copied."""
+        source = tmp_path / "source"
+        source.mkdir()
+        docs = tmp_path / "docs"
+        docs.mkdir()
+
+        (source / "untargeted.md").write_text("# No target\n")
+
+        copy_targeted_docs(str(source), str(docs), "myrepo")
+
+        # Nothing should be copied to docs/
+        assert list(docs.rglob("*.md")) == []
+
+    def test_missing_source_dir_warns_gracefully(self, tmp_path, capsys):
+        """Missing source dir logs a warning and returns without error."""
+        docs = tmp_path / "docs"
+        docs.mkdir()
+
+        copy_targeted_docs(str(tmp_path / "nonexistent"), str(docs), "myrepo")
+
+        captured = capsys.readouterr()
+        assert "Warning" in captured.out
+
+    def test_retargeted_media_colocated_with_target(self, tmp_path):
+        """Media next to a retargeted file lands at the target parent, not source parent.
+
+        Concrete case: glrd overview/README.md → reference/supporting_tools/glrd.md
+        Media at overview/assets/ must end up at reference/supporting_tools/assets/.
+        """
+        source = tmp_path / "source"
+        (source / "overview" / "assets").mkdir(parents=True)
+        docs = tmp_path / "docs"
+        docs.mkdir()
+
+        content = (
+            "---\n"
+            "title: GLRD\n"
+            "github_target_path: docs/reference/supporting_tools/glrd.md\n"
+            "---\n\n![Overview](assets/x.png)\n"
+        )
+        (source / "overview" / "README.md").write_text(content)
+        (source / "overview" / "assets" / "x.png").write_bytes(b"\x89PNG")
+
+        copy_targeted_docs(
+            str(source), str(docs), "glrd", media_dirs=["assets"]
         )
 
-        assert (target / "intro" / "index.md").exists()
-        assert (target / "guide" / "guide.md").exists()
-        # Original names should NOT appear in the target
-        assert not (target / "01_intro").exists()
-        assert not (target / "02_guide").exists()
+        # Targeted file copied to correct location
+        assert (docs / "reference" / "supporting_tools" / "glrd.md").exists()
+        # Media colocated with retargeted file
+        assert (docs / "reference" / "supporting_tools" / "assets" / "x.png").exists()
+        # Media must NOT appear at the source-relative path
+        assert not (docs / "overview").exists()
 
-    def test_flat_structure_copies_files(self, tmp_path):
-        """With structure_map='flat', all files are copied as-is."""
+    def test_identity_mapped_media_unchanged(self, tmp_path):
+        """Media next to an identity-mapped file stays at its source-relative location.
+
+        Gardenlinux case: tutorials/cloud/first-boot-aws.md → tutorials/cloud/first-boot-aws.md
+        Media at tutorials/assets/img.png must still end up at tutorials/assets/img.png.
+        """
         source = tmp_path / "source"
-        source.mkdir()
-        (source / "readme.md").write_text("# README")
-        (source / "guide.md").write_text("# Guide")
+        (source / "tutorials" / "cloud").mkdir(parents=True)
+        (source / "tutorials" / "assets").mkdir(parents=True)
+        docs = tmp_path / "docs"
+        docs.mkdir()
 
-        target = tmp_path / "target"
+        content = (
+            "---\n"
+            "title: First Boot AWS\n"
+            "github_target_path: docs/tutorials/cloud/first-boot-aws.md\n"
+            "---\n\n![Img](../assets/img.png)\n"
+        )
+        (source / "tutorials" / "cloud" / "first-boot-aws.md").write_text(content)
+        (source / "tutorials" / "assets" / "img.png").write_bytes(b"\x89PNG")
 
-        transform_directory_structure(str(source), str(target), structure_map="flat")
-
-        assert (target / "readme.md").exists()
-        assert (target / "guide.md").exists()
-
-    def test_sphinx_structure_cleans_target(self, tmp_path):
-        """When structure_map='sphinx', a pre-existing target directory is wiped."""
-        source = tmp_path / "source"
-        source.mkdir()
-        (source / "new.md").write_text("# New")
-
-        target = tmp_path / "target"
-        target.mkdir()
-        stale = target / "stale.md"
-        stale.write_text("# Stale file from previous run")
-        assert stale.exists()
-
-        transform_directory_structure(
-            str(source), str(target), structure_map="sphinx"
+        copy_targeted_docs(
+            str(source), str(docs), "gardenlinux", media_dirs=["assets"]
         )
 
-        assert not stale.exists(), "Stale file should have been removed by sphinx clean"
-        assert (target / "new.md").exists()
+        # Targeted file at its correct location
+        assert (docs / "tutorials" / "cloud" / "first-boot-aws.md").exists()
+        # Media at source-relative path (identity mapping: source parent "tutorials/cloud"
+        # maps to target parent "tutorials/cloud"; the assets dir parent is "tutorials",
+        # which has no file mapped from it, so fallback fires and preserves the path)
+        assert (docs / "tutorials" / "assets" / "img.png").exists()
 
-    def test_special_files_placed_in_subdir(self, tmp_path):
-        """Files listed in special_files are copied to their configured subdirectory."""
+
+class TestVerifyInternalLinks:
+    """Tests for verify_internal_links function."""
+
+    def test_no_errors_when_no_shipped_files(self, tmp_path):
+        """Returns 0 when no files are shipped (no github_target_path)."""
         source = tmp_path / "source"
         source.mkdir()
-        (source / "CHANGELOG.md").write_text("# Changelog")
-        (source / "intro").mkdir()
-        (source / "intro" / "index.md").write_text("# Intro")
+        docs = tmp_path / "docs"
+        docs.mkdir()
 
-        target = tmp_path / "target"
+        (source / "untargeted.md").write_text("[Link](other.md)\n")
 
-        transform_directory_structure(
-            str(source),
-            str(target),
-            structure_map={"intro": "intro"},
-            special_files={"CHANGELOG.md": "reference/"},
+        errors = verify_internal_links(str(source), str(docs), "myrepo")
+        assert errors == 0
+
+    def test_no_errors_when_links_are_external(self, tmp_path):
+        """External links and anchors in shipped files do not trigger errors."""
+        source = tmp_path / "source"
+        source.mkdir()
+        docs = tmp_path / "docs"
+        docs.mkdir()
+
+        content = (
+            "---\n"
+            "github_target_path: docs/reference/page.md\n"
+            "---\n\n"
+            "[External](https://example.com)\n"
+            "[Anchor](#section)\n"
         )
+        (source / "page.md").write_text(content)
 
-        assert (target / "reference" / "CHANGELOG.md").exists()
+        errors = verify_internal_links(str(source), str(docs), "myrepo")
+        assert errors == 0
 
-    def test_creates_target_if_missing(self, tmp_path):
-        """Target directory is created automatically if it does not exist."""
+    def test_no_errors_when_linked_file_also_shipped(self, tmp_path):
+        """A shipped file linking to another shipped file produces no errors."""
         source = tmp_path / "source"
         source.mkdir()
-        (source / "page.md").write_text("# Page")
+        docs = tmp_path / "docs"
+        docs.mkdir()
 
-        target = tmp_path / "nested" / "target"
-        assert not target.exists()
+        content_a = (
+            "---\n"
+            "github_target_path: docs/reference/a.md\n"
+            "---\n\n[B](b.md)\n"
+        )
+        content_b = (
+            "---\n"
+            "github_target_path: docs/reference/b.md\n"
+            "---\n\n# B\n"
+        )
+        (source / "a.md").write_text(content_a)
+        (source / "b.md").write_text(content_b)
 
-        transform_directory_structure(str(source), str(target), structure_map="flat")
+        errors = verify_internal_links(str(source), str(docs), "myrepo")
+        assert errors == 0
 
-        assert target.exists()
-        assert (target / "page.md").exists()
-
-    def test_underscore_prefixed_files_are_skipped_in_dict_mode(self, tmp_path):
-        """In dict-map mode, files/dirs starting with _ are skipped (not in structure_map)."""
+    def test_error_when_shipped_file_links_to_unshipped_file(self, tmp_path):
+        """A shipped file linking to an existing but unshipped file causes an error."""
         source = tmp_path / "source"
         source.mkdir()
-        (source / "_private.md").write_text("# Private")
-        (source / "public.md").write_text("# Public")
+        docs = tmp_path / "docs"
+        docs.mkdir()
 
-        target = tmp_path / "target"
+        content_a = (
+            "---\n"
+            "github_target_path: docs/reference/a.md\n"
+            "---\n\n[Unshipped](unshipped.md)\n"
+        )
+        # unshipped.md exists in source but has no github_target_path
+        content_u = "# Unshipped\n"
+        (source / "a.md").write_text(content_a)
+        (source / "unshipped.md").write_text(content_u)
 
-        # Use dict mode with an empty map: _private.md is not in map, not special,
-        # and starts with _, so the dict branch skips it.
-        transform_directory_structure(str(source), str(target), structure_map={})
+        errors = verify_internal_links(str(source), str(docs), "myrepo")
+        assert errors == 1
 
-        assert not (target / "_private.md").exists()
-        assert (target / "public.md").exists()
+    def test_no_error_for_missing_linked_file(self, tmp_path):
+        """Links to files that do not exist in the source tree are not flagged
+        (they may be VitePress-resolved or external paths)."""
+        source = tmp_path / "source"
+        source.mkdir()
+        docs = tmp_path / "docs"
+        docs.mkdir()
+
+        content = (
+            "---\n"
+            "github_target_path: docs/reference/page.md\n"
+            "---\n\n[Gone](does-not-exist.md)\n"
+        )
+        (source / "page.md").write_text(content)
+
+        errors = verify_internal_links(str(source), str(docs), "myrepo")
+        assert errors == 0

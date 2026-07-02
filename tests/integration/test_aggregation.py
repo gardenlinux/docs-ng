@@ -46,7 +46,6 @@ class TestDocsFetcher:
             name="test-repo",
             url=f"file://{repo_path}",
             docs_path="docs",
-            target_path="projects/test-repo",
             ref="",
         )
         
@@ -75,7 +74,6 @@ class TestDocsFetcher:
             name="test-repo",
             url=f"file://{repo_path}",
             docs_path="docs",  # Does not exist
-            target_path="projects/test-repo",
             ref="",
         )
 
@@ -105,7 +103,6 @@ class TestDocsFetcher:
             name="test-repo",
             url=f"file://{repo_path}",
             docs_path="nonexistent-docs",  # No standard docs; only root_files
-            target_path="projects/test-repo",
             ref="",
             root_files=["features/foo/*.md"],
         )
@@ -135,7 +132,6 @@ class TestDocsFetcher:
             name="relative-repo",
             url="file://../mock-repo",
             docs_path="docs",
-            target_path="projects/relative-repo",
             ref="",
         )
 
@@ -179,7 +175,7 @@ class TestMarkdownProcessing:
         
         # Verify guide links were rewritten
         guide_content = (subdir / "guide.md").read_text()
-        assert "/projects/test-repo" in guide_content or "README" in guide_content
+        assert "README" in guide_content
     
     def test_process_markdown_with_frontmatter(self, tmp_path):
         """Test that frontmatter is properly handled."""

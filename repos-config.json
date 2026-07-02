@@ -3,54 +3,28 @@
     {
       "name": "gardenlinux",
       "url": "https://github.com/gardenlinux/gardenlinux",
-      "docs_path": "docs",
-      "target_path": "projects/gardenlinux",
       "ref": "docs-ng",
-      "commit": "71a86404897f709975969b7c1489429a61f70f35",
+      "commit": "b6ea9704d22871d1893a9e4567f43eca94201d52",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
         "features/*/README.md",
         "features/*/info.yaml",
         "flavors.yaml"
-      ],
-      "structure": {
-        "tutorials": "tutorials",
-        "how-to": "how-to",
-        "explanation": "explanation",
-        "reference": "reference",
-        "contributing": "contributing"
-      },
-      "media_directories": [
-        ".media",
-        "assets"
       ]
     },
     {
       "name": "builder",
       "url": "https://github.com/gardenlinux/builder",
-      "docs_path": "docs",
-      "target_path": "projects/builder",
       "ref": "docs-ng",
-      "commit": "6326277fe220553b6ac8fcf87956a8fcc6639064",
-      "media_directories": [
-        ".media",
-        "assets",
-        "_static"
-      ]
+      "commit": "6326277fe220553b6ac8fcf87956a8fcc6639064"
     },
     {
       "name": "python-gardenlinux-lib",
       "url": "https://github.com/gardenlinux/python-gardenlinux-lib",
-      "docs_path": "docs",
-      "target_path": "projects/python-gardenlinux-lib",
       "ref": "docs-ng",
       "commit": "61a370280ff6c726f91b3d65f7ed172448841858",
       "structure": "sphinx",
-      "media_directories": [
-        ".media",
-        "assets"
-      ],
       "target_map": {
         "cli.md": "reference/python-gardenlinux-lib-cli.md",
         "api.md": "reference/python-gardenlinux-lib-api.md"
@@ -59,50 +33,26 @@
     {
       "name": "package-linux",
       "url": "https://github.com/gardenlinux/package-linux",
-      "docs_path": "docs",
-      "target_path": "projects/package-linux",
       "ref": "docs-ng",
-      "commit": "45f0d1a62a723d0052bcfbf9eb40e26366595164",
-      "media_directories": [
-        ".media",
-        "assets"
-      ]
+      "commit": "45f0d1a62a723d0052bcfbf9eb40e26366595164"
     },
     {
       "name": "package-build",
       "url": "https://github.com/gardenlinux/package-build",
-      "docs_path": "docs",
-      "target_path": "projects/package-build",
       "ref": "docs-ng",
-      "commit": "2021e13e55a73d060450c295307c9a996f08ba91",
-      "media_directories": [
-        ".media",
-        "assets"
-      ]
+      "commit": "2021e13e55a73d060450c295307c9a996f08ba91"
     },
     {
       "name": "repo",
       "url": "https://github.com/gardenlinux/repo",
-      "docs_path": "docs",
-      "target_path": "projects/repo",
       "ref": "docs-ng",
-      "commit": "9adfc48e8933c6f6a66f00bbfb28756259d04aa1",
-      "media_directories": [
-        ".media",
-        "assets"
-      ]
+      "commit": "9adfc48e8933c6f6a66f00bbfb28756259d04aa1"
     },
     {
       "name": "glrd",
       "url": "https://github.com/gardenlinux/glrd",
-      "docs_path": "docs",
-      "target_path": "projects/glrd",
       "ref": "docs-ng",
-      "commit": "403361e0462e95666fd5528efd1217a7f64b3569",
-      "media_directories": [
-        ".media",
-        "assets"
-      ]
+      "commit": "c51d0a8f902322848aa17bdee8ddd3a86bf86bf3"
     }
   ]
 }

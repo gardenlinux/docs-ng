@@ -138,7 +138,6 @@ clean:
 	@echo "Cleaning build artifacts and aggregated docs..."
 	rm -rf docs/.vitepress/dist
 	rm -rf docs/.vitepress/cache
-	rm -rf docs/projects
 	@# Clean aggregated (untracked) content from section directories, preserving git-tracked files
 	@if [ -d .git ]; then \
 		git clean -fdX docs/contributing/ docs/explanation/ docs/how-to/ docs/reference/ docs/tutorials/ 2>/dev/null || true; \

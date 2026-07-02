@@ -43,16 +43,11 @@ git operations.
     {
       "name": "repository-name",
       "url": "https://github.com/org/repo",
-      "docs_path": "docs",
-      "target_path": "projects/repository-name",
       "ref": "main",
       "commit": "abc123...",
       "root_files": ["README.md"],
       "structure": "flat",
-      "media_directories": [".media", "assets"],
-      "special_files": {
-        "GUIDE.md": "how-to"
-      }
+      "media_directories": [".media", "assets"]
     }
   ]
 }
@@ -84,14 +79,8 @@ git operations.
 - **Type:** String
 - **Description:** Path to documentation directory within the repository
 - **Examples:** `"docs"`, `"documentation"`, `"."` (for root)
+- **Default:** `"docs"` (may be omitted when the value is `"docs"`)
 - **Notes:** Relative to repository root; content of this directory is copied
-
-#### `target_path`
-
-- **Type:** String
-- **Description:** Destination path in the docs directory
-- **Example:** `"projects/gardenlinux"`
-- **Notes:** Usually `projects/<name>` for project mirrors
 
 #### `ref`
 
@@ -121,53 +110,24 @@ git operations.
 
 #### `structure`
 
-- **Type:** String or Object
+- **Type:** String
 - **Description:** How to reorganize directory structure
 - **Options:**
   - `"flat"` — Copy all files as-is
   - `"sphinx"` — Sphinx documentation structure
-  - Object — Custom directory mapping (see below)
 - **Default:** `"flat"`
-
-**Custom Structure Example:**
-
-```json
-"structure": {
-  "tutorials": "tutorials",
-  "guides": "how-to",
-  "concepts": "explanation",
-  "api-reference": "reference"
-}
-```
-
-This maps source directories to Diataxis categories.
 
 #### `media_directories`
 
 - **Type:** Array of strings
 - **Description:** Directory names to treat as media/assets
 - **Example:** `[".media", "assets", "_static", "images"]`
-- **Default:** `[]`
+- **Default:** `[".media", "assets"]`
 - **Notes:**
   - Searched recursively in source repository
   - Nested media dirs (e.g., `tutorials/assets/`) copied to same relative path
   - Root-level media dirs (e.g., `_static/`) copied to common ancestor of
     targeted files
-
-#### `special_files`
-
-- **Type:** Object (filename → category mapping)
-- **Description:** Map non-standard files to Diataxis categories
-- **Example:**
-  ```json
-  {
-    "GUIDE.md": "how-to",
-    "CONCEPTS.md": "explanation",
-    "CHANGELOG.md": "reference"
-  }
-  ```
-- **Default:** `{}`
-- **Notes:** Used when files don't follow standard naming conventions
 
 ## Complete Example
 
@@ -177,39 +137,26 @@ This maps source directories to Diataxis categories.
     {
       "name": "gardenlinux",
       "url": "https://github.com/gardenlinux/gardenlinux",
-      "docs_path": "docs",
-      "target_path": "projects/gardenlinux",
       "ref": "docs-ng",
       "commit": "c4b1d8d7f878fcb3e779315d28e35fcb19ae4dfb",
-      "root_files": ["CONTRIBUTING.md", "SECURITY.md"],
-      "structure": {
-        "tutorials": "tutorials",
-        "how-to": "how-to",
-        "explanation": "explanation",
-        "reference": "reference",
-        "contributing": "contributing"
-      },
-      "media_directories": [".media", "assets", "_static"]
+      "root_files": ["CONTRIBUTING.md", "SECURITY.md"]
     },
     {
       "name": "builder",
       "url": "https://github.com/gardenlinux/builder",
-      "docs_path": "docs",
-      "target_path": "projects/builder",
       "ref": "docs-ng",
-      "commit": "b10476ad8c46130f310e36daa42c6e2c14fb51a9",
-      "structure": "flat",
-      "media_directories": [".media", "assets", "_static"]
+      "commit": "b10476ad8c46130f310e36daa42c6e2c14fb51a9"
     },
     {
       "name": "python-gardenlinux-lib",
       "url": "https://github.com/gardenlinux/python-gardenlinux-lib",
-      "docs_path": "docs",
-      "target_path": "projects/python-gardenlinux-lib",
       "ref": "docs-ng",
       "commit": "9142fccc3d83ab51759db7d328fa19166bc1df63",
       "structure": "sphinx",
-      "media_directories": [".media", "assets", "_static"]
+      "target_map": {
+        "cli.md": "reference/python-gardenlinux-lib-cli.md",
+        "api.md": "reference/python-gardenlinux-lib-api.md"
+      }
     }
   ]
 }
@@ -238,16 +185,7 @@ This maps source directories to Diataxis categories.
     {
       "name": "gardenlinux",
       "url": "file://../gardenlinux",
-      "docs_path": "docs",
-      "target_path": "projects/gardenlinux",
-      "root_files": ["CONTRIBUTING.md", "SECURITY.md"],
-      "structure": {
-        "tutorials": "tutorials",
-        "how-to": "how-to",
-        "explanation": "explanation",
-        "reference": "reference"
-      },
-      "media_directories": [".media", "assets"]
+      "root_files": ["CONTRIBUTING.md", "SECURITY.md"]
     }
   ]
 }
@@ -263,10 +201,7 @@ Simplest configuration for a flat repository:
 {
   "name": "my-repo",
   "url": "https://github.com/org/my-repo",
-  "docs_path": "docs",
-  "target_path": "projects/my-repo",
-  "ref": "main",
-  "structure": "flat"
+  "ref": "main"
 }
 ```
 
@@ -278,10 +213,7 @@ Repository using `github_target_path` front-matter:
 {
   "name": "my-repo",
   "url": "https://github.com/org/my-repo",
-  "docs_path": "docs",
-  "target_path": "projects/my-repo",
   "ref": "main",
-  "structure": "flat",
   "media_directories": ["assets", "_static"]
 }
 ```
