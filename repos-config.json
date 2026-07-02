@@ -98,7 +98,7 @@
       "docs_path": "docs",
       "target_path": "projects/glrd",
       "ref": "docs-ng",
-      "commit": "403361e0462e95666fd5528efd1217a7f64b3569",
+      "commit": "e0a1d078d5e6fd6d39641c7c700c50f0ec803f05",
       "media_directories": [
         ".media",
         "assets"
