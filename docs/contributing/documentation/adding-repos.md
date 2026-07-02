@@ -1,12 +1,15 @@
 ---
 title: "Adding Repositories to Documentation Aggregation"
 description: "Guide for adding new repositories to the documentation aggregation system"
+order: 4
 related_topics:
   - /contributing/documentation/documentation_workflow.md
   - /contributing/documentation/writing_good_docs.md
   - /contributing/documentation/aggregation-architecture.md
-  - /contributing/documentation/adding-repos.md
   - /contributing/documentation/working-locally.md
+  - /contributing/documentation/ci-architecture.md
+  - /contributing/documentation/ci-workflows-reference.md
+  - /contributing/documentation/configuration.md
   - /contributing/documentation/technical.md
   - /contributing/documentation/testing.md
   - /contributing/documentation/vitepress-features.md
@@ -16,9 +19,6 @@ related_topics:
 
 This guide explains how to add a new repository to the documentation aggregation
 system.
-
-> **Source Repository:**
-> [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng)
 
 ## Prerequisites
 

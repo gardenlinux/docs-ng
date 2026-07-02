@@ -1,25 +1,23 @@
 ---
 title: "Documentation Aggregation Testing Guide"
 description: "Test suite for documentation - unit tests, integration tests, and testing best practices"
+order: 10
 related_topics:
   - /contributing/documentation/documentation_workflow.md
   - /contributing/documentation/writing_good_docs.md
   - /contributing/documentation/aggregation-architecture.md
   - /contributing/documentation/adding-repos.md
   - /contributing/documentation/working-locally.md
+  - /contributing/documentation/ci-architecture.md
+  - /contributing/documentation/ci-workflows-reference.md
+  - /contributing/documentation/configuration.md
   - /contributing/documentation/technical.md
-  - /contributing/documentation/testing.md
   - /contributing/documentation/vitepress-features.md
 ---
 
 # Documentation Aggregation Testing Guide
 
 Test suite documentation for the documentation aggregation system.
-
-> **Source Repository:**
-> [gardenlinux/docs-ng](https://github.com/gardenlinux/docs-ng) > **Source
-> File:**
-> [tests/README.md](https://github.com/gardenlinux/docs-ng/blob/main/tests/README.md)
 
 ## Test Structure
 
