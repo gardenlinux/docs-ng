@@ -30,6 +30,7 @@ tests/
 ├── unit/                 # Unit tests (pure functions)
 │   ├── test_config.py
 │   ├── test_models.py
+│   ├── test_structure.py
 │   └── test_transformer.py
 └── integration/          # Integration tests (filesystem)
     └── test_aggregation.py
@@ -117,10 +118,10 @@ Example:
 
 ```python
 def test_rewrite_links():
-    """Test that links are properly rewritten."""
-    content = "[link](../other/file.md)"
-    result = rewrite_links(content, "repo-name", "path/to/file.md")
-    assert "[link](/projects/repo-name/other/file.md)" in result
+    """Test that out-of-docs links are redirected to GitHub."""
+    content = "[link](../../README.md)"
+    result = rewrite_links(content, "repo-name", "subdir/file.md")
+    assert "github.com/gardenlinux/repo-name/blob/main" in result
 ```
 
 ### Adding an Integration Test

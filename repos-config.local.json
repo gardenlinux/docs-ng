@@ -3,76 +3,42 @@
     {
       "name": "gardenlinux",
       "url": "file://../gardenlinux",
-      "docs_path": "docs",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
         "features/*/README.md",
         "features/*/info.yaml",
         "flavors.yaml"
-      ],
-      "target_path": "projects/gardenlinux",
-      "structure": {
-        "tutorials": "tutorials",
-        "how-to": "how-to",
-        "explanation": "explanation",
-        "reference": "reference",
-        "contributing": "contributing"
-      },
-      "special_files": {},
-      "media_directories": [".media", "assets"]
+      ]
     },
     {
       "name": "builder",
-      "url": "file://../builder",
-      "docs_path": "docs",
-      "target_path": "projects/builder",
-      "structure": "flat",
-      "media_directories": [".media", "assets"]
+      "url": "file://../builder"
     },
     {
       "name": "python-gardenlinux-lib",
       "url": "file://../python-gardenlinux-lib",
-      "docs_path": "docs",
-      "target_path": "projects/python-gardenlinux-lib",
       "structure": "sphinx",
       "target_map": {
         "cli.md": "reference/python-gardenlinux-lib-cli.md",
         "api.md": "reference/python-gardenlinux-lib-api.md"
-      },
-      "media_directories": [".media", "assets"]
+      }
     },
     {
       "name": "package-linux",
-      "url": "file://../package-linux",
-      "docs_path": "docs",
-      "target_path": "projects/package-linux",
-      "structure": "flat",
-      "media_directories": [".media", "assets"]
+      "url": "file://../package-linux"
     },
     {
       "name": "package-build",
-      "url": "file://../package-build",
-      "docs_path": "docs",
-      "target_path": "projects/package-build",
-      "structure": "flat",
-      "media_directories": [".media", "assets"]
+      "url": "file://../package-build"
     },
     {
       "name": "repo",
-      "url": "file://../repo",
-      "docs_path": "docs",
-      "target_path": "projects/repo",
-      "structure": "flat",
-      "media_directories": [".media", "assets"]
+      "url": "file://../repo"
     },
     {
       "name": "glrd",
-      "url": "file://../glrd",
-      "docs_path": "docs",
-      "target_path": "projects/glrd",
-      "structure": "flat",
-      "media_directories": [".media", "assets"]
+      "url": "file://../glrd"
     }
   ]
 }

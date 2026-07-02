@@ -142,10 +142,6 @@ After aggregation, your docs directory will look like:
 
 ```
 docs/
-├── projects/              # Mirrored repository docs
-│   ├── gardenlinux/
-│   ├── builder/
-│   └── python-gardenlinux-lib/
 ├── tutorials/             # Aggregated tutorials
 ├── how-to/                # Aggregated guides
 ├── explanation/           # Aggregated explanations

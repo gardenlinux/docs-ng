@@ -8,7 +8,7 @@ from .models import AggregateResult, RepoConfig
 from .releases import generate_release_docs
 from .sphinx_builder import build_sphinx_markdown
 from .structure import (copy_targeted_docs, process_all_markdown,
-                        transform_directory_structure)
+                        verify_internal_links)
 from .transformer import (ensure_frontmatter, parse_frontmatter,
                           quote_yaml_value, rewrite_links)
 
@@ -27,9 +27,9 @@ __all__ = [
     "quote_yaml_value",
     "parse_frontmatter",
     # Structure
-    "transform_directory_structure",
     "copy_targeted_docs",
     "process_all_markdown",
+    "verify_internal_links",
     # Releases
     "generate_release_docs",
     # Flavor Matrix

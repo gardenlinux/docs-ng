@@ -12,8 +12,8 @@ import tempfile
 from pathlib import Path
 
 from aggregation import (DocsFetcher, copy_targeted_docs, load_config,
-                         process_all_markdown, save_config,
-                         transform_directory_structure)
+                          save_config)
+from aggregation.structure import verify_internal_links
 from aggregation.flavor_matrix import generate_flavor_matrix_docs
 from aggregation.release_notes import generate_release_notes_docs
 from aggregation.releases import generate_release_docs
@@ -31,7 +31,6 @@ def transform_repo_docs(
     print(f"{'='*60}")
 
     source_dir = temp_dir / repo_name
-    target_dir = docs_dir / repo.target_path
 
     # Step 1: Copy files with 'github_target_path:' frontmatter
     print(f"\nStep 1: Processing targeted files...")
@@ -43,19 +42,19 @@ def transform_repo_docs(
         repo.root_files,
     )
 
-    # Step 2: Transform project structure
-    print(f"\nStep 2: Transforming project structure...")
-    transform_directory_structure(
+    # Step 2: Verify internal links in shipped files
+    print(f"\nStep 2: Verifying internal links...")
+    link_errors = verify_internal_links(
         str(source_dir),
-        str(target_dir),
-        repo.structure,
-        repo.special_files,
-        repo.media_directories,
+        str(docs_dir),
+        repo_name,
     )
-
-    # Step 3: Process markdown files
-    print(f"\nStep 3: Processing markdown files...")
-    process_all_markdown(str(target_dir), repo_name)
+    if link_errors > 0:
+        print(
+            f"  [ERROR] {link_errors} unshipped link(s) found in {repo_name}. "
+            "Add github_target_path to the linked files or remove the links."
+        )
+        return False
 
     print(f"\n✓ Transformation complete for {repo_name}")
     return True
@@ -247,6 +246,7 @@ Examples:
         fail_count = 0
 
         # Aggregate each repository
+        gardenlinux_temp_dir = None
         for repo in repos:
             # Filter to a single repo when --single is set
             if args.single and repo.name != args.repo:
@@ -263,6 +263,8 @@ Examples:
                 success_count += 1
                 if resolved_commit:
                     resolved_commits[repo.name] = resolved_commit
+                if repo.name == "gardenlinux":
+                    gardenlinux_temp_dir = temp_dir / repo.name
             else:
                 fail_count += 1
 
@@ -281,13 +283,12 @@ Examples:
             print(f"\n✓ Config updated: {config_path}")
 
         # Generate flavor matrix documentation after all repos are aggregated
-        # Use docs/projects/gardenlinux path since temp_dir is cleaned up
-        gardenlinux_docs_path = docs_dir / "projects" / "gardenlinux"
-        if gardenlinux_docs_path.exists():
+        # Use the gardenlinux temp dir (still available inside the with block)
+        if gardenlinux_temp_dir and gardenlinux_temp_dir.exists():
             print(f"\n{'='*60}")
             print("Generating flavor matrix documentation...")
             print(f"{'='*60}\n")
-            generate_flavor_matrix_docs(docs_dir, gardenlinux_docs_path)
+            generate_flavor_matrix_docs(docs_dir, gardenlinux_temp_dir)
 
     # Generate release documentation from GLRD
     print(f"\n{'='*60}")
@@ -309,7 +310,7 @@ Examples:
     print(f"Failed: {fail_count}")
 
     print("\nNext steps:")
-    print("  1. Review the changes in docs/projects/")
+    print("  1. Review the changes in docs/")
     print("  2. Run 'make run' or 'pnpm run docs:dev' to preview")
     print("  3. Commit the changes if satisfied")
 

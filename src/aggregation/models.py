@@ -1,7 +1,10 @@
 """Data models for documentation aggregation."""
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Union
+from typing import Dict, List
+
+
+_DEFAULT_MEDIA_DIRECTORIES = [".media", "assets"]
 
 
 @dataclass
@@ -11,15 +14,14 @@ class RepoConfig:
     name: str
     url: str
     docs_path: str
-    target_path: str
     ref: str
     commit: str | None = None
+    target_path: str = ""
     root_files: List[str] = field(default_factory=list)
-    structure: Union[str, Dict[str, str]] = "flat"
-    special_files: Dict[str, str] = field(default_factory=dict)
+    structure: str = "flat"
     media_directories: List[str] = field(default_factory=list)
     target_map: Dict[str, str] = field(default_factory=dict)
-    
+
     @property
     def is_local(self) -> bool:
         """Check if this is a local file:// repository."""
@@ -46,17 +48,27 @@ class RepoConfig:
     @classmethod
     def from_dict(cls, data: Dict) -> "RepoConfig":
         """Create RepoConfig from dictionary."""
+        media_directories = data.get("media_directories")
+        if media_directories is None:
+            media_directories = list(_DEFAULT_MEDIA_DIRECTORIES)
+
+        structure = data.get("structure", "flat")
+        if not isinstance(structure, str):
+            raise ValueError(
+                f"Repository '{data.get('name')}': 'structure' must be a string "
+                f"('flat' or 'sphinx'), got {type(structure).__name__}"
+            )
+
         return cls(
             name=data["name"],
             url=data["url"],
-            docs_path=data["docs_path"],
-            target_path=data["target_path"],
+            docs_path=data.get("docs_path", "docs"),
+            target_path=data.get("target_path", ""),
             ref=data.get("ref") or "main",
             commit=data.get("commit"),
             root_files=data.get("root_files", []),
-            structure=data.get("structure", "flat"),
-            special_files=data.get("special_files", {}),
-            media_directories=data.get("media_directories", []),
+            structure=structure,
+            media_directories=media_directories,
             target_map=data.get("target_map", {}),
         )
 
