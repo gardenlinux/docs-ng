@@ -74,11 +74,26 @@ jobs:
           name: aggregated-docs
           path: docs/
 
+      - name: Restore lychee cache
+        id: lychee-cache
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .lycheecache
+          key: cache-lychee
+          restore-keys: cache-lychee-
+
       # installing lychee to call it via make target is hard
       - name: Run link check
         uses: lycheeverse/lychee-action@8646ba30535128ac92d33dfc9133794bfdd9b411 # v2.8.0
         with:
-          args: docs/**/*.md --config lychee.toml --root-dir "$(pwd)/docs/"
+          args: --cache --max-cache-age 1d docs/**/*.md --config lychee.toml --root-dir "$(pwd)/docs/"
+
+      - name: Save lychee cache
+        if: always()
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: .lycheecache
+          key: ${{ steps.lychee-cache.outputs.cache-primary-key }}
 
   spelling:
     needs: aggregate
