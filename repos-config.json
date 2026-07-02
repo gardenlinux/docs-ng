@@ -6,7 +6,7 @@
       "docs_path": "docs",
       "target_path": "projects/gardenlinux",
       "ref": "docs-ng",
-      "commit": "42e8288a65fdda3d59edadb49156acdfc6c6502f",
+      "commit": "1552ba6225eac8f2caddfa325217e69ea1ee375c",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
@@ -32,7 +32,7 @@
       "docs_path": "docs",
       "target_path": "projects/builder",
       "ref": "docs-ng",
-      "commit": "fab0c1b98c37b682774bb815c674e178af9758ab",
+      "commit": "475bfe57ec9152208ff181600c8ebc8fea21942c",
       "media_directories": [
         ".media",
         "assets",
@@ -45,7 +45,7 @@
       "docs_path": "docs",
       "target_path": "projects/python-gardenlinux-lib",
       "ref": "docs-ng",
-      "commit": "24d5a0eb5e683f61ada7033584c1b6b7df798e06",
+      "commit": "0801082307d222f1dfe274c70a84c1e310909f96",
       "structure": "sphinx",
       "media_directories": [
         ".media",
@@ -62,7 +62,7 @@
       "docs_path": "docs",
       "target_path": "projects/package-linux",
       "ref": "docs-ng",
-      "commit": "a402f6ff869717137590b883c2a28a17c27d907b",
+      "commit": "7536480264635faae806a98878aa353b3e7f2c47",
       "media_directories": [
         ".media",
         "assets"
@@ -74,7 +74,7 @@
       "docs_path": "docs",
       "target_path": "projects/package-build",
       "ref": "docs-ng",
-      "commit": "b37eed4f0133e0b51079d87f67332ac9e12dc110",
+      "commit": "50ba63e5759d26c7119638d4e259abc3d40414a9",
       "media_directories": [
         ".media",
         "assets"
@@ -86,7 +86,7 @@
       "docs_path": "docs",
       "target_path": "projects/repo",
       "ref": "docs-ng",
-      "commit": "96491381c64b7c9f7ebee33841ae409ffc9dcf94",
+      "commit": "97634724eb42c07ff1fb804ac4d9b3709a65e574",
       "media_directories": [
         ".media",
         "assets"
@@ -98,7 +98,7 @@
       "docs_path": "docs",
       "target_path": "projects/glrd",
       "ref": "docs-ng",
-      "commit": "4969f8dadcb777e53e4928083797b0f9eb15c775",
+      "commit": "d1bce933d223e4039255d1de2117533f6ca97561",
       "media_directories": [
         ".media",
         "assets"
