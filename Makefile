@@ -1,4 +1,4 @@
-.PHONY: help run build preview aggregate aggregate-repo test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration check spelling linkcheck woke
+.PHONY: help run build preview aggregate aggregate-repo aggregate-update-repo aggregate-repo-single aggregate-update-repo-single test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration check spelling linkcheck woke
 
 help:
 	@echo "Garden Linux Documentation Hub - Available targets:"
@@ -23,8 +23,10 @@ help:
 	@echo "    aggregate-local        - Aggregate from local repos (file:// URLs in repos-config.local.json)"
 	@echo "    aggregate              - Aggregate from locked commits (repos-config.json)"
 	@echo "    aggregate-update       - Fetch latest from remotes and update commit locks"
-	@echo "    aggregate-repo         - Aggregate single repo (usage: make aggregate-repo REPO=gardenlinux)"
-	@echo "    aggregate-update-repo  - Update single repo to latest (usage: make aggregate-update-repo REPO=gardenlinux)"
+	@echo "    aggregate-repo         - Aggregate all repos, overrides scoped to REPO (usage: make aggregate-repo REPO=gardenlinux [REF=branch] [COMMIT=hash])"
+	@echo "    aggregate-update-repo  - Same as aggregate-repo plus update commit locks"
+	@echo "    aggregate-repo-single       - Aggregate only REPO (usage: make aggregate-repo-single REPO=gardenlinux [REF=branch] [COMMIT=hash])"
+	@echo "    aggregate-update-repo-single - Aggregate only REPO and update its commit lock (same optional REF/COMMIT)"
 	@echo ""
 	@echo "  Utilities:"
 	@echo "    clean                  - Clean aggregated docs and build artifacts"
@@ -90,20 +92,46 @@ aggregate-update:
 aggregate-repo:
 	@if [ -z "$(REPO)" ]; then \
 		echo "Error: REPO variable not set"; \
-		echo "Usage: make aggregate-repo REPO=gardenlinux"; \
+		echo "Usage: make aggregate-repo REPO=gardenlinux [REF=branch] [COMMIT=hash]"; \
 		exit 1; \
 	fi
-	@echo "Aggregating documentation for locked repository: $(REPO)"
-	python3 src/aggregate.py --repo $(REPO)
+	@echo "Aggregating all repositories with overrides scoped to: $(REPO)"
+	python3 src/aggregate.py --repo $(REPO) \
+		$(if $(REF),--override-ref $(REF)) \
+		$(if $(COMMIT),--override-commit $(COMMIT))
 
 aggregate-update-repo:
 	@if [ -z "$(REPO)" ]; then \
 		echo "Error: REPO variable not set"; \
-		echo "Usage: make aggregate-update-repo REPO=gardenlinux"; \
+		echo "Usage: make aggregate-update-repo REPO=gardenlinux [REF=branch] [COMMIT=hash]"; \
 		exit 1; \
 	fi
-	@echo "Aggregating documentation for locked repository: $(REPO)"
-	python3 src/aggregate.py --update-locks --repo $(REPO)
+	@echo "Aggregating all repositories with overrides scoped to: $(REPO) (updating locks)"
+	python3 src/aggregate.py --update-locks --repo $(REPO) \
+		$(if $(REF),--override-ref $(REF)) \
+		$(if $(COMMIT),--override-commit $(COMMIT))
+
+aggregate-repo-single:
+	@if [ -z "$(REPO)" ]; then \
+		echo "Error: REPO variable not set"; \
+		echo "Usage: make aggregate-repo-single REPO=gardenlinux [REF=branch] [COMMIT=hash]"; \
+		exit 1; \
+	fi
+	@echo "Aggregating single repository: $(REPO)"
+	python3 src/aggregate.py --repo $(REPO) --single \
+		$(if $(REF),--override-ref $(REF)) \
+		$(if $(COMMIT),--override-commit $(COMMIT))
+
+aggregate-update-repo-single:
+	@if [ -z "$(REPO)" ]; then \
+		echo "Error: REPO variable not set"; \
+		echo "Usage: make aggregate-update-repo-single REPO=gardenlinux [REF=branch] [COMMIT=hash]"; \
+		exit 1; \
+	fi
+	@echo "Aggregating single repository: $(REPO) (updating lock)"
+	python3 src/aggregate.py --repo $(REPO) --single --update-locks \
+		$(if $(REF),--override-ref $(REF)) \
+		$(if $(COMMIT),--override-commit $(COMMIT))
 
 # Utilities
 clean:

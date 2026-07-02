@@ -105,20 +105,23 @@ def main() -> int:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Aggregate all repositories
+  # Aggregate all repositories (default)
   %(prog)s
 
-  # Aggregate with local config (file:// URLs, no git)
-  %(prog)s --config repos-config.local.json
+  # Aggregate all repositories (explicit)
+  %(prog)s --all
 
-  # Aggregate specific repository
-  %(prog)s --repo gardenlinux
-
-  # Aggregate with ref/commit override (for CI from external repos)
+  # Aggregate all repos, applying overrides to one repo (used in CI)
   %(prog)s --repo gardenlinux --override-ref feature/my-docs --override-commit abc123def
 
-  # Update commit locks (fetch and update config with resolved commit hashes)
+  # Aggregate only a single repository
+  %(prog)s --repo gardenlinux --single
+
+  # Update commit locks for all repos
   %(prog)s --update-locks
+
+  # Update commit lock for a single repo only
+  %(prog)s --repo gardenlinux --single --update-locks
         """,
     )
 
@@ -134,7 +137,7 @@ Examples:
     )
     parser.add_argument(
         "--repo",
-        help="Only aggregate specific repository",
+        help="Scope overrides to this repository; required when --single is used",
     )
     parser.add_argument(
         "--update-locks",
@@ -150,7 +153,25 @@ Examples:
         help="Override commit for the repo specified by --repo",
     )
 
+    mode_group = parser.add_mutually_exclusive_group()
+    mode_group.add_argument(
+        "--all",
+        action="store_true",
+        help="Aggregate all repositories (default behaviour; explicit alias)",
+    )
+    mode_group.add_argument(
+        "--single",
+        action="store_true",
+        help="Aggregate only the repository specified by --repo",
+    )
+
     args = parser.parse_args()
+
+    # Validate argument combinations
+    if args.single and not args.repo:
+        parser.error("--single requires --repo NAME")
+    if (args.override_ref or args.override_commit) and not args.repo:
+        parser.error("--override-ref/--override-commit require --repo NAME")
 
     # Determine script directory
     script_dir = Path(__file__).parent.resolve()
@@ -174,8 +195,10 @@ Examples:
     print(f"{'='*60}\n")
     print(f"Configuration: {config_path}")
     print(f"Docs directory: {docs_dir}")
-    if args.repo:
-        print(f"Repository filter: {args.repo}")
+    if args.single and args.repo:
+        print(f"Single-repo mode: {args.repo}")
+    elif args.repo:
+        print(f"Override scoped to: {args.repo}")
     if args.update_locks:
         print("Update commit locks: ENABLED")
     print()
@@ -194,7 +217,21 @@ Examples:
                     print(f"Override commit for {repo.name}: {args.override_commit}")
                 break
         else:
-            print(f"WARNING: Repository '{args.repo}' not found for override")
+            parser.error(
+                f"Repository '{args.repo}' not found in config; "
+                "cannot apply --override-ref/--override-commit"
+            )
+    elif args.repo:
+        # --repo without overrides: validate the name exists when --single is used
+        # (filter will silently aggregate nothing if the name is wrong)
+        repo_names = {repo.name for repo in repos}
+        if args.repo not in repo_names:
+            if args.single:
+                parser.error(
+                    f"Repository '{args.repo}' not found in config"
+                )
+            else:
+                print(f"WARNING: Repository '{args.repo}' not found in config")
 
     # Create temporary directory for fetched docs
     with tempfile.TemporaryDirectory() as temp_dir_str:
@@ -211,8 +248,8 @@ Examples:
 
         # Aggregate each repository
         for repo in repos:
-            # Filter by repo if specified
-            if args.repo and repo.name != args.repo:
+            # Filter to a single repo when --single is set
+            if args.single and repo.name != args.repo:
                 continue
 
             success, resolved_commit = aggregate_repo(
