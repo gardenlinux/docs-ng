@@ -61,6 +61,13 @@ migration_approved: false
 ---
 
 <script setup>
+const useCases = [
+  { name: 'Gardener Kubernetes Nodes', image: '/assets/use_cases/gardener-logo.svg', url: '/explanation/use-cases#gardener-kubernetes-nodes' },
+  { name: 'Gardener Kubernetes Nodes via IronCore', image: '/assets/use_cases/ironcore-logo.svg', url: '/explanation/use-cases#bare-metal-gardener-kubernetes-nodes-via-ironcore' },
+  { name: 'Vanilla Kubernetes Nodes', image: '/assets/use_cases/kubernetes-logo.svg', url: '/explanation/use-cases#vanilla-kubernetes-nodes' },
+  { name: 'Container Base Image', image: '/assets/use_cases/oci-logo.svg', url: '/explanation/use-cases#container-base-images' },
+  { name: 'Virtualization Host', image: '/assets/use_cases/libvirt-logo.svg', url: '/explanation/use-cases#virtualization-host' },
+]
 const cloudPlatforms = [
   { name: 'Amazon Web Services', image: '/assets/cloud_platforms/AWS.svg', url: '/how-to/installation/cloud/aws' },
   { name: 'Microsoft Azure', image: '/assets/cloud_platforms/Microsoft_Azure.svg', url: '/how-to/installation/cloud/azure' },
@@ -76,9 +83,21 @@ const sponsors = [
 ]
 </script>
 
+<!-- Use Cases Carousel -->
+
+<Carousel
+  title="Whatever You Grow. Garden Linux Helps It Bloom."
+  :items="useCases"
+  :slides-per-view="3"
+  :space-between="30"
+  :autoplay="2500"
+  :grayscale="false"
+/>
+
 <!-- Cloud Platforms Carousel -->
-<Carousel 
-  title="Wherever You Are. Garden Linux Is With You." 
+
+<Carousel
+  title="Wherever You Are. Garden Linux Is With You."
   :items="cloudPlatforms"
   :slides-per-view="3"
   :space-between="30"
@@ -87,8 +106,9 @@ const sponsors = [
 />
 
 <!-- Sponsors Carousel -->
-<Carousel 
-  title="Our Sponsors" 
+
+<Carousel
+  title="Our Sponsors"
   :items="sponsors"
   :slides-per-view="3"
   :space-between="20"
