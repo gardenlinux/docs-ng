@@ -62,6 +62,18 @@ make aggregate
 This fetches documentation from the configured repositories at their locked
 commit hashes.
 
+#### GitHub API token
+
+`make aggregate` also fetches every release from `gardenlinux/gardenlinux` via
+the GitHub Releases API to generate per-release note pages and to validate
+GLRD-listed minor releases. Set `GITHUB_TOKEN` before running `make aggregate`
+to prevent rate-limiting:
+
+```bash
+export GITHUB_TOKEN=$(gh auth token)
+make aggregate
+```
+
 #### From Local Repositories (Development)
 
 For local development, use `repos-config.local.json` with `file://` URLs:
@@ -174,6 +186,20 @@ python3 --version  # Should be 3.x
 
 Check that `repos-config.json` or `repos-config.local.json` is properly
 configured. See the [configuration reference](./configuration.md) for details.
+
+### GitHub API rate limit or fetch error
+
+If `make aggregate` fails with a message like
+`Could not fetch GitHub releases — HTTP 403 …`, the GitHub API rate limit is
+exhausted or the request was rejected. Set `GITHUB_TOKEN` and retry:
+
+```bash
+export GITHUB_TOKEN=$(gh auth token)
+make aggregate
+```
+
+See the [GitHub API token](#github-api-token) note under Step 3 for rate-limit
+details.
 
 ## Related Topics
 

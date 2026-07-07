@@ -27,11 +27,18 @@ src/
 ├── migration_tracker.py  # Standalone utility
 └── aggregation/          # Core package
     ├── __init__.py
-    ├── models.py         # Data classes
     ├── config.py         # Config I/O
+    ├── constants.py      # Shared constants (Mermaid theme, GitHub URL templates)
     ├── fetcher.py        # Git + local fetch
-    ├── transformer.py    # Content transforms
-    └── structure.py      # Directory transforms
+    ├── flavor_matrix.py  # Flavor matrix docs from flavors.yaml
+    ├── github_api.py     # GitHub HTTP client (releases fetch, auth)
+    ├── glrd.py           # GLRD subprocess wrapper (active versions, metadata)
+    ├── models.py         # Data classes
+    ├── release_notes.py  # Per-release note pages from GH data
+    ├── releases.py       # Release tables from GLRD (filtered by GH tags)
+    ├── sphinx_builder.py # Sphinx-to-Markdown builder for sphinx-structured repos
+    ├── structure.py      # Directory transforms
+    └── transformer.py    # Content transforms
 ```
 
 ## Module Reference
@@ -49,6 +56,18 @@ Configuration file handling:
 
 - **`load_config()`** — Parse repos-config.json
 - **`save_config()`** — Write updated config (commit locks)
+
+### `aggregation/constants.py`
+
+Shared constants for release-doc generation. Contains no functions; exposes
+only module-level constants:
+
+- **`GANTT_THEME`** — Mermaid Gantt chart theme variables using the Garden
+  Linux color palette.
+- **`GITHUB_BASE_URL`**, **`RELEASES_TAG_URL`**, **`COMMITS_URL`** — GitHub URL
+  templates for the `gardenlinux/gardenlinux` repository.
+- **`LIFECYCLE_LINKS`** — Anchor-link map for release lifecycle documentation
+  sections.
 
 ### `aggregation/fetcher.py`
 
@@ -77,12 +96,87 @@ Content transformation:
 - **`parse_frontmatter()`** — Extract metadata from markdown front-matter
 - **`fix_broken_project_links()`** — Validate and fix links to project mirrors
 
+### `aggregation/github_api.py`
+
+GitHub HTTP client for release data:
+
+- **`GitHubAPIError`** — Exception raised on any GitHub API failure (network,
+  non-2xx, rate-limit, or empty first page).
+- **`get_json(url)`** — Fetch a single GitHub API URL and return the parsed
+  JSON response. Uses `GITHUB_TOKEN` when set. Hard-fails on non-2xx status.
+- **`list_repo_releases(owner, repo, per_page=100)`** — Paginate through all
+  releases for a repository and return the full list. Paginates until GitHub
+  returns an empty page (uncapped). Hard-fails on any error or an empty first
+  page.
+
+This module is the single source of truth for GitHub HTTP calls in the
+aggregation package. Future callers should use it rather than adding new
+ad-hoc HTTP requests.
+
+### `aggregation/glrd.py`
+
+GLRD subprocess wrapper:
+
+- **`run_glrd_json(args)`** — Run `glrd` with JSON output and return the parsed
+  data. Returns `None` on any failure (binary not found, non-zero exit, JSON
+  decode error).
+- **`get_active_minor_versions()`** — Return the set of active minor-release
+  version strings from GLRD (e.g. `{"1877.14", "2150.1.0"}`).
+
+### `aggregation/sphinx_builder.py`
+
+Sphinx-to-Markdown builder for repos configured with
+`"structure": "sphinx"` in `repos-config.json`:
+
+- **`build_sphinx_markdown(repo_dir, docs_path, output_dir, target_map=None)`**
+  — Run `python -m sphinx -M markdown` on a fetched repository and copy the
+  resulting Markdown into `output_dir` so the standard Transform/Structure
+  stages can consume it. Injects VitePress frontmatter, carries over
+  hand-written Markdown files that have a `github_target_path` frontmatter
+  field, and strips Sphinx HTML anchors that break VitePress compatibility.
+  Returns `True` on success, `False` on any failure. Requires `sphinx`,
+  `sphinx-markdown-builder`, and any project-specific Sphinx extensions
+  installed in the same Python environment as the aggregator.
+
+### `aggregation/releases.py`
+
+Release-table generation from GLRD data:
+
+- **`generate_release_docs(docs_dir, existing_gh_tags)`** — Read GLRD release
+  data and write per-release documentation pages. Only writes pages for
+  releases whose normalized version string appears in `existing_gh_tags`.
+- **`generate_release_table(releases_data, active_versions,
+existing_gh_tags)`** — Build the release-status table. GLRD-listed rows that
+  carry a `minor` version component are only emitted when their normalized
+  version string appears in `existing_gh_tags`. Major-only rows are always
+  emitted. Skipped rows are logged to `stderr`.
+
+### `aggregation/release_notes.py`
+
+Per-release note page generation:
+
+- **`generate_release_notes_docs(docs_dir, releases)`** — Write one Markdown
+  page per release from the pre-fetched `releases` list. Accepts the release
+  list returned by `github_api.list_repo_releases()` and makes no network
+  calls itself.
+
+### `aggregation/flavor_matrix.py`
+
+Flavor matrix documentation generator:
+
+- **`get_flavor_list(gardenlinux_repo_dir)`** — Parse `flavors.yaml` in the
+  fetched Garden Linux repository and return a per-architecture dict of flavor
+  combinations. Returns `None` on failure.
+- **`generate_flavor_matrix_docs(docs_dir, gardenlinux_repo_dir)`** — Generate
+  the flavor matrix Markdown page by combining `get_flavor_list()` output with
+  feature metadata from the Garden Linux `FeaturesParser`. Appends the
+  generated table to the existing aggregated `reference/flavor-matrix.md` file.
+  Returns `True` on success, `False` on any failure.
+
 ### `aggregation/structure.py`
 
 Directory operations:
 
-- **`transform_directory_structure()`** — Restructure docs based on config
-  mapping
 - **`copy_targeted_docs(source_dir, docs_dir, repo_name, media_dirs=None, root_files=None)`**
   — Copy files with `github_target_path` front-matter to specified locations
   - Handles nested media dirs (e.g., `tutorials/assets/`) by copying to same
@@ -90,6 +184,11 @@ Directory operations:
   - Handles root-level media dirs (e.g., `_static/`) by copying to common
     ancestor of targeted files
   - Supports scanning root_files for targeted placement
+- **`verify_internal_links(source_dir, docs_dir, repo_name)`** — Verify that
+  all internal relative links in shipped Markdown files resolve to files that
+  were also shipped. Returns the number of broken links found (0 = success).
+  Hard-fails aggregation when any shipped file links to a source-repo file that
+  was not itself shipped.
 - **`process_markdown_file()`** — Transform single markdown file (links,
   front-matter)
 - **`process_all_markdown()`** — Batch process all markdown files in directory
@@ -180,7 +279,7 @@ To add a new transformation:
 
 To add a new structure mapping type:
 
-1. Update `transform_directory_structure()` in `structure.py`
+1. Add the corresponding logic to `structure.py`
 2. Add corresponding structure key handling
 3. Update configuration documentation
 
