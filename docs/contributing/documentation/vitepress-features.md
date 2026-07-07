@@ -133,7 +133,7 @@ Garden Linux documentation supports [Mermaid](https://mermaid.js.org/) diagrams 
 - Displaying complex relationships
 
 **How it works:**
-The plugin automatically renders code blocks marked with `mermaid` as diagrams. It includes custom theming that matches the Garden Linux brand colors (green scheme) and supports dark mode.
+The plugin automatically renders code blocks marked with `mermaid` as diagrams. It supports dark mode and injects a shared set of semantic class definitions into every diagram at build time.
 
 **Syntax:**
 
@@ -161,23 +161,35 @@ gantt
 ```
 ````
 
-**Custom theming:**
-The documentation uses a green color scheme matching Garden Linux branding:
+### Mermaid styling
 
+Flowchart nodes are styled using five canonical semantic class names. The VitePress build injects their color definitions automatically — **do not write `classDef` or `style X fill:` lines in diagram source**. Use only `class` assignment statements. Every node must be assigned one of these five classes.
+
+| Class name | Color   | Semantic use                                        |
+|------------|---------|-----------------------------------------------------|
+| `decision` | blue    | conditional branches, diamond nodes                 |
+| `input`    | yellow  | triggers, external sources                          |
+| `process`  | gray    | intermediate work, retries                          |
+| `output`   | green   | successful terminal states, published artefacts     |
+| `neutral`  | violet  | sequential steps with no special semantic role      |
+
+**Example:**
+
+````markdown
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {
-  'primaryColor':'#30a46c',
-  'primaryTextColor':'#fff',
-  'primaryBorderColor':'#18794e',
-  'lineColor':'#30a46c',
-  'textColor':'#009f76'
-}}}%%
-gantt
-    title Theme Preview
-    dateFormat YYYY-MM-DD
-    section Example
-    Task 1 :2024-01-01, 10d
+flowchart TD
+    Boot[Power On] --> Check{Feature present?}
+    Check -->|Yes| Install[Install to disk]
+    Check -->|No| Live[Live boot only]
+    Install --> Done[System running]
+
+    class Boot neutral
+    class Check decision
+    class Install output
+    class Live process
+    class Done neutral
 ```
+````
 
 **Real-world example:**
 See the [Maintained Releases](/reference/releases/maintained-releases) page for a complete Gantt chart showing release maintenance phases.
@@ -301,7 +313,9 @@ Branch name for edit links.
 - Use for timelines, processes, and complex relationships
 - Keep diagrams simple and focused
 - Test in both light and dark mode (use the preview)
-- Don't overuse - diagrams should add clarity, not replace text
+- Don't overuse — diagrams should add clarity, not replace text
+- Use the five canonical class names (`decision`, `input`, `process`, `output`, `neutral`) for node colors — every node must be assigned one
+- Do not write `classDef` declarations or `style X fill:` lines in diagram source
 
 ### Containers/Callouts
 
