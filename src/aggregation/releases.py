@@ -1,4 +1,13 @@
-"""Generate release documentation from GLRD."""
+"""Generate release documentation from GLRD.
+
+The :func:`generate_release_docs` and :func:`generate_release_table` functions
+accept a pre-built ``existing_gh_tags`` set that was fetched from the GitHub
+Releases API by the caller (``aggregate.py``).  GLRD rows that carry a
+``minor`` version component are skipped when their normalized version string
+(``{major}.{minor}[.{patch}]``) is absent from that set.  Major-only rows are
+always emitted.  One warning line per skipped row is written to ``stderr`` so
+that CI logs surface the omission.
+"""
 
 import sys
 from pathlib import Path
@@ -133,12 +142,26 @@ gantt
     return gantt
 
 
-def generate_release_table(releases_data: dict, active_versions: set[str]) -> str:
+def generate_release_table(
+    releases_data: dict,
+    active_versions: set[str],
+    existing_gh_tags: set[str],
+) -> str:
     """Generate markdown table from GLRD JSON data.
 
+    GLRD rows that carry a ``minor`` version component are only included when
+    their normalized version string (``{major}.{minor}[.{patch}]``) appears in
+    *existing_gh_tags*.  Rows without a matching GitHub release tag are skipped
+    and a warning is written to ``stderr``.  Major-only rows are always emitted
+    regardless of *existing_gh_tags*.
+
     Args:
-        releases_data: Release data from GLRD
-        active_versions: Set of active minor version strings
+        releases_data: Release data from GLRD.
+        active_versions: Set of active minor version strings (used for link
+            routing, not for inclusion filtering).
+        existing_gh_tags: Set of GitHub release tag names with leading ``v``
+            stripped (e.g. ``{"1877.14", "2150.1.0"}``).  Built from the full
+            list fetched by :func:`aggregation.github_api.list_repo_releases`.
     """
     if not releases_data or "releases" not in releases_data:
         return "*No releases found*"
@@ -151,6 +174,25 @@ def generate_release_table(releases_data: dict, active_versions: set[str]) -> st
     table += "|:--------|:-------|:---------------------|:---------------------|:-------------------|\n"
 
     for release in releases:
+        version_obj = release.get("version", {})
+        has_minor = "minor" in version_obj
+
+        if has_minor:
+            # Build the normalized version string for tag comparison.
+            if "patch" in version_obj:
+                version_str = (
+                    f"{version_obj['major']}.{version_obj['minor']}.{version_obj['patch']}"
+                )
+            else:
+                version_str = f"{version_obj['major']}.{version_obj['minor']}"
+
+            if version_str not in existing_gh_tags:
+                print(
+                    f"Warning: skipping GLRD version {version_str} — no GitHub release found",
+                    file=sys.stderr,
+                )
+                continue
+
         _, version_link = format_version(release, active_versions)
         commit_link = format_commit(release)
 
@@ -199,8 +241,20 @@ def append_release_page(
 """
 
 
-def generate_release_docs(docs_dir: Path) -> bool:
-    """Fetch release data from GLRD and generate release documentation pages."""
+def generate_release_docs(docs_dir: Path, existing_gh_tags: set[str]) -> bool:
+    """Fetch release data from GLRD and generate release documentation pages.
+
+    GLRD minor releases are only included in the generated tables when a
+    matching GitHub release tag exists in *existing_gh_tags* (see
+    :func:`generate_release_table`).
+
+    Args:
+        docs_dir: Root of the VitePress ``docs/`` tree.
+        existing_gh_tags: Set of GitHub release tag names with leading ``v``
+            stripped.  Built from the full list fetched by the caller
+            (``aggregate.py``) via
+            :func:`aggregation.github_api.list_repo_releases`.
+    """
     releases_dir = docs_dir / "reference" / "releases"
     releases_dir.mkdir(parents=True, exist_ok=True)
 
@@ -220,7 +274,7 @@ def generate_release_docs(docs_dir: Path) -> bool:
         )
         return False
 
-    active_table = generate_release_table(active_data, active_versions)
+    active_table = generate_release_table(active_data, active_versions, existing_gh_tags)
     active_gantt = generate_mermaid_gantt(active_data)
     active_timeline = get_timeline_section(active_gantt, "Release Timeline")
 
@@ -252,7 +306,7 @@ def generate_release_docs(docs_dir: Path) -> bool:
     print(f"  Updated: {release_path}")
 
     if archived_data is not None:
-        archived_table = generate_release_table(archived_data, active_versions)
+        archived_table = generate_release_table(archived_data, active_versions, existing_gh_tags)
         archived_gantt = generate_mermaid_gantt(archived_data)
         archived_timeline = get_timeline_section(
             archived_gantt, "Archived Releases Timeline"
