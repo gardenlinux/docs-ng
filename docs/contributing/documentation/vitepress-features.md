@@ -194,6 +194,31 @@ flowchart TD
 **Real-world example:**
 See the [Maintained Releases](/reference/releases/maintained-releases) page for a complete Gantt chart showing release maintenance phases.
 
+## Theme-Adaptive Images
+
+Some diagrams and illustrations need different versions for light and dark mode — for example, SVGs with dark strokes that are invisible on a dark background.
+
+Append `#light-mode-only` or `#dark-mode-only` to the image path. The VitePress theme CSS hides the wrong variant automatically.
+
+**Syntax:**
+
+```markdown
+![Description of the image](image-light.svg#light-mode-only)
+![Description of the image](image-dark.svg#dark-mode-only)
+```
+
+Both lines must use identical alt text so screen readers and search engines see a single logical image.
+
+**When to use:**
+
+- SVG diagrams with strokes or text that rely on a white or black background
+- Any image where contrast or legibility differs significantly between themes
+
+**Naming convention:** suffix the dark variant's filename with `_dark` before the extension (e.g. `diagram.svg` / `diagram_dark.svg`). Keep both files in the same `.media/` directory as the page.
+
+**Real-world example:**
+See [Boot Modes](/explanation/boot-modes) for SVG diagrams that use both variants.
+
 ## Container Syntax (Callouts)
 
 VitePress supports special container blocks for callouts and highlighted content. Garden Linux documentation uses these throughout.

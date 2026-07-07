@@ -137,3 +137,12 @@ img[src="/search.png"] {
     padding: 18px 12px;
   }
 }
+
+/* select based on dark or light mode */
+:root.dark [src$="#light-mode-only"] {
+  display: none;
+}
+
+:root:not(.dark) [src$="#dark-mode-only"] {
+  display: none;
+}
