@@ -1,6 +1,6 @@
 ---
 title: "Documentation Aggregation Architecture"
-description: "Deep dive into how the documentation aggregation system works"
+description: "How the documentation aggregation system works"
 order: 3
 related_topics:
   - /contributing/documentation/documentation_workflow.md
@@ -17,8 +17,8 @@ related_topics:
 
 # Documentation Aggregation Architecture
 
-Deep dive into the design and implementation of the documentation aggregation
-system.
+This page describes the design and implementation of the documentation
+aggregation system.
 
 ## System Overview
 
