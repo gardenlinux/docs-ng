@@ -3,6 +3,7 @@ import matter from "gray-matter";
 import { join } from "path";
 import { defineConfig } from "vitepress";
 import { generateDocumentationSidebar } from "./sidebar.js";
+import { mermaidClassDefs } from "./plugins/mermaid-classdefs.js";
 
 // Get base URL from environment variable (for GitHub Pages deployment)
 const base = process.env.BASE_URL || "/";
@@ -76,6 +77,9 @@ function normalizeUrl(ref: string): string {
 export default defineConfig({
   base,
   title: "Garden Linux",
+  markdown: {
+    config: (md) => md.use(mermaidClassDefs),
+  },
   // description: "Operating system built for cloud native workloads.",
   ignoreDeadLinks: [
     // Ignore dead links in legacy documentation

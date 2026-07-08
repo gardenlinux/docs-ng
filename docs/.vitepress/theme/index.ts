@@ -16,7 +16,7 @@ export default {
 
     const initMermaid = () => {
       createMermaidRenderer({
-        // Use base theme; colors are set inline per diagram
+        // Colors are injected globally via the mermaid-classdefs markdown plugin
         theme: isDark.value ? 'dark' : 'default',
       })
     }

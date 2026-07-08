@@ -133,7 +133,7 @@ Garden Linux documentation supports [Mermaid](https://mermaid.js.org/) diagrams 
 - Displaying complex relationships
 
 **How it works:**
-The plugin automatically renders code blocks marked with `mermaid` as diagrams. It includes custom theming that matches the Garden Linux brand colors (green scheme) and supports dark mode.
+The plugin automatically renders code blocks marked with `mermaid` as diagrams. It injects a shared set of semantic class definitions into every diagram at build time and supports both light and dark mode — node colors switch automatically when the reader toggles the theme.
 
 **Syntax:**
 
@@ -161,26 +161,63 @@ gantt
 ```
 ````
 
-**Custom theming:**
-The documentation uses a green color scheme matching Garden Linux branding:
+### Mermaid styling
 
+Flowchart nodes are styled using five canonical semantic class names. Color values for both light mode and dark mode are defined in `docs/.vitepress/theme/style.css` — **do not write `classDef` or `style X fill:` lines in diagram source**. Use only `class` assignment statements. Every node must be assigned one of these five classes.
+
+| Class name | Semantic use                                        |
+|------------|-----------------------------------------------------|
+| `decision` | conditional branches, diamond nodes                 |
+| `input`    | triggers, external sources                          |
+| `process`  | intermediate work, retries                          |
+| `output`   | successful terminal states, published artefacts     |
+| `neutral`  | sequential steps with no special semantic role      |
+
+**Example:**
+
+````markdown
 ```mermaid
-%%{init: {'theme':'base', 'themeVariables': {
-  'primaryColor':'#30a46c',
-  'primaryTextColor':'#fff',
-  'primaryBorderColor':'#18794e',
-  'lineColor':'#30a46c',
-  'textColor':'#009f76'
-}}}%%
-gantt
-    title Theme Preview
-    dateFormat YYYY-MM-DD
-    section Example
-    Task 1 :2024-01-01, 10d
+flowchart TD
+    Boot[Power On] --> Check{Feature present?}
+    Check -->|Yes| Install[Install to disk]
+    Check -->|No| Live[Live boot only]
+    Install --> Done[System running]
+
+    class Boot neutral
+    class Check decision
+    class Install output
+    class Live process
+    class Done neutral
 ```
+````
 
 **Real-world example:**
 See the [Maintained Releases](/reference/releases/maintained-releases) page for a complete Gantt chart showing release maintenance phases.
+
+## Theme-Adaptive Images
+
+Some diagrams and illustrations need different versions for light and dark mode — for example, SVGs with dark strokes that are invisible on a dark background.
+
+Append `#light-mode-only` or `#dark-mode-only` to the image path. The VitePress theme CSS hides the wrong variant automatically.
+
+**Syntax:**
+
+```markdown
+![Description of the image](image-light.svg#light-mode-only)
+![Description of the image](image-dark.svg#dark-mode-only)
+```
+
+Both lines must use identical alt text so screen readers and search engines see a single logical image.
+
+**When to use:**
+
+- SVG diagrams with strokes or text that rely on a white or black background
+- Any image where contrast or legibility differs significantly between themes
+
+**Naming convention:** suffix the dark variant's filename with `_dark` before the extension (e.g. `diagram.svg` / `diagram_dark.svg`). Keep both files in the same `.media/` directory as the page.
+
+**Real-world example:**
+See [Boot Modes](/explanation/boot-modes) for SVG diagrams that use both variants.
 
 ## Container Syntax (Callouts)
 
@@ -301,7 +338,9 @@ Branch name for edit links.
 - Use for timelines, processes, and complex relationships
 - Keep diagrams simple and focused
 - Test in both light and dark mode (use the preview)
-- Don't overuse - diagrams should add clarity, not replace text
+- Don't overuse — diagrams should add clarity, not replace text
+- Use the five canonical class names (`decision`, `input`, `process`, `output`, `neutral`) for node colors — every node must be assigned one
+- Do not write `classDef` declarations or `style X fill:` lines in diagram source
 
 ### Containers/Callouts
 

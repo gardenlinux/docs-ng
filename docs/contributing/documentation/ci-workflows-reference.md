@@ -100,6 +100,12 @@ flowchart TD
     B -->|yes, merged| D
     B -->|yes, not merged| E["workflow ends<br/>(no action)"]
     D --> F["repository_dispatch → docs-ng<br/>event_type: docs-pr"]
+
+    class A input
+    class C,D process
+    class B decision
+    class E process
+    class F output
 ```
 
 ### Common Failure Causes
@@ -196,6 +202,10 @@ flowchart TD
     C --> E["spelling job<br/>(make spelling / codespell)"]
     C --> F["woke job<br/>(make woke)"]
     D & E & F --> G["All checks pass ✓"]
+
+    class A input
+    class B,C,D,E,F process
+    class G output
 ```
 
 ### Common Failure Causes
@@ -311,6 +321,11 @@ flowchart TD
     H -->|yes| I["Update existing PR<br/>(draft status based on event)"]
     H -->|no| J["Create new draft PR"]
     I & J --> K["Post/update comment<br/>on source-repo PR"]
+
+    class A input
+    class B,C,D,E,F,G,I,J process
+    class H decision
+    class K output
 ```
 
 ### Common Failure Causes
@@ -386,6 +401,12 @@ flowchart TD
     C --> D{"For each repo:<br/>ref ∈ {main, docs-ng, semver}?"}
     D -->|all valid| E["✓ Check passes"]
     D -->|invalid refs found| F["✗ Check fails<br/>lists non-compliant repos"]
+
+    class A input
+    class B,C process
+    class D decision
+    class E output
+    class F process
 ```
 
 ### Common Failure Causes

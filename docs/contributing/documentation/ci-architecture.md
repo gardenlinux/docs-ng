@@ -122,6 +122,12 @@ flowchart TD
     S --> T[Published site updated]
 
     P -->|no, more commits| A
+
+    class A,S input
+    class B,C,D,E,F,G,H,I,J,K,Q,R process
+    class P decision
+    class L,M,N,O process
+    class T output
 ```
 
 ## CI Flow Scenarios

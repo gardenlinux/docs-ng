@@ -77,6 +77,10 @@ flowchart TD
     RL --> OUT
     RN --> OUT
     FM --> OUT
+
+    class SR,GRA,GL,FY input
+    class DF,GH,GD,SB,TR,ST,RL,RN,FM process
+    class OUT output
 ```
 
 ## Core Components
