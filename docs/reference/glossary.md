@@ -65,6 +65,13 @@ A **versioned flavor** is the flavor qualified with a version — the string pas
 
 Example: `aws-gardener_prod-amd64-1877.3`. See [ADR 0035](/reference/adr/0035-cname-flavor-artifact-naming) for the authoritative definition.
 
+Partial arguments are accepted. You can pass any subset of the full [naming hierarchy](/reference/flavors#canonical-names):
+a bare cname (e.g. `aws-gardener_prod`), a flavor (cname + arch, e.g.
+`aws-gardener_prod-amd64`), or a versioned flavor (flavor + version, e.g.
+`aws-gardener_prod-amd64-1877.3`). Any missing component is resolved
+automatically: architecture defaults to the host architecture, and version is
+read from the `VERSION` file via `./get_version`.
+
 ---
 
 ## C
@@ -88,6 +95,8 @@ The **cname** is the minimal, canonically-sorted encoding of the feature set —
 ```
 cname = {feature-encoding}
 ```
+
+**Minimality:** The cname encodes only the [minimal feature set](#minimal-feature-set) — features that are not already pulled in transitively by another selected feature are omitted. For example, if the [`aws`](/reference/features/aws) platform feature already depends on `cloud` transitively, then `aws-gardener` is a valid cname but `aws-cloud-gardener` is not, because `cloud` is redundant and therefore not minimal. The same rule applies to any transitively-included feature: listing it explicitly in the cname is invalid.
 
 Example: `aws-gardener_prod`. The `GARDENLINUX_CNAME` entry in `/etc/os-release` contains the cname. See [ADR 0035](/reference/adr/0035-cname-flavor-artifact-naming) for the authoritative definition and [**GARDENLINUX_CNAME**](#gardenlinux_cname) for the environment variable.
 
@@ -405,9 +414,13 @@ An extension to Secure Boot that provides additional system integrity verificati
 
 Automated tests that validate the correct functionality of a Garden Linux image after it's created. Unit tests verify that the image contains expected packages, configurations, and behaviors. See [ADR-0013](./adr/0013-discontinue-packages-musthave-tests.md) for the decision to discontinue certain package must-have tests, and [ADR-0025](./adr/0025-disable-debsums-tests.md) for the decision to disable debsums tests.
 
+### UKI (Unified Kernel Image)
+
+A single Executable and Linkable Format (ELF) binary that combines the Linux kernel, the initramfs, and kernel command-line parameters — and optionally additional resources such as firmware and device trees — into one bootable image. UKIs are signed as a unit, which enables end-to-end Secure Boot verification without separate per-component signatures. See the [UAPI Group UKI specification](https://uapi-group.org/specifications/specs/unified_kernel_image/) for the authoritative definition. See also [**USI (Unified System Image)**](#usi-unified-system-image) for Garden Linux's extension of this concept.
+
 ### USI (Unified System Image)
 
-A boot approach where the Linux kernel, initramfs, and root filesystem are combined into a single Unified Kernel Image (UKI) with an embedded EROFS root disk. The [`_usi`](/reference/features/_usi) flag feature enables this mode in Garden Linux. USI images boot without a separate root partition and include the [`_nocrypt`](/reference/features/_nocrypt) and [`_unsigned`](/reference/features/_unsigned) features by default; they are incompatible with the [`_legacy`](/reference/features/_legacy) feature.
+A boot approach where the Linux kernel, initramfs, and root filesystem are combined into a single [UKI (Unified Kernel Image)](#uki-unified-kernel-image) with an embedded EROFS root disk. The [`_usi`](/reference/features/_usi) flag feature enables this mode in Garden Linux. USI images boot without a separate root partition and include the [`_nocrypt`](/reference/features/_nocrypt) and [`_unsigned`](/reference/features/_unsigned) features by default; they are incompatible with the [`_legacy`](/reference/features/_legacy) feature.
 
 ---
 
