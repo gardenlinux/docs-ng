@@ -4,7 +4,7 @@
       "name": "gardenlinux",
       "url": "https://github.com/gardenlinux/gardenlinux",
       "ref": "docs-ng",
-      "commit": "b6ea9704d22871d1893a9e4567f43eca94201d52",
+      "commit": "e982815ba31e79c9f6606e27ede1590e3b634163",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
@@ -46,7 +46,7 @@
       "name": "repo",
       "url": "https://github.com/gardenlinux/repo",
       "ref": "docs-ng",
-      "commit": "9adfc48e8933c6f6a66f00bbfb28756259d04aa1"
+      "commit": "030acbd0d9c08da047e65f8becd28862aefecd17"
     },
     {
       "name": "glrd",

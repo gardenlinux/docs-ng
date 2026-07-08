@@ -25,41 +25,62 @@ system.
 We use a documentation aggregation pipeline that combines content from multiple
 source repositories into a unified VitePress documentation site.
 
-```
-┌─────────────────┐
-│ Source Repos    │
-│ - gardenlinux   │
-│ - builder       │
-│ - python-gl-lib │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Fetch Stage     │
-│ Git sparse      │
-│ checkout or     │
-│ local copy      │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Transform Stage │
-│ Rewrite links   │
-│ Fix front-matter│
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ Structure Stage │
-│ Reorganize dirs │
-│ Copy media      │
-└────────┬────────┘
-         │
-         ▼
-┌─────────────────┐
-│ docs/ output    │
-│ VitePress build │
-└─────────────────┘
+```mermaid
+flowchart TD
+    subgraph Sources
+        SR[Source Repos]
+        GRA[GitHub Releases API]
+        GL[GLRD]
+        FY[flavors.yaml]
+    end
+
+    subgraph Fetch
+        DF["DocsFetcher\n(git sparse / local)"]
+        GH["github_api.list_repo_releases()"]
+        GD["glrd.run_glrd_json()"]
+    end
+
+    subgraph OptionalPreTransform["Optional Pre-Transform"]
+        SB["sphinx_builder.build_sphinx_markdown()\n(repos with structure: sphinx only)"]
+    end
+
+    subgraph Transform
+        TR[transformer.py]
+    end
+
+    subgraph Structure
+        ST[structure.py]
+    end
+
+    subgraph Generators
+        RL[releases.py]
+        RN[release_notes.py]
+        FM[flavor_matrix.py]
+    end
+
+    OUT[docs/]
+
+    SR --> DF
+    GRA --> GH
+    GL --> GD
+    FY --> FM
+
+    DF --> SB
+    SB --> TR
+    DF --> TR
+    TR --> ST
+    ST --> OUT
+
+    GH --> RL
+    GH --> RN
+    GD --> RL
+    RL --> OUT
+    RN --> OUT
+    FM --> OUT
+
+    class SR,GRA,GL,FY input
+    class DF,GH,GD,SB,TR,ST,RL,RN,FM process
+    class OUT output
 ```
 
 ## Core Components
