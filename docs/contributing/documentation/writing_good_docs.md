@@ -28,10 +28,10 @@ therefore optional.
 
 ### Accuracy & Completeness
 
-It should go without saying that all documentation should be correct in an
-informational sense. Meaning all code and commands need to be tested and any
-tutorials & guides that are meant to lead a user through a process should be
-executed by the reviewer once to see if they do what they were written for.
+All documentation must be correct in an informational sense. All code and
+commands need to be tested and any tutorials & guides that are meant to lead a
+user through a process should be executed by the reviewer once to see if they do
+what they were written for.
 
 All code examples should:
 
