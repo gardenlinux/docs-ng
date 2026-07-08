@@ -61,9 +61,7 @@ def rewrite_links(
             if file_dir:
                 dir_depth = len(file_dir.split("/"))
                 if levels_up > dir_depth:
-                    new_link = (
-                        f"{github_base}/{repo_name}/blob/main/{stripped_link}"
-                    )
+                    new_link = f"{github_base}/{repo_name}/blob/main/{stripped_link}"
                     return f"[{text}]({new_link})"
 
             # Inside docs tree: leave relative link unchanged for VitePress

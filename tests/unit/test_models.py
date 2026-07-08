@@ -1,7 +1,8 @@
 """Unit tests for aggregation.models module."""
 
 import pytest
-from aggregation import RepoConfig, AggregateResult
+
+from aggregation import AggregateResult, RepoConfig
 from aggregation.models import _DEFAULT_MEDIA_DIRECTORIES
 
 

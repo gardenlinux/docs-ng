@@ -5,7 +5,8 @@ import tempfile
 from pathlib import Path
 
 import pytest
-from aggregation import load_config, save_config, RepoConfig
+
+from aggregation import RepoConfig, load_config, save_config
 from aggregation.models import _DEFAULT_MEDIA_DIRECTORIES
 
 

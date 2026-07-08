@@ -11,14 +11,14 @@ import sys
 import tempfile
 from pathlib import Path
 
-from aggregation import (DocsFetcher, copy_targeted_docs, load_config,
-                          save_config)
-from aggregation.structure import verify_internal_links
+from aggregation import DocsFetcher, copy_targeted_docs, load_config, save_config
+from aggregation.auto_glossary import process_glossary_links
 from aggregation.flavor_matrix import generate_flavor_matrix_docs
 from aggregation.github_api import GitHubAPIError, list_repo_releases
 from aggregation.install_pins import sync_install_pins
 from aggregation.release_notes import generate_release_notes_docs
 from aggregation.releases import generate_release_docs
+from aggregation.structure import verify_internal_links
 
 
 def transform_repo_docs(
@@ -228,9 +228,7 @@ Examples:
         repo_names = {repo.name for repo in repos}
         if args.repo not in repo_names:
             if args.single:
-                parser.error(
-                    f"Repository '{args.repo}' not found in config"
-                )
+                parser.error(f"Repository '{args.repo}' not found in config")
             else:
                 print(f"WARNING: Repository '{args.repo}' not found in config")
 
@@ -316,7 +314,9 @@ Examples:
         )
         return 1
     existing_gh_tags = {r["tag_name"].lstrip("v") for r in gh_releases}
-    print(f"  Fetched {len(gh_releases)} GitHub release(s), {len(existing_gh_tags)} unique tag(s)")
+    print(
+        f"  Fetched {len(gh_releases)} GitHub release(s), {len(existing_gh_tags)} unique tag(s)"
+    )
 
     # Generate release documentation from GLRD
     print(f"\n{'='*60}")
@@ -329,6 +329,12 @@ Examples:
     print("Generating release notes from GitHub...")
     print(f"{'='*60}\n")
     generate_release_notes_docs(docs_dir, gh_releases)
+
+    # Process glossary links
+    print(f"\n{'='*60}")
+    print("Processing glossary links...")
+    print(f"{'='*60}\n")
+    process_glossary_links(docs_dir)
 
     # Summary
     print(f"\n{'='*60}")

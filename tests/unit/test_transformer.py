@@ -1,7 +1,9 @@
 """Unit tests for aggregation.transformer module."""
 
-import pytest
 from pathlib import Path
+
+import pytest
+
 from aggregation import (
     ensure_frontmatter,
     parse_frontmatter,
@@ -48,7 +50,9 @@ class TestRewriteLinks:
         """Test that absolute paths redirect to GitHub."""
         content = "[File](/some/path/README.md)"
         result = rewrite_links(content, "gardenlinux", "")
-        assert "github.com/gardenlinux/gardenlinux/blob/main/some/path/README.md" in result
+        assert (
+            "github.com/gardenlinux/gardenlinux/blob/main/some/path/README.md" in result
+        )
 
     def test_bare_filename_left_unchanged(self):
         """Bare filenames without path separators are left unchanged for VitePress."""

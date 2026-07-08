@@ -4,12 +4,14 @@ import pytest
 
 from aggregation.releases import generate_release_table
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
 
-def _make_release(major: int, minor: int | None = None, patch: int | None = None) -> dict:
+
+def _make_release(
+    major: int, minor: int | None = None, patch: int | None = None
+) -> dict:
     """Build a minimal GLRD release dict."""
     version: dict = {"major": major}
     if minor is not None:
@@ -31,6 +33,7 @@ def _make_releases_data(*releases) -> dict:
 # Filtering: minor rows
 # ---------------------------------------------------------------------------
 
+
 class TestGenerateReleaseTableFiltering:
     """generate_release_table skips minor rows absent from existing_gh_tags."""
 
@@ -47,8 +50,11 @@ class TestGenerateReleaseTableFiltering:
         assert "1877.14" not in table
         # Table should be effectively empty (header rows only)
         data_rows = [
-            line for line in table.splitlines()
-            if line.startswith("|") and not line.startswith("|:") and "Version" not in line
+            line
+            for line in table.splitlines()
+            if line.startswith("|")
+            and not line.startswith("|:")
+            and "Version" not in line
         ]
         assert data_rows == []
 
@@ -61,9 +67,9 @@ class TestGenerateReleaseTableFiltering:
     def test_mixed_major_and_minor(self):
         """Major rows pass through; unmatched minor rows are dropped."""
         data = _make_releases_data(
-            _make_release(2150),          # major-only — always kept
-            _make_release(2150, 1, 0),    # minor — tag present
-            _make_release(2150, 2, 0),    # minor — tag absent
+            _make_release(2150),  # major-only — always kept
+            _make_release(2150, 1, 0),  # minor — tag present
+            _make_release(2150, 2, 0),  # minor — tag absent
         )
         table = generate_release_table(
             data,

@@ -128,11 +128,15 @@ class DocsFetcher:
                 if repo.structure == "sphinx":
                     print(f"  Building Sphinx Markdown from {repo.docs_path}/")
                     sphinx_ok = build_sphinx_markdown(
-                        temp_dir, repo.docs_path, output_dir,
+                        temp_dir,
+                        repo.docs_path,
+                        output_dir,
                         target_map=repo.target_map or None,
                     )
                     if not sphinx_ok:
-                        print(f"  Warning: Sphinx build failed; falling back to raw docs copy")
+                        print(
+                            f"  Warning: Sphinx build failed; falling back to raw docs copy"
+                        )
                         self._copy_docs(docs_source, output_dir)
                 else:
                     print(f"  Copying docs to {output_dir}")
@@ -185,18 +189,22 @@ class DocsFetcher:
                     file=sys.stderr,
                 )
                 return False
-            
+
             # Copy docs directory (or build Sphinx Markdown first)
             docs_source = repo_abs_path / repo.docs_path
             if docs_source.exists():
                 if repo.structure == "sphinx":
                     print(f"  Building Sphinx Markdown from {repo.docs_path}/")
                     sphinx_ok = build_sphinx_markdown(
-                        repo_abs_path, repo.docs_path, output_dir,
+                        repo_abs_path,
+                        repo.docs_path,
+                        output_dir,
                         target_map=repo.target_map or None,
                     )
                     if not sphinx_ok:
-                        print(f"  Warning: Sphinx build failed; falling back to raw docs copy")
+                        print(
+                            f"  Warning: Sphinx build failed; falling back to raw docs copy"
+                        )
                         self._copy_docs(docs_source, output_dir)
                 else:
                     print(f"  Copying docs from {repo.docs_path}/")

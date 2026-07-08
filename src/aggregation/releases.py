@@ -180,9 +180,7 @@ def generate_release_table(
         if has_minor:
             # Build the normalized version string for tag comparison.
             if "patch" in version_obj:
-                version_str = (
-                    f"{version_obj['major']}.{version_obj['minor']}.{version_obj['patch']}"
-                )
+                version_str = f"{version_obj['major']}.{version_obj['minor']}.{version_obj['patch']}"
             else:
                 version_str = f"{version_obj['major']}.{version_obj['minor']}"
 
@@ -274,7 +272,9 @@ def generate_release_docs(docs_dir: Path, existing_gh_tags: set[str]) -> bool:
         )
         return False
 
-    active_table = generate_release_table(active_data, active_versions, existing_gh_tags)
+    active_table = generate_release_table(
+        active_data, active_versions, existing_gh_tags
+    )
     active_gantt = generate_mermaid_gantt(active_data)
     active_timeline = get_timeline_section(active_gantt, "Release Timeline")
 
@@ -319,7 +319,9 @@ def generate_release_docs(docs_dir: Path, existing_gh_tags: set[str]) -> bool:
     print(f"  Updated: {release_path}")
 
     if archived_data is not None:
-        archived_table = generate_release_table(archived_data, active_versions, existing_gh_tags)
+        archived_table = generate_release_table(
+            archived_data, active_versions, existing_gh_tags
+        )
         archived_gantt = generate_mermaid_gantt(archived_data)
         archived_timeline = get_timeline_section(
             archived_gantt, "Archived Releases Timeline"

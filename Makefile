@@ -1,4 +1,4 @@
-.PHONY: help run build preview aggregate aggregate-repo aggregate-update-repo aggregate-repo-single aggregate-update-repo-single test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration check spelling linkcheck woke
+.PHONY: help run build preview aggregate aggregate-repo aggregate-update-repo aggregate-repo-single aggregate-update-repo-single test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration check spelling linkcheck woke glossary glossary-check format
 
 help:
 	@echo "Garden Linux Documentation Hub - Available targets:"
@@ -18,6 +18,8 @@ help:
 	@echo "    spelling               - Check spelling with codespell"
 	@echo "    linkcheck              - Check links with lychee"
 	@echo "    woke                   - Check inclusive language with woke"
+	@echo "    glossary               - Process glossary links in documentation"
+	@echo "    glossary-check         - Validate glossary structure"
 	@echo ""
 	@echo "  Documentation Aggregation:"
 	@echo "    aggregate-local        - Aggregate from local repos (file:// URLs in repos-config.local.json)"
@@ -54,6 +56,10 @@ build: install clean aggregate
 preview:
 	pnpm run docs:preview
 
+format:
+	black src/ tests/
+	isort src/ tests/
+
 # Testing
 test: test-unit test-integration
 	@echo "All tests passed!"
@@ -81,6 +87,25 @@ linkcheck:
 woke:
 	@echo "Running inclusive language checks..."
 	@pnpm run docs:woke
+
+glossary:
+	@echo "Processing glossary links..."
+	@python3 -c "import sys, importlib.util; \
+		from pathlib import Path; \
+		spec = importlib.util.spec_from_file_location('auto_glossary', 'src/aggregation/auto_glossary.py'); \
+		mod = importlib.util.module_from_spec(spec); \
+		spec.loader.exec_module(mod); \
+		mod.process_glossary_links(Path('docs'))"
+
+glossary-check:
+	@echo "Validating glossary structure..."
+	@python3 -c "import importlib.util; \
+		from pathlib import Path; \
+		spec = importlib.util.spec_from_file_location('auto_glossary', 'src/aggregation/auto_glossary.py'); \
+		mod = importlib.util.module_from_spec(spec); \
+		spec.loader.exec_module(mod); \
+		mod.AutoGlossary(Path('docs/reference/glossary.md')); \
+		print('  ✓ Glossary structure valid')"
 
 # Documentation Aggregation
 aggregate-local:

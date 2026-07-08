@@ -3,6 +3,7 @@
 from pathlib import Path
 
 import pytest
+
 from aggregation.structure import copy_targeted_docs, verify_internal_links
 
 
@@ -72,9 +73,7 @@ class TestCopyTargetedDocs:
         (source / "overview" / "README.md").write_text(content)
         (source / "overview" / "assets" / "x.png").write_bytes(b"\x89PNG")
 
-        copy_targeted_docs(
-            str(source), str(docs), "glrd", media_dirs=["assets"]
-        )
+        copy_targeted_docs(str(source), str(docs), "glrd", media_dirs=["assets"])
 
         # Targeted file copied to correct location
         assert (docs / "reference" / "supporting_tools" / "glrd.md").exists()
@@ -104,9 +103,7 @@ class TestCopyTargetedDocs:
         (source / "tutorials" / "cloud" / "first-boot-aws.md").write_text(content)
         (source / "tutorials" / "assets" / "img.png").write_bytes(b"\x89PNG")
 
-        copy_targeted_docs(
-            str(source), str(docs), "gardenlinux", media_dirs=["assets"]
-        )
+        copy_targeted_docs(str(source), str(docs), "gardenlinux", media_dirs=["assets"])
 
         # Targeted file at its correct location
         assert (docs / "tutorials" / "cloud" / "first-boot-aws.md").exists()
@@ -158,15 +155,9 @@ class TestVerifyInternalLinks:
         docs.mkdir()
 
         content_a = (
-            "---\n"
-            "github_target_path: docs/reference/a.md\n"
-            "---\n\n[B](b.md)\n"
+            "---\n" "github_target_path: docs/reference/a.md\n" "---\n\n[B](b.md)\n"
         )
-        content_b = (
-            "---\n"
-            "github_target_path: docs/reference/b.md\n"
-            "---\n\n# B\n"
-        )
+        content_b = "---\n" "github_target_path: docs/reference/b.md\n" "---\n\n# B\n"
         (source / "a.md").write_text(content_a)
         (source / "b.md").write_text(content_b)
 
