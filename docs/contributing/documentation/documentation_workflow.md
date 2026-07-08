@@ -21,7 +21,7 @@ This guide will provide you with a detailed overview over everything you need to
 know to support our efforts in documenting the Garden Linux project.
 
 If you would like to know what markers we use to determine if submitted
-documentation is good, please check our guide about
+documentation is good, check our guide about
 [Document Quality Markers](./writing_good_docs.md)
 
 ## When Is Documentation Necessary?
