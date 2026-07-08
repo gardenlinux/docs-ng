@@ -133,7 +133,7 @@ Garden Linux documentation supports [Mermaid](https://mermaid.js.org/) diagrams 
 - Displaying complex relationships
 
 **How it works:**
-The plugin automatically renders code blocks marked with `mermaid` as diagrams. It supports dark mode and injects a shared set of semantic class definitions into every diagram at build time.
+The plugin automatically renders code blocks marked with `mermaid` as diagrams. It injects a shared set of semantic class definitions into every diagram at build time and supports both light and dark mode — node colors switch automatically when the reader toggles the theme.
 
 **Syntax:**
 
@@ -163,15 +163,15 @@ gantt
 
 ### Mermaid styling
 
-Flowchart nodes are styled using five canonical semantic class names. The VitePress build injects their color definitions automatically — **do not write `classDef` or `style X fill:` lines in diagram source**. Use only `class` assignment statements. Every node must be assigned one of these five classes.
+Flowchart nodes are styled using five canonical semantic class names. Color values for both light mode and dark mode are defined in `docs/.vitepress/theme/style.css` — **do not write `classDef` or `style X fill:` lines in diagram source**. Use only `class` assignment statements. Every node must be assigned one of these five classes.
 
-| Class name | Color   | Semantic use                                        |
-|------------|---------|-----------------------------------------------------|
-| `decision` | blue    | conditional branches, diamond nodes                 |
-| `input`    | yellow  | triggers, external sources                          |
-| `process`  | gray    | intermediate work, retries                          |
-| `output`   | green   | successful terminal states, published artefacts     |
-| `neutral`  | violet  | sequential steps with no special semantic role      |
+| Class name | Semantic use                                        |
+|------------|-----------------------------------------------------|
+| `decision` | conditional branches, diamond nodes                 |
+| `input`    | triggers, external sources                          |
+| `process`  | intermediate work, retries                          |
+| `output`   | successful terminal states, published artefacts     |
+| `neutral`  | sequential steps with no special semantic role      |
 
 **Example:**
 

@@ -4,21 +4,31 @@ import type MarkdownIt from 'markdown-it'
  * Shared classDef preamble injected into flowchart/graph mermaid fence blocks.
  *
  * Five canonical semantic categories:
- *   decision – conditional branches, diamond nodes      (blue)
- *   input    – triggers, external sources               (yellow/amber)
- *   process  – intermediate work, retries               (gray)
- *   output   – successful terminal, published artefacts (green)
- *   neutral  – sequential steps with no special role    (violet)
+ *   decision – conditional branches, diamond nodes
+ *   input    – triggers, external sources
+ *   process  – intermediate work, retries
+ *   output   – successful terminal, published artefacts
+ *   neutral  – sequential steps with no special role
  *
  * Authors use `class NodeA,NodeB neutral` in their diagrams and never
- * write hex color codes directly. All color definitions live here.
+ * write hex color codes directly.
+ *
+ * Colors (both light-mode and dark-mode palettes) are defined in
+ * docs/.vitepress/theme/style.css under the "Mermaid canonical classes"
+ * section. The classDef lines below use only opacity:1 (a visually inert
+ * no-op) so that mermaid does NOT emit fill/stroke/color/stroke-width
+ * !important rules from classDef. The class name itself is what matters:
+ * mermaid attaches the class name to the node's <g> element, and the
+ * external CSS uses !important to beat the theme's SVG-scoped id-selector
+ * rules (e.g. "#mermaid-123 .node rect { fill: ... }") that would otherwise
+ * take precedence over plain class selectors.
  */
 const CLASSDEFS_PREAMBLE =
-    '    classDef decision fill:#e1f5ff,stroke:#3b82f6,color:#0b1e3a;\n' +
-    '    classDef input    fill:#fff4e1,stroke:#d97706,color:#3a2408;\n' +
-    '    classDef process  fill:#f0f0f0,stroke:#6b7280,color:#111827;\n' +
-    '    classDef output   fill:#d4edda,stroke:#16a34a,color:#0b2e13;\n' +
-    '    classDef neutral  fill:#f0e6ff,stroke:#7c3aed,color:#1e0a3c;\n'
+    '    classDef decision opacity:1;\n' +
+    '    classDef input    opacity:1;\n' +
+    '    classDef process  opacity:1;\n' +
+    '    classDef output   opacity:1;\n' +
+    '    classDef neutral  opacity:1;\n'
 
 /**
  * markdown-it plugin that injects shared mermaid classDef declarations

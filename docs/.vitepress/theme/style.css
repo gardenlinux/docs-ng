@@ -146,3 +146,183 @@ img[src="/search.png"] {
 :root:not(.dark) [src$="#dark-mode-only"] {
   display: none;
 }
+
+/*
+ * Mermaid canonical class colors (light and dark mode)
+ *
+ * The five semantic classes (decision, input, process, output, neutral) are
+ * injected into every flowchart/graph fence by the mermaid-classdefs plugin
+ * (docs/.vitepress/plugins/mermaid-classdefs.ts). That plugin emits only a
+ * stroke-width sentinel so mermaid does NOT emit fill/stroke/color !important
+ * rules for these classes.
+ *
+ * However, mermaid's theme CSS is scoped to the SVG's id (e.g.
+ * "#mermaid-123 .node rect { fill: ... }"), giving it higher specificity than
+ * plain class selectors. !important is therefore required here to override the
+ * theme's node fill/stroke defaults.
+ *
+ * Node shapes: rect, polygon (diamond), circle, ellipse, path (stadium/rounded).
+ * Text: htmlLabels mode wraps text in foreignObject; tspan covers non-html mode.
+ */
+
+/* --- Light mode --- */
+.mermaid .decision > rect,
+.mermaid .decision > polygon,
+.mermaid .decision > circle,
+.mermaid .decision > ellipse,
+.mermaid .decision > path {
+  fill: #e1f5ff !important;
+  stroke: #3b82f6 !important;
+}
+.mermaid .decision foreignObject div,
+.mermaid .decision foreignObject p,
+.mermaid .decision foreignObject span,
+.mermaid .decision tspan {
+  color: #0b1e3a !important;
+  fill: #0b1e3a !important;
+}
+
+.mermaid .input > rect,
+.mermaid .input > polygon,
+.mermaid .input > circle,
+.mermaid .input > ellipse,
+.mermaid .input > path {
+  fill: #fff4e1 !important;
+  stroke: #d97706 !important;
+}
+.mermaid .input foreignObject div,
+.mermaid .input foreignObject p,
+.mermaid .input foreignObject span,
+.mermaid .input tspan {
+  color: #3a2408 !important;
+  fill: #3a2408 !important;
+}
+
+.mermaid .process > rect,
+.mermaid .process > polygon,
+.mermaid .process > circle,
+.mermaid .process > ellipse,
+.mermaid .process > path {
+  fill: #f0f0f0 !important;
+  stroke: #6b7280 !important;
+}
+.mermaid .process foreignObject div,
+.mermaid .process foreignObject p,
+.mermaid .process foreignObject span,
+.mermaid .process tspan {
+  color: #111827 !important;
+  fill: #111827 !important;
+}
+
+.mermaid .output > rect,
+.mermaid .output > polygon,
+.mermaid .output > circle,
+.mermaid .output > ellipse,
+.mermaid .output > path {
+  fill: #d4edda !important;
+  stroke: #16a34a !important;
+}
+.mermaid .output foreignObject div,
+.mermaid .output foreignObject p,
+.mermaid .output foreignObject span,
+.mermaid .output tspan {
+  color: #0b2e13 !important;
+  fill: #0b2e13 !important;
+}
+
+.mermaid .neutral > rect,
+.mermaid .neutral > polygon,
+.mermaid .neutral > circle,
+.mermaid .neutral > ellipse,
+.mermaid .neutral > path {
+  fill: #f0e6ff !important;
+  stroke: #7c3aed !important;
+}
+.mermaid .neutral foreignObject div,
+.mermaid .neutral foreignObject p,
+.mermaid .neutral foreignObject span,
+.mermaid .neutral tspan {
+  color: #1e0a3c !important;
+  fill: #1e0a3c !important;
+}
+
+/* --- Dark mode --- */
+:root.dark .mermaid .decision > rect,
+:root.dark .mermaid .decision > polygon,
+:root.dark .mermaid .decision > circle,
+:root.dark .mermaid .decision > ellipse,
+:root.dark .mermaid .decision > path {
+  fill: #0b1e3a !important;
+  stroke: #60a5fa !important;
+}
+:root.dark .mermaid .decision foreignObject div,
+:root.dark .mermaid .decision foreignObject p,
+:root.dark .mermaid .decision foreignObject span,
+:root.dark .mermaid .decision tspan {
+  color: #dbeafe !important;
+  fill: #dbeafe !important;
+}
+
+:root.dark .mermaid .input > rect,
+:root.dark .mermaid .input > polygon,
+:root.dark .mermaid .input > circle,
+:root.dark .mermaid .input > ellipse,
+:root.dark .mermaid .input > path {
+  fill: #3a2408 !important;
+  stroke: #fbbf24 !important;
+}
+:root.dark .mermaid .input foreignObject div,
+:root.dark .mermaid .input foreignObject p,
+:root.dark .mermaid .input foreignObject span,
+:root.dark .mermaid .input tspan {
+  color: #fef3c7 !important;
+  fill: #fef3c7 !important;
+}
+
+:root.dark .mermaid .process > rect,
+:root.dark .mermaid .process > polygon,
+:root.dark .mermaid .process > circle,
+:root.dark .mermaid .process > ellipse,
+:root.dark .mermaid .process > path {
+  fill: #1f2937 !important;
+  stroke: #9ca3af !important;
+}
+:root.dark .mermaid .process foreignObject div,
+:root.dark .mermaid .process foreignObject p,
+:root.dark .mermaid .process foreignObject span,
+:root.dark .mermaid .process tspan {
+  color: #f3f4f6 !important;
+  fill: #f3f4f6 !important;
+}
+
+:root.dark .mermaid .output > rect,
+:root.dark .mermaid .output > polygon,
+:root.dark .mermaid .output > circle,
+:root.dark .mermaid .output > ellipse,
+:root.dark .mermaid .output > path {
+  fill: #0b2e13 !important;
+  stroke: #4ade80 !important;
+}
+:root.dark .mermaid .output foreignObject div,
+:root.dark .mermaid .output foreignObject p,
+:root.dark .mermaid .output foreignObject span,
+:root.dark .mermaid .output tspan {
+  color: #d1fae5 !important;
+  fill: #d1fae5 !important;
+}
+
+:root.dark .mermaid .neutral > rect,
+:root.dark .mermaid .neutral > polygon,
+:root.dark .mermaid .neutral > circle,
+:root.dark .mermaid .neutral > ellipse,
+:root.dark .mermaid .neutral > path {
+  fill: #1e0a3c !important;
+  stroke: #a78bfa !important;
+}
+:root.dark .mermaid .neutral foreignObject div,
+:root.dark .mermaid .neutral foreignObject p,
+:root.dark .mermaid .neutral foreignObject span,
+:root.dark .mermaid .neutral tspan {
+  color: #ede9fe !important;
+  fill: #ede9fe !important;
+}
