@@ -95,6 +95,21 @@ operation outcomes in any instructional guides.
 Use examples liberally across the documentation for any document that advises
 readers to action.
 
+#### AI-generated phrasing to avoid
+
+AI-assisted writing introduces recognizable patterns that reduce documentation quality. Avoid these categories when authoring:
+
+- **Hype openers and filler adjectives** (`delve`, `dive into`, `embark`, `unlock`, `elevate`, `seamlessly`, `robust`, `comprehensive`, `cutting-edge`, `powerful`, `leverage`, `harness`, `empower`, `streamline`, `effortless`). Example: "This guide will help you unlock the full potential of..." → "This guide covers..."
+- **Transitional bloat** (`Moreover`, `Furthermore`, `In conclusion`, `In summary`, `It's worth noting`, `It's important to note`). Example: "Furthermore, the builder supports..." → "The builder supports..."
+- **Promotional flourish** (`world-class`, `best-in-class`, `next-generation`, `revolutionary`, `game-changing`). Example: "a next-generation build system" → "a purpose-built build system"
+- **Contextual hedging openers** (`In today's fast-paced world`, `In the ever-evolving landscape of`, `As we all know`, `It goes without saying`). Delete the opener and start with the actual statement.
+- **Presumptuous collective pronouns** (`we've all been there`, `let's explore together`, `join me on this journey`). Use second person or neutral framing instead.
+- **Rhetorical-question openers** (`Ever wondered…?`, `What if I told you…?`). State the topic directly.
+- **Canonical style anti-patterns** (`please`, `kindly`, `note that` as filler, ornamental parentheticals such as `(and this is important)`). Remove the filler; keep the statement.
+- **Em-dash drama** — em-dash used as a rhetorical pause before a hype word (e.g., `— unlocking`, `— making it`). Legitimate parenthetical em-dashes are fine.
+
+These categories describe concrete patterns to avoid at authoring time. The "no vague polish" refusal policy still applies for reviewers: contributors must identify a specific pattern from this list, not request general rewriting.
+
 ### Usability & Accessibility
 
 Every person browsing documentation has different means and needs. Not only in
@@ -201,6 +216,7 @@ Use this checklist when reviewing or submitting documentation:
 - ✅ Document is discoverable via navigation/index
 - ✅ Cross-referenced from related documentation
 - ✅ Clear ownership indicated
+- ✅ No AI-tell phrasing (hype openers, transitional bloat, promotional flourish, hedging, rhetorical-question openers)
 
 ### Conditional Markers
 
