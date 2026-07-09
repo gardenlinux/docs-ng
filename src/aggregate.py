@@ -15,6 +15,7 @@ from aggregation import (DocsFetcher, copy_targeted_docs, load_config,
                           save_config)
 from aggregation.structure import verify_internal_links
 from aggregation.flavor_matrix import generate_flavor_matrix_docs
+from aggregation.github_api import GitHubAPIError, list_repo_releases
 from aggregation.release_notes import generate_release_notes_docs
 from aggregation.releases import generate_release_docs
 
@@ -290,17 +291,36 @@ Examples:
             print(f"{'='*60}\n")
             generate_flavor_matrix_docs(docs_dir, gardenlinux_temp_dir)
 
+    # Fetch all GitHub releases up front — used by both release-doc generators.
+    # Hard-fail here rather than inside the generators so the earlier repo-
+    # aggregation results are still printed before we exit non-zero.
+    print(f"\n{'='*60}")
+    print("Fetching GitHub releases...")
+    print(f"{'='*60}\n")
+    try:
+        gh_releases = list_repo_releases("gardenlinux", "gardenlinux")
+    except GitHubAPIError as exc:
+        print(
+            f"\nError: Could not fetch GitHub releases — {exc}\n"
+            "Hint: set GITHUB_TOKEN to avoid rate-limit issues: "
+            "export GITHUB_TOKEN=$(gh auth token)",
+            file=sys.stderr,
+        )
+        return 1
+    existing_gh_tags = {r["tag_name"].lstrip("v") for r in gh_releases}
+    print(f"  Fetched {len(gh_releases)} GitHub release(s), {len(existing_gh_tags)} unique tag(s)")
+
     # Generate release documentation from GLRD
     print(f"\n{'='*60}")
     print("Generating release documentation...")
     print(f"{'='*60}\n")
-    generate_release_docs(docs_dir)
+    generate_release_docs(docs_dir, existing_gh_tags)
 
-    # Generate release notes from GitHub
+    # Generate release notes from pre-fetched GitHub releases
     print(f"\n{'='*60}")
-    print("Fetching release notes from GitHub...")
+    print("Generating release notes from GitHub...")
     print(f"{'='*60}\n")
-    generate_release_notes_docs(docs_dir)
+    generate_release_notes_docs(docs_dir, gh_releases)
 
     # Summary
     print(f"\n{'='*60}")

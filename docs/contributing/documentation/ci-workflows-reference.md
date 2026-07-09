@@ -19,11 +19,11 @@ related_topics:
 
 ## 1. `docs-check.yml` — Per-Repo Caller Workflow
 
-| | |
-|---|---|
-| **File** | `.github/workflows/docs-check.yml` |
-| **Lives in** | Each aggregated repository |
-| **Type** | Caller workflow — invokes the reusable `docs-checks.yml` from `docs-ng` |
+|              |                                                                         |
+| ------------ | ----------------------------------------------------------------------- |
+| **File**     | `.github/workflows/docs-check.yml`                                      |
+| **Lives in** | Each aggregated repository                                              |
+| **Type**     | Caller workflow — invokes the reusable `docs-checks.yml` from `docs-ng` |
 
 ### Triggers
 
@@ -33,12 +33,12 @@ on:
     branches: [main, docs-ng]
     types: [opened, synchronize, reopened, closed]
     paths:
-      - 'docs/**'
-      - 'features/*/README.md'
-      - 'features/*/info.yaml'
-      - 'flavors.yaml'
-      - 'CONTRIBUTING.md'
-      - 'SECURITY.md'
+      - "docs/**"
+      - "features/*/README.md"
+      - "features/*/info.yaml"
+      - "flavors.yaml"
+      - "CONTRIBUTING.md"
+      - "SECURITY.md"
   push:
     branches: [main, docs-ng]
     paths:
@@ -51,18 +51,18 @@ can detect merged PRs.
 
 ### Jobs
 
-| Job | Condition | Purpose |
-|-----|-----------|---------|
-| `docs-checks` | Skipped when `action == 'closed'` | Calls the reusable quality-check workflow in `docs-ng` with override inputs |
+| Job              | Condition                                                                         | Purpose                                                                     |
+| ---------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| `docs-checks`    | Skipped when `action == 'closed'`                                                 | Calls the reusable quality-check workflow in `docs-ng` with override inputs |
 | `notify-docs-ng` | Runs after `docs-checks` succeeds **or** when a PR is merged (always-conditional) | Generates a GitHub App token and sends a `repository_dispatch` to `docs-ng` |
 
 ### Inputs Passed to Reusable Workflow
 
-| Input | Value |
-|-------|-------|
-| `override-repo` | Hard-coded repository name (e.g., `gardenlinux`) |
-| `override-ref` | `github.head_ref` (PR branch) or `github.ref_name` (push) |
-| `override-commit` | `pull_request.head.sha` or `github.sha` |
+| Input             | Value                                                     |
+| ----------------- | --------------------------------------------------------- |
+| `override-repo`   | Hard-coded repository name (e.g., `gardenlinux`)          |
+| `override-ref`    | `github.head_ref` (PR branch) or `github.ref_name` (push) |
+| `override-commit` | `pull_request.head.sha` or `github.sha`                   |
 
 ### Dispatch Payload Sent to `docs-ng`
 
@@ -78,9 +78,9 @@ can detect merged PRs.
 
 ### Required Secrets
 
-| Secret | Purpose |
-|--------|---------|
-| `DOCS_BOT_APP_ID` | GitHub App identifier for `gardenlinux-docs-bot` |
+| Secret                 | Purpose                                                   |
+| ---------------------- | --------------------------------------------------------- |
+| `DOCS_BOT_APP_ID`      | GitHub App identifier for `gardenlinux-docs-bot`          |
 | `DOCS_BOT_PRIVATE_KEY` | Private key used to sign the JWT for App token generation |
 
 ### Outputs / Side-Effects
@@ -110,20 +110,19 @@ flowchart TD
 
 ### Common Failure Causes
 
-| Symptom | Likely cause |
-|---------|--------------|
-| `docs-checks` job fails | Broken links, spelling errors, or woke violations in the documentation change |
+| Symptom                    | Likely cause                                                                                       |
+| -------------------------- | -------------------------------------------------------------------------------------------------- |
+| `docs-checks` job fails    | Broken links, spelling errors, or woke violations in the documentation change                      |
 | `notify-docs-ng` job fails | `DOCS_BOT_APP_ID` or `DOCS_BOT_PRIVATE_KEY` secret missing/invalid; App not installed on `docs-ng` |
-| Workflow not triggered | Changed files do not match the `paths:` filter |
-
+| Workflow not triggered     | Changed files do not match the `paths:` filter                                                     |
 
 ## 2. `docs-checks.yml` — Reusable Quality Checks Workflow
 
-| | |
-|---|---|
-| **File** | `.github/workflows/docs-checks.yml` |
-| **Lives in** | `gardenlinux/docs-ng` |
-| **Type** | Reusable workflow (`workflow_call`) + own PR/push trigger |
+|              |                                                           |
+| ------------ | --------------------------------------------------------- |
+| **File**     | `.github/workflows/docs-checks.yml`                       |
+| **Lives in** | `gardenlinux/docs-ng`                                     |
+| **Type**     | Reusable workflow (`workflow_call`) + own PR/push trigger |
 
 ### Triggers
 
@@ -132,15 +131,15 @@ on:
   workflow_call:
     inputs:
       override-repo:
-        description: 'Repository name to override (e.g., gardenlinux)'
+        description: "Repository name to override (e.g., gardenlinux)"
         required: false
         type: string
       override-ref:
-        description: 'Git ref to use for the overridden repo'
+        description: "Git ref to use for the overridden repo"
         required: false
         type: string
       override-commit:
-        description: 'Git commit SHA to use for the overridden repo'
+        description: "Git commit SHA to use for the overridden repo"
         required: false
         type: string
   pull_request:
@@ -155,11 +154,11 @@ own documentation (with no overrides — all repos use their pinned commits).
 
 ### Inputs
 
-| Input | Required | Description |
-|-------|----------|-------------|
-| `override-repo` | no | Repository name in `repos-config.json` to override |
-| `override-ref` | no | Git ref (branch) to check out for the overridden repo |
-| `override-commit` | no | Exact commit SHA to aggregate from |
+| Input             | Required | Description                                           |
+| ----------------- | -------- | ----------------------------------------------------- |
+| `override-repo`   | no       | Repository name in `repos-config.json` to override    |
+| `override-ref`    | no       | Git ref (branch) to check out for the overridden repo |
+| `override-commit` | no       | Exact commit SHA to aggregate from                    |
 
 When all three inputs are provided, `aggregate.py` substitutes the pinned
 commit in `repos-config.json` with the specified commit, effectively testing
@@ -167,18 +166,18 @@ the PR's documentation against the rest of the published site.
 
 ### Jobs
 
-| Job | Depends on | Runner | Purpose |
-|-----|-----------|--------|---------|
-| `aggregate` | — | `ubuntu-24.04` | Runs `aggregate.py` with override arguments; uploads `docs/` as artifact |
-| `linkcheck` | `aggregate` | `ubuntu-24.04` | Runs lychee link checker on the aggregated `docs/**/*.md` |
-| `spelling` | `aggregate` | `ubuntu-24.04` | Runs `make spelling` (codespell) |
-| `woke` | `aggregate` | `ubuntu-24.04` | Runs `make woke` (inclusive-language checker) |
+| Job         | Depends on  | Runner         | Purpose                                                                  |
+| ----------- | ----------- | -------------- | ------------------------------------------------------------------------ |
+| `aggregate` | —           | `ubuntu-24.04` | Runs `aggregate.py` with override arguments; uploads `docs/` as artifact |
+| `linkcheck` | `aggregate` | `ubuntu-24.04` | Runs lychee link checker on the aggregated `docs/**/*.md`                |
+| `spelling`  | `aggregate` | `ubuntu-24.04` | Runs `make spelling` (codespell)                                         |
+| `woke`      | `aggregate` | `ubuntu-24.04` | Runs `make woke` (inclusive-language checker)                            |
 
 ### Artifacts
 
-| Artifact | Contents | Retention |
-|----------|----------|-----------|
-| `aggregated-docs` | Full `docs/` directory after aggregation | 1 day |
+| Artifact          | Contents                                 | Retention |
+| ----------------- | ---------------------------------------- | --------- |
+| `aggregated-docs` | Full `docs/` directory after aggregation | 1 day     |
 
 The artifact is consumed by the three parallel lint jobs (`linkcheck`,
 `spelling`, `woke`) to avoid re-running aggregation.
@@ -188,6 +187,10 @@ The artifact is consumed by the three parallel lint jobs (`linkcheck`,
 No secrets are required by this workflow itself (it only reads public
 repositories). When called as a reusable workflow, it inherits the caller's
 `GITHUB_TOKEN` permissions (read-only is sufficient).
+
+:::tip `GITHUB_TOKEN`
+Setting the `GITHUB_TOKEN` environment variable is recommended to prevent rate limiting.
+:::
 
 ### Job Graph
 
@@ -207,20 +210,20 @@ flowchart TD
 
 ### Common Failure Causes
 
-| Symptom | Likely cause |
-|---------|--------------|
+| Symptom               | Likely cause                                                                                                 |
+| --------------------- | ------------------------------------------------------------------------------------------------------------ |
 | `aggregate` job fails | Invalid `repos-config.json` entry for the overridden repo; commit SHA not reachable; Python dependency issue |
-| `linkcheck` job fails | Broken internal or external links in Markdown files; check lychee output for specific URLs |
-| `spelling` job fails | Unknown words — add them to the project's codespell dictionary (`.codespell/project-words.txt`) |
-| `woke` job fails | Non-inclusive language detected — see the woke rule file (`.woke.yml`) for alternatives |
+| `linkcheck` job fails | Broken internal or external links in Markdown files; check lychee output for specific URLs                   |
+| `spelling` job fails  | Unknown words — add them to the project's codespell dictionary (`.codespell/project-words.txt`)              |
+| `woke` job fails      | Non-inclusive language detected — see the woke rule file (`.woke.yml`) for alternatives                      |
 
 ## 3. `docs-pr.yml` — Automated Docs PR Workflow
 
-| | |
-|---|---|
-| **File** | `.github/workflows/docs-pr.yml` |
-| **Lives in** | `gardenlinux/docs-ng` |
-| **Type** | `repository_dispatch` consumer + `workflow_dispatch` (manual) |
+|              |                                                               |
+| ------------ | ------------------------------------------------------------- |
+| **File**     | `.github/workflows/docs-pr.yml`                               |
+| **Lives in** | `gardenlinux/docs-ng`                                         |
+| **Type**     | `repository_dispatch` consumer + `workflow_dispatch` (manual) |
 
 ### Triggers
 
@@ -230,11 +233,11 @@ on:
     types: [docs-pr]
   workflow_dispatch:
     inputs:
-      repo:        # required, string
-      pr_number:   # required, string
-      commit_sha:  # required, string
-      ref:         # required, string
-      event:       # required, choice: [pr_success, merged]
+      repo: # required, string
+      pr_number: # required, string
+      commit_sha: # required, string
+      ref: # required, string
+      event: # required, choice: [pr_success, merged]
 ```
 
 The workflow is normally triggered by `repository_dispatch` from a source
@@ -245,18 +248,18 @@ repo's `docs-check.yml`. It can also be triggered manually via
 
 The `client_payload` (or `inputs` for manual dispatch) must contain:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `repo` | string | Repository name as it appears in `repos-config.json` (e.g., `gardenlinux`) |
-| `pr_number` | string | PR number in the source repository |
-| `commit_sha` | string | Commit SHA to pin in `repos-config.json` |
-| `ref` | string | Branch name — feature branch for open PRs, base branch (e.g., `main`) for merged PRs |
-| `event` | string | Either `pr_success` (PR is open, checks passed) or `merged` (PR was merged) |
+| Field        | Type   | Description                                                                          |
+| ------------ | ------ | ------------------------------------------------------------------------------------ |
+| `repo`       | string | Repository name as it appears in `repos-config.json` (e.g., `gardenlinux`)           |
+| `pr_number`  | string | PR number in the source repository                                                   |
+| `commit_sha` | string | Commit SHA to pin in `repos-config.json`                                             |
+| `ref`        | string | Branch name — feature branch for open PRs, base branch (e.g., `main`) for merged PRs |
+| `event`      | string | Either `pr_success` (PR is open, checks passed) or `merged` (PR was merged)          |
 
 ### Jobs
 
-| Job | Runner | Purpose |
-|-----|--------|---------|
+| Job         | Runner         | Purpose                                                                                                   |
+| ----------- | -------------- | --------------------------------------------------------------------------------------------------------- |
 | `create-pr` | `ubuntu-24.04` | Creates/updates a branch, modifies `repos-config.json`, opens/updates a PR, and comments on the source PR |
 
 ### Job Steps (in order)
@@ -280,19 +283,19 @@ The `client_payload` (or `inputs` for manual dispatch) must contain:
 
 ### Required Secrets
 
-| Secret | Purpose |
-|--------|---------|
-| `DOCS_BOT_APP_ID` | GitHub App identifier (configured at org level in `docs-ng`) |
-| `DOCS_BOT_PRIVATE_KEY` | Private key for JWT token generation |
+| Secret                 | Purpose                                                      |
+| ---------------------- | ------------------------------------------------------------ |
+| `DOCS_BOT_APP_ID`      | GitHub App identifier (configured at org level in `docs-ng`) |
+| `DOCS_BOT_PRIVATE_KEY` | Private key for JWT token generation                         |
 
 ### Outputs / Side-Effects
 
-| Side-effect | Details |
-|-------------|---------|
-| Branch `auto/<repo>/<pr_number>` | Created or force-updated in `docs-ng` |
-| Draft PR in `docs-ng` | Title: `docs(<repo>): Update commit lock from PR #<N>` |
-| PR transitioned to ready-for-review | When `event == merged` |
-| Comment on source PR | Contains docs-ng PR URL and Netlify preview link |
+| Side-effect                         | Details                                                |
+| ----------------------------------- | ------------------------------------------------------ |
+| Branch `auto/<repo>/<pr_number>`    | Created or force-updated in `docs-ng`                  |
+| Draft PR in `docs-ng`               | Title: `docs(<repo>): Update commit lock from PR #<N>` |
+| PR transitioned to ready-for-review | When `event == merged`                                 |
+| Comment on source PR                | Contains docs-ng PR URL and Netlify preview link       |
 
 ### Branch Naming Convention
 
@@ -327,20 +330,20 @@ flowchart TD
 
 ### Common Failure Causes
 
-| Symptom | Likely cause |
-|---------|--------------|
-| Job fails at "Generate GitHub App token" | `DOCS_BOT_APP_ID` or `DOCS_BOT_PRIVATE_KEY` not set in `docs-ng` repository secrets |
-| "Repository not found in repos-config.json" | The dispatching repo's name does not match any `name` field in `repos-config.json` |
-| Force-push fails | Branch protection rules on `docs-ng` blocking the bot (auto branches should not be protected) |
-| Comment not posted | App token lacks write access to the source repo's issues/PRs |
+| Symptom                                     | Likely cause                                                                                  |
+| ------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Job fails at "Generate GitHub App token"    | `DOCS_BOT_APP_ID` or `DOCS_BOT_PRIVATE_KEY` not set in `docs-ng` repository secrets           |
+| "Repository not found in repos-config.json" | The dispatching repo's name does not match any `name` field in `repos-config.json`            |
+| Force-push fails                            | Branch protection rules on `docs-ng` blocking the bot (auto branches should not be protected) |
+| Comment not posted                          | App token lacks write access to the source repo's issues/PRs                                  |
 
 ## 4. `check-pr-main.yml` — `repos-config.json` Validator
 
-| | |
-|---|---|
-| **File** | `.github/workflows/check-pr-main.yml` |
-| **Lives in** | `gardenlinux/docs-ng` |
-| **Type** | PR validator (status check) |
+|              |                                       |
+| ------------ | ------------------------------------- |
+| **File**     | `.github/workflows/check-pr-main.yml` |
+| **Lives in** | `gardenlinux/docs-ng`                 |
+| **Type**     | PR validator (status check)           |
 
 ### Triggers
 
@@ -373,8 +376,8 @@ check fails, blocking the merge.
 
 ### Jobs
 
-| Job | Runner | Purpose |
-|-----|--------|---------|
+| Job        | Runner         | Purpose                                                                    |
+| ---------- | -------------- | -------------------------------------------------------------------------- |
 | `validate` | `ubuntu-24.04` | Reads `repos-config.json`, iterates over repos, validates each `ref` field |
 
 ### Required Secrets / Permissions
@@ -408,11 +411,11 @@ flowchart TD
 
 ### Common Failure Causes
 
-| Symptom | Likely cause |
-|---------|--------------|
-| Check fails with "non-main branch references" | The automated PR was created from an open (not yet merged) source PR — the ref still points at the feature branch |
-| Check fails after source PR was merged | Race condition — the `docs-pr.yml` workflow has not yet run to update the ref. Wait for the "merged" dispatch to complete and force-push the updated branch |
-| False positive on `docs-ng` ref | The `docs-ng` ref is in the allowed set — if validation fails, check the exact spelling in `repos-config.json` |
+| Symptom                                       | Likely cause                                                                                                                                                |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Check fails with "non-main branch references" | The automated PR was created from an open (not yet merged) source PR — the ref still points at the feature branch                                           |
+| Check fails after source PR was merged        | Race condition — the `docs-pr.yml` workflow has not yet run to update the ref. Wait for the "merged" dispatch to complete and force-push the updated branch |
+| False positive on `docs-ng` ref               | The `docs-ng` ref is in the allowed set — if validation fails, check the exact spelling in `repos-config.json`                                              |
 
 ## Related Topics
 

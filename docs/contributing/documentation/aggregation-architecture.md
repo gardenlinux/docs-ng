@@ -103,7 +103,33 @@ flowchart TD
 - Handles root files separately from docs directory
 - Provides commit hash for reproducible builds
 
-### 2. Transform Stage (`transformer.py`)
+### 2. GitHub HTTP client (`github_api.py`)
+
+**Purpose:** Fetch GitHub release data for use by the release generators.
+
+Uses `GITHUB_TOKEN` when set. Hard-fails on any error (network, non-2xx status,
+rate-limit exhaustion, or empty first page) so release docs never ship in a
+silently degraded state.
+
+### 3. GLRD subprocess wrapper (`glrd.py`)
+
+**Purpose:** Query active minor-release versions and release metadata from the
+`glrd` command-line tool. The data drives the release-table generator.
+
+Returns `None` on any failure rather than raising exceptions.
+
+### 4. Sphinx Markdown builder (`sphinx_builder.py`)
+
+**Purpose:** Produce plain Markdown output from Sphinx-based documentation so
+it can be consumed by VitePress through the normal aggregation pipeline.
+
+Invokes `python -m sphinx -M markdown` on a fetched repository and copies the
+resulting Markdown into the aggregation output directory. Called only for repos
+configured with `"structure": "sphinx"` in `repos-config.json`. Requires
+`sphinx`, `sphinx-markdown-builder`, and any project-specific Sphinx extensions
+installed in the same Python environment as the aggregator.
+
+### 5. Transform Stage (`transformer.py`)
 
 **Purpose:** Modify content to work in the aggregated site
 
@@ -121,7 +147,7 @@ flowchart TD
    - Quote YAML values safely
    - Preserve existing metadata
 
-### 3. Structure Stage (`structure.py`)
+### 6. Structure Stage (`structure.py`)
 
 **Purpose:** Organize documentation into the final directory structure
 
@@ -134,6 +160,28 @@ flowchart TD
    unmigrated links early)
 3. **Media Copying:** Discover and copy media directories
 4. **Markdown Processing:** Apply front-matter fixes to all copied files
+
+### 7. Release-table generator (`releases.py`)
+
+**Purpose:** Build the release-status table from GLRD data, filtered against
+fetched GitHub tags.
+
+GLRD-listed rows that carry a `minor` version component are only emitted when
+their normalized version string (`{major}.{minor}[.{patch}]`, leading `v`
+stripped) appears in the fetched GitHub tag set. Major-only rows are always
+emitted. Each skipped row logs a one-line warning to `stderr`.
+
+### 8. Per-release notes generator (`release_notes.py`)
+
+**Purpose:** Write one Markdown page per pre-fetched GitHub release. Makes no
+network calls; accepts the release list returned by
+`github_api.list_repo_releases()`.
+
+### 9. Flavor matrix generator (`flavor_matrix.py`)
+
+**Purpose:** Generate flavor matrix documentation from `flavors.yaml` and
+feature metadata. Parses `flavors.yaml` directly using the Garden Linux
+`FlavorsParser` and `FeaturesParser` classes.
 
 ## Key Mechanisms
 
@@ -262,7 +310,7 @@ Temp Directory                 Docs Output
 ### Structure Stage
 
 - **Targeted copy:** O(n) where n = files with github_target_path
-- **Link verification:** O(n * l) where l = avg links per file
+- **Link verification:** O(n \* l) where l = avg links per file
 - **Media copy:** O(m) where m = media files
 
 ### Overall
@@ -290,6 +338,13 @@ Temp Directory                 Docs Output
 - Missing target directory → Create automatically
 - Conflicting file paths → Error with clear message
 - Media directory not found → Log warning, continue
+
+### GitHub API Failures
+
+Any GitHub API failure during release pre-fetch (network, non-2xx status,
+rate-limit exhaustion, or empty result) is fatal. This prevents shipping
+silently degraded release documentation. See
+[GitHub API token](./working-locally.md#github-api-token) for token setup.
 
 ## Related Topics
 

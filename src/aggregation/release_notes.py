@@ -1,8 +1,6 @@
-"""Fetch and format release notes from GitHub."""
+"""Format release notes from pre-fetched GitHub release data."""
 
-import json
 import re
-import subprocess
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -10,12 +8,10 @@ from pathlib import Path
 from .glrd import get_active_minor_versions
 from .transformer import cleanup_github_markdown
 
-GITHUB_API_URL = "https://api.github.com/repos/gardenlinux/gardenlinux/releases"
 GITHUB_RELEASES_URL = "https://github.com/gardenlinux/gardenlinux/releases/tag"
 GITHUB_COMMITS_URL = "https://github.com/gardenlinux/gardenlinux/commit"
 
 # Configuration
-MAX_RELEASES = 200  # Include up to 200 recent releases
 ARCHIVED_DIR = "archived"
 
 
@@ -53,39 +49,6 @@ def sort_by_version(releases: list) -> list:
     return sorted(
         releases, key=lambda r: parse_version(r.get("tag_name", "0")), reverse=True
     )
-
-
-def fetch_github_releases(per_page: int = 100) -> list:
-    """Fetch releases from GitHub API using curl with pagination."""
-    all_releases = []
-    page = 1
-    max_pages = (MAX_RELEASES // per_page) + 2  # Fetch enough pages
-
-    while page <= max_pages and len(all_releases) < MAX_RELEASES:
-        try:
-            result = subprocess.run(
-                [
-                    "curl",
-                    "-s",
-                    "-L",
-                    f"{GITHUB_API_URL}?per_page={per_page}&page={page}",
-                ],
-                capture_output=True,
-                text=True,
-                check=False,
-            )
-            if result.returncode == 0:
-                page_releases = json.loads(result.stdout)
-                if not page_releases:
-                    break
-                all_releases.extend(page_releases)
-            else:
-                break
-        except (json.JSONDecodeError, Exception):
-            break
-        page += 1
-
-    return all_releases[:MAX_RELEASES]
 
 
 def format_release_date(date_str: str) -> str:
@@ -129,8 +92,21 @@ def format_release_entry(release: dict) -> str:
     return f"{header}{body.strip()}\n"
 
 
-def generate_release_notes_docs(docs_dir: Path) -> bool:
-    """Fetch GitHub release notes and generate release-notes as individual files."""
+def generate_release_notes_docs(docs_dir: Path, releases: list[dict]) -> bool:
+    """Generate release-notes documentation files from a pre-fetched release list.
+
+    The caller (``aggregate.py``) is responsible for fetching the full release
+    list via :func:`aggregation.github_api.list_repo_releases` before calling
+    this function.  No network requests are made here.
+
+    Args:
+        docs_dir: Root of the VitePress ``docs/`` tree.
+        releases: Full list of GitHub release objects as returned by the GitHub
+            Releases API (already fetched and validated by the caller).
+
+    Returns:
+        ``True`` on success, ``False`` if no releases were provided.
+    """
     releases_dir = docs_dir / "reference" / "releases" / "release-notes"
     releases_dir.mkdir(parents=True, exist_ok=True)
 
@@ -143,11 +119,8 @@ def generate_release_notes_docs(docs_dir: Path) -> bool:
             md_file.unlink()
             print(f"  Removed: {md_file.relative_to(docs_dir)}")
 
-    print("Fetching release notes from GitHub...")
-    releases = fetch_github_releases()
-
     if not releases:
-        print("Warning: No releases fetched from GitHub", file=sys.stderr)
+        print("Warning: No releases provided to generate_release_notes_docs", file=sys.stderr)
         return False
 
     # Query GLRD to determine release status
@@ -169,9 +142,6 @@ def generate_release_notes_docs(docs_dir: Path) -> bool:
     # Sort by semantic version (highest first)
     filtered = sort_by_version(filtered)
 
-    # Limit
-    filtered = filtered[:MAX_RELEASES]
-
     # Generate individual files for each release
     release_list = []
     for idx, release in enumerate(filtered):
@@ -186,9 +156,9 @@ def generate_release_notes_docs(docs_dir: Path) -> bool:
             r"^##\s+" + re.escape(name) + r"$", "# " + name, content, flags=re.MULTILINE
         )
 
-        # Determine if this release is archived
-        # A release is active ONLY if it's explicitly in the active_versions dict
-        # All other releases are archived
+        # Determine if this release is archived.
+        # A release is active ONLY if it's explicitly in the active_versions set.
+        # All other releases are archived.
         tag_without_v = tag_name.lstrip("v")
         is_archived = tag_without_v not in active_versions
 
