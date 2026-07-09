@@ -22,7 +22,7 @@ In each repository you will find multiple issue types each with their own form.
 Read these forms carefully and provide as much information as possible
 about your issue.
 
-## Issue Type Not Listed?
+## Issue type not listed?
 
 For most problems you may encounter, the `bug` issue type might be the best fit
 your report.
