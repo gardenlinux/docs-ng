@@ -82,8 +82,7 @@ project and works closely with the development team, a team member that is
 permanently appointed to or volunteers for this position, or a rotating position
 that anyone in the team may take on for a set amount of time.
 
-However this may be implemented it is important to stress that _**documentation
-is a team effort**_.
+However this may be implemented, _**documentation is a team effort**_.
 
 The responsibilities of this person are:
 
