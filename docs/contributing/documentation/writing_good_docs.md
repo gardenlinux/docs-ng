@@ -53,7 +53,7 @@ Each document should clearly state:
 
 One of the most important factors of good documentation is readability. This
 means that good documents should have a clear structure separated by concise
-headlines that serves both as a navigation aid and a red string through the
+headlines that are both a navigation aid and a thread through the
 topic.
 
 Another aspect of good readability is a well thought out **separation of
@@ -131,9 +131,8 @@ These categories describe concrete patterns to avoid at authoring time. The "no 
 
 ### Usability & Accessibility
 
-Every person browsing documentation has different means and needs. Not only in
-the information they are looking for, but also how they access and process this
-documentation. Language barriers or disabilities may present barriers when
+Every person browsing documentation has different means and needs. They look for
+different information and access documentation through different means. Language barriers or disabilities may present barriers when
 attempting to look for something in documentation.
 
 There are a few things contributors can do to lower these barriers:
