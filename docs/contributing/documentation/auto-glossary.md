@@ -1,5 +1,5 @@
 ---
-title: "Auto Glossary"
+title: "Documentation Auto Glossary"
 description: "Automatically link common idioms to their glossary entry"
 order: 13 
 related_topics:
@@ -24,16 +24,16 @@ The documentation system includes an automatic glossary linker that converts mar
 Mark terms in your documentation using the marker format:
 
 ```markdown
-Deploy {glossary:Garden Linux} on {glossary:AWS} using {glossary:KVM}.
+Deploy {glossary:Gardenlinux} on {glossary:AWS} using {glossary:KVM}.
 ```
 
 After aggregation, this becomes:
 
 ```markdown
-Deploy [Garden Linux](/reference/glossary#garden-linux) on [AWS](/reference/glossary#aws) using [KVM](/reference/glossary#kvm).
+Deploy [Gardenlinux](/reference/glossary#gardenlinux) on [AWS](/reference/glossary#aws) using [KVM](/reference/glossary#kvm).
 ```
 
-## How It Works
+## Function
 
 During aggregation (`make aggregate`), the system:
 
@@ -57,6 +57,13 @@ Term matching is case-insensitive but preserves your original formatting:
 
 - Input: `{glossary:aws}` produces `[aws](/reference/glossary#aws)`
 - Input: `{glossary:AWS}` produces `[AWS](/reference/glossary#aws)`
+
+::: details Developer Information
+The auto glossary system is designed to accept a new custom `entry_format` through which
+the shortcode `{glossary:*}` can be replaced with a new custom pattern.
+
+Check the source code for more information.
+:::
 
 ## Protected Regions
 
@@ -102,12 +109,14 @@ All three can be used in markers and link to the same glossary entry.
 
 ## Auto-Linking
 
+
+
 Auto-linking creates links for glossary terms without requiring explicit markers. This feature is disabled by default.
 
 With auto-linking enabled, input text:
 
 ```
-Deploy Garden Linux on AWS using KVM virtualization.
+Deploy Gardenlinux on AWS using KVM virtualization.
 ```
 
 Becomes:
@@ -123,6 +132,12 @@ Auto-linking rules:
 - Respects word boundaries
 - Preserves code blocks and inline code
 - Does not modify existing links
+
+::: warning
+This feature is disabled by default as it is highly experimental and intended for research work only.
+
+**Contributors must not rely on this feature when contributing documentation.**
+:::
 
 ## Makefile Targets
 
