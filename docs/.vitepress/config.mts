@@ -77,10 +77,10 @@ function normalizeUrl(ref: string): string {
 export default defineConfig({
   base,
   title: "Garden Linux",
+  description: "Purpose-built Linux for cloud-native workloads",
   markdown: {
     config: (md) => md.use(mermaidClassDefs),
   },
-  // description: "Operating system built for cloud native workloads.",
   ignoreDeadLinks: [
     // Ignore dead links in legacy documentation
     /\/how-to\/troubleshooting\//,
