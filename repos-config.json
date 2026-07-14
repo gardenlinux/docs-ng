@@ -3,8 +3,8 @@
     {
       "name": "gardenlinux",
       "url": "https://github.com/gardenlinux/gardenlinux",
-      "ref": "docs-ng",
-      "commit": "037000ff0cdadf6c0c19a5db21b26195f6d19412",
+      "ref": "docs/flavor_cname",
+      "commit": "5d1b752cec8160336d679477f4cddb7cc60467f5",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
