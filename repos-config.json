@@ -51,8 +51,8 @@
     {
       "name": "glrd",
       "url": "https://github.com/gardenlinux/glrd",
-      "ref": "docs-ng",
-      "commit": "c51d0a8f902322848aa17bdee8ddd3a86bf86bf3"
+      "ref": "main",
+      "commit": "b80bd5486fb4efc24c17980670965c2b7ddfb766"
     }
   ]
 }
