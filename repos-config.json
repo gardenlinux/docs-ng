@@ -3,8 +3,8 @@
     {
       "name": "gardenlinux",
       "url": "https://github.com/gardenlinux/gardenlinux",
-      "ref": "docs-ng",
-      "commit": "e982815ba31e79c9f6606e27ede1590e3b634163",
+      "ref": "docs/humanize",
+      "commit": "664dfd7708c5ec9ef29980483bb4d5d05b31ea5e",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
