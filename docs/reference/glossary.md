@@ -5,7 +5,7 @@ order: 1
 
 # Glossary
 
-This glossary provides definitions for Garden Linux-specific terminology. If you would like to contribute additional terms or improve existing definitions, please visit our [contributing guide](../contributing/index.md).
+This glossary provides definitions for Garden Linux-specific terminology. To contribute additional terms or improve existing definitions, visit our [contributing guide](../contributing/index.md).
 
 **Jump to:** [A](#a) · [B](#b) · [C](#c) · [D](#d) · [E](#e) · [F](#f) · [G](#g) · [I](#i) · [K](#k) · [L](#l) · [M](#m) · [N](#n) · [O](#o) · [P](#p) · [R](#r) · [S](#s) · [T](#t) · [U](#u) · [V](#v)
 
@@ -287,7 +287,7 @@ The system and service manager used by Garden Linux. Garden Linux is purely syst
 
 ### test-ng
 
-The testing framework used by Garden Linux for comprehensive system testing. See [ADR-0006](./adr/0006-new-test-framework-in-place-self-contained-test-execution.md) (new test framework), [ADR-0007](./adr/0007-non-invasive-read-only-testing.md) (non-invasive testing), [ADR-0008](./adr/0008-unified-and-declarative-test-logic.md) (unified test logic), [ADR-0010](./adr/0010-incremental-migration-and-coexistence-of-tests.md) (incremental migration), [ADR-0016](./adr/0016-minimal-host-dependencies-for-test-ng.md) (minimal host dependencies), [ADR-0021](./adr/0021-use-of-tiger-tool-in-tests-ng.md) (tiger tool usage), [ADR-0022](./adr/0022-test-ng-system-state-diffing.md) (system state diffing), and [ADR-0026](./adr/0026-test-ng-when-to-parsers.md) (when-to parsers) for comprehensive details on the test-ng architecture and design decisions.
+The testing framework used by Garden Linux for system testing. See [ADR-0006](./adr/0006-new-test-framework-in-place-self-contained-test-execution.md) (new test framework), [ADR-0007](./adr/0007-non-invasive-read-only-testing.md) (non-invasive testing), [ADR-0008](./adr/0008-unified-and-declarative-test-logic.md) (unified test logic), [ADR-0010](./adr/0010-incremental-migration-and-coexistence-of-tests.md) (incremental migration), [ADR-0016](./adr/0016-minimal-host-dependencies-for-test-ng.md) (minimal host dependencies), [ADR-0021](./adr/0021-use-of-tiger-tool-in-tests-ng.md) (tiger tool usage), [ADR-0022](./adr/0022-test-ng-system-state-diffing.md) (system state diffing), and [ADR-0026](./adr/0026-test-ng-when-to-parsers.md) (when-to parsers) for details on the test-ng architecture and design decisions.
 
 ### TPM2
 
