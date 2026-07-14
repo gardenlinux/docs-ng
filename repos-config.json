@@ -34,7 +34,7 @@
       "name": "package-linux",
       "url": "https://github.com/gardenlinux/package-linux",
       "ref": "docs-ng",
-      "commit": "45f0d1a62a723d0052bcfbf9eb40e26366595164"
+      "commit": "373a0d6ab102404d7440e16c4818817812ff9890"
     },
     {
       "name": "package-build",
