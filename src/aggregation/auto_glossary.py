@@ -223,13 +223,30 @@ class AutoGlossary:
                 canonical = self.aliases[term_lower]
                 anchor, display_name = self.terms[canonical]
                 return f"[{term}](/reference/glossary#{anchor})"
-            else:
-                print(
-                    f"[Warning][auto-glossary] Term '{term}' not found in glossary "
-                    f"(referenced in {file_path})"
-                )
-                # Return original marker if term not found
-                return match.group(0)
+
+            # Basic grammar handling
+            base_term: str = ""
+            for suffix in ("s", "es", "ed", "ing", "ly"):
+                if term_lower.endswith(suffix):
+                    candidate = term_lower[: -len(suffix)]
+                    if candidate in self.terms:
+                        base_term = candidate
+                        break
+                    elif candidate in self.aliases:
+                        base_term = self.aliases[candidate]
+                        break
+
+            if base_term:
+                anchor, display_name = self.terms[base_term]
+                return f"[{term}](/reference/glossary#{anchor})"
+
+            # Not found
+            print(
+                f"[Warning][auto-glossary] Term '{term}' not found in glossary! "
+                f"(referenced in file '{file_path}')"
+            )
+            # Return original marker if term not found
+            return match.group(0)
 
         work_content: str = self._entry_pattern.sub(
             replace_glossary_marker, work_content
