@@ -50,7 +50,7 @@ install:
 run:
 	pnpm run docs:dev
 
-build: install clean aggregate
+build: install clean aggregate glossary
 	pnpm run docs:build
 
 preview:
@@ -90,22 +90,11 @@ woke:
 
 glossary:
 	@echo "Processing glossary links..."
-	@python3 -c "import sys, importlib.util; \
-		from pathlib import Path; \
-		spec = importlib.util.spec_from_file_location('auto_glossary', 'src/aggregation/auto_glossary.py'); \
-		mod = importlib.util.module_from_spec(spec); \
-		spec.loader.exec_module(mod); \
-		mod.process_glossary_links(Path('docs'))"
+	@python3 src/aggregation/auto_glossary.py docs/
 
 glossary-check:
 	@echo "Validating glossary structure..."
-	@python3 -c "import importlib.util; \
-		from pathlib import Path; \
-		spec = importlib.util.spec_from_file_location('auto_glossary', 'src/aggregation/auto_glossary.py'); \
-		mod = importlib.util.module_from_spec(spec); \
-		spec.loader.exec_module(mod); \
-		mod.AutoGlossary(Path('docs/reference/glossary.md')); \
-		print('  ✓ Glossary structure valid')"
+	@python3 src/aggregation/auto_glossary.py docs/ --check
 
 # Documentation Aggregation
 aggregate-local:

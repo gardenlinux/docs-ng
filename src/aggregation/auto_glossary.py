@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import re
 import unicodedata
 import uuid
@@ -178,7 +180,7 @@ class AutoGlossary:
         :param auto_link: Whether to auto-link first occurrence of known terms
         :return: Content with glossary markers replaced by markdown links
         """
-        if "glossary.md" in file_path:
+        if file_path == "reference/glossary.md" or file_path.endswith("/glossary.md"):
             return content
 
         # Extract code blocks and inline code to protect them from modification
@@ -359,3 +361,103 @@ def process_glossary_links(
 
     print(f"[Success] Auto-Glossary processed {processed} files successfully.")
     return processed
+
+
+def validate_glossary(glossary_path: Path) -> int:
+    """
+    Validate glossary structure and report statistics.
+
+    :param glossary_path: Path to the glossary markdown file.
+    :return: Exit code (0 for success, 1 for error)
+    """
+    try:
+        linker = AutoGlossary(glossary_path)
+
+        print(f"Glossary structure valid.")
+        print(f"Terms found: {len(linker.terms)}")
+        print(f"Aliases found: {len(linker.aliases)}")
+
+        return 0
+    except FileNotFoundError as e:
+        print(f"[Error][auto-glossary] {e}")
+        return 1
+    except Exception as e:
+        print(f"[Error][auto-glossary] Filed to validate glossary: {e}")
+        return 1
+
+
+def main() -> int:
+    """CLI entry point."""
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Process glossary links in markdown documentation.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+        Examples:
+            %(prog)s docs/
+            %(prog)s docs/ --auto-link
+            %(prog)s docs/ --entry-format "[[*]]"
+        """,
+    )
+
+    parser.add_argument(
+        "docs_dir",
+        type=Path,
+        nargs="?",
+        default=Path("docs"),
+        help="Documentation directory to process (default: docs/)",
+    )
+
+    parser.add_argument(
+        "--auto-link",
+        action="store_true",
+        help="Automatically link first occurrence of known terms (experimental)",
+    )
+
+    parser.add_argument(
+        "--entry-format",
+        type=str,
+        default=None,
+        help=f"Custom entry format pattern (default: '{GLOSSARY_ENTRY_FORMAT}')",
+    )
+
+    parser.add_argument(
+        "-v", "--verbose", action="store_true", help="Enable verbose output"
+    )
+
+    parser.add_argument(
+        "--check", action="store_true", help="Validate glossary structure only"
+    )
+
+    args = parser.parse_args()
+
+    if args.check:
+        glossary_path = args.docs_dir / "reference" / "glossary.md"
+        return validate_glossary(glossary_path)
+
+    if not args.docs_dir.exists():
+        print(f"[Error][auto-glossary] Directory not found: {args.docs_dir}")
+        return 1
+
+    if args.verbose:
+        print(f"Processing directory: {args.docs_dir}")
+        print(f"Auto-link: {args.auto_link}")
+        print(f"Entry format: {args.entry_format or GLOSSARY_ENTRY_FORMAT}")
+
+    try:
+        processed = process_glossary_links(
+            args.docs_dir, auto_link=args.auto_link, entry_format=args.entry_format
+        )
+    except Exception as e:
+        print(f"[Error][auto-glossary] Failed to process glossary links: {e}")
+        return 1
+
+    print(f"[success][auto-glossary] Successfully processed {processed} files.")
+    return 0
+
+
+if __name__ == "__main__":
+    import sys
+
+    sys.exit(main())

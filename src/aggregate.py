@@ -330,12 +330,6 @@ Examples:
     print(f"{'='*60}\n")
     generate_release_notes_docs(docs_dir, gh_releases)
 
-    # Process glossary links
-    print(f"\n{'='*60}")
-    print("Processing glossary links...")
-    print(f"{'='*60}\n")
-    process_glossary_links(docs_dir)
-
     # Summary
     print(f"\n{'='*60}")
     print("Documentation aggregation complete!")
