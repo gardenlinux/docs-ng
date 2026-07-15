@@ -2,12 +2,17 @@
 
 import re
 import unicodedata
-import uuid
 from pathlib import Path
-from typing import Any, Dict, Match, Pattern, Tuple
+from typing import Any, Dict, List, Match, Pattern, Tuple
 
 # Default format for marking glossary entries in markdown
 GLOSSARY_ENTRY_FORMAT = "{glossary:*}"
+
+CODE_BLOCK_PATTERN: Pattern[str] = re.compile(
+    r"^(`{3,}|~{3,})[^\n]*\n[\s\S]*?^\1\s*$", re.MULTILINE
+)
+INLINE_CODE_PATTERN: Pattern[str] = re.compile(r"`[^`\n]+`")
+LINK_PATTERN: Pattern[str] = re.compile(r"\[[^\]]+\]\([^\)]+\)")
 
 
 class AutoGlossary:
@@ -170,6 +175,56 @@ class AutoGlossary:
 
         return anchor
 
+    def _get_protected_region(self, content: str) -> List[Tuple[int, int]]:
+        """
+        Find all regions that should not be processed.
+
+        Identifies code blocks, inline code, and existing markdown links.
+        Returns a sorted, merged list of (start, end) spans.
+
+        :param content: The markdown content to analyze.
+        :return: List of (start, end) tuples for protected regions.
+        """
+        protected: List[Tuple[int, int]] = []
+        for pattern in [CODE_BLOCK_PATTERN, INLINE_CODE_PATTERN, LINK_PATTERN]:
+            for match in pattern.finditer(content):
+                protected.append((match.start(), match.end()))
+
+        protected.sort()
+
+        merged: List[Tuple[int, int]] = []
+        for start, end in protected:
+            if merged and start <= merged[-1][1]:
+                # Overlaps with previous region, extend it
+                merged[-1] = (merged[-1][0], max(merged[-1][1], end))
+            else:
+                merged.append((start, end))
+
+        return merged
+
+    def _get_unprotected_region(
+        self, content: str, protected_regions: List[Tuple[int, int]]
+    ) -> List[Tuple[int, int]]:
+        """
+        Get the inverse of protected regions.
+
+        :param content: The full content string.
+        :param protected_regions: Sroted, merged list of protected (start, end) regions
+        :return: List of (start, end) tuples for unprotected regions.
+        """
+        unprotected: List[Tuple[int, int]] = []
+        pos = 0
+
+        for prot_start, prot_end in protected_regions:
+            if pos < prot_start:
+                unprotected.append((pos, prot_start))
+            pos = prot_end
+
+        if pos < len(content):
+            unprotected.append((pos, len(content)))
+
+        return unprotected
+
     def link_terms(
         self, content: str, file_path: str = "", auto_link: bool = False
     ) -> str:
@@ -183,32 +238,11 @@ class AutoGlossary:
         if file_path == "reference/glossary.md" or file_path.endswith("/glossary.md"):
             return content
 
-        # Extract code blocks and inline code to protect them from modification
-        protected_regions: dict[str, str] = {}
-        pattern_id: str = uuid.uuid4().hex[:8]
-        placeholder_pattern: str = f"<<<GLOSSARY_PLACEHOLDER_{{}}_{pattern_id}_>>>"
-
-        # Pattern for fenced code blocks (``` or ~~~)
-        code_block_pattern: Pattern[str] = re.compile(
-            r"^(`{3,}|~{3,})[^\n]*\n[\s\S]*?^\1\s*$", re.MULTILINE
+        # Find all protected regions and their inverse
+        protected_regions: List[Tuple[int, int]] = self._get_protected_region(content)
+        unprotected_regions: List[Tuple[int, int]] = self._get_unprotected_region(
+            content, protected_regions
         )
-
-        # Pattern for inline code (`code`)
-        inline_code_pattern: Pattern[str] = re.compile(r"(`[^`\n]+`)")
-
-        # Pattern for existing markdown links ([text](url))
-        link_pattern: Pattern[str] = re.compile(r"(\[([^\]]+)\]\([^\)]+\))")
-
-        # Store and replace code blocks
-        def protect_region(match):
-            idx: int = len(protected_regions)
-            placeholder: str = placeholder_pattern.format(idx)
-            protected_regions[placeholder] = match.group(0)
-            return placeholder
-
-        work_content: str = code_block_pattern.sub(protect_region, content)
-        work_content = link_pattern.sub(protect_region, work_content)
-        work_content = inline_code_pattern.sub(protect_region, work_content)
 
         # Process glossary markers
         def replace_glossary_marker(match):
@@ -230,15 +264,12 @@ class AutoGlossary:
                 if term_lower.endswith(suffix):
                     candidate = term_lower[: -len(suffix)]
                     if candidate in self.terms:
-                        base_term = candidate
-                        break
+                        anchor, display_name = self.terms[candidate]
+                        return f"[{term}](/reference/glossary#{anchor})"
                     elif candidate in self.aliases:
-                        base_term = self.aliases[candidate]
-                        break
-
-            if base_term:
-                anchor, display_name = self.terms[base_term]
-                return f"[{term}](/reference/glossary#{anchor})"
+                        canonical = self.aliases[candidate]
+                        anchor, display_name = self.terms[canonical]
+                        return f"[{term}](/reference/glossary#{anchor})"
 
             # Not found
             print(
@@ -248,19 +279,30 @@ class AutoGlossary:
             # Return original marker if term not found
             return match.group(0)
 
-        work_content: str = self._entry_pattern.sub(
-            replace_glossary_marker, work_content
-        )
+        # Build result by processing only unprotected regions
+        parts: List[str] = []
+        pos = 0
+
+        for span_start, span_end in unprotected_regions:
+            parts.append(content[pos:span_start])
+
+            span_content = content[span_start:span_end]
+            processed_span = self._entry_pattern.sub(
+                replace_glossary_marker, span_content
+            )
+            parts.append(processed_span)
+
+            pos = span_end
+
+        parts.append(content[pos:])
+
+        result = "".join(parts)
 
         # Auto-link first occurrence of each term
         if auto_link:
-            work_content = self._auto_link_terms(work_content, file_path)
+            result = self._auto_link_terms(result, file_path)
 
-        # Restore protected regions
-        for placeholder, original in protected_regions.items():
-            work_content = work_content.replace(placeholder, original)
-
-        return work_content
+        return result
 
     def _auto_link_terms(self, content: str, file_path: str = "") -> str:
         """Auto-link first occurrence of glossary terms.
