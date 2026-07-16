@@ -183,7 +183,7 @@ Target coverage levels:
 Tests run automatically on:
 
 - Pull requests
-- Pushes to main/docs-ng branches
+- Pushes to main branch
 - Scheduled nightly builds
 
 ## Debugging Tests

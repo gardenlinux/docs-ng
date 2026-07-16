@@ -1,8 +1,8 @@
 # Garden Linux Documentation Framework
 
-`docs-ng` is the primary documentation aggregation framework and hosting hub.
+`docs` is the primary documentation aggregation framework and hosting hub.
 
-The documentation is hosted at https://gardenlinux-docs.netlify.app
+The documentation is hosted at https://docs.gardenlinux.org
 
 This repository contains all source code of our custom aggregation system, as
 well as any relevant documentation related to the topic of documenting.
@@ -10,14 +10,14 @@ well as any relevant documentation related to the topic of documenting.
 ## Documentation
 
 To learn everything related to our approach of documenting, check the
-[Documentation](https://gardenlinux-docs.netlify.app/contributing/documentation/)
+[Documentation](https://docs.gardenlinux.org/contributing/documentation/)
 subsection of our contributing page.
 
 You can also jump directly into topics like
-[how to work with the documentation system locally](https://gardenlinux-docs.netlify.app/contributing/documentation/working-locally.html),
-[our documentation workflow & review process](https://gardenlinux-docs.netlify.app/contributing/documentation/documentation_workflow.html)
+[how to work with the documentation system locally](https://docs.gardenlinux.org/contributing/documentation/working-locally.html),
+[our documentation workflow & review process](https://docs.gardenlinux.org/contributing/documentation/documentation_workflow.html)
 and the
-[quality markers](https://gardenlinux-docs.netlify.app/contributing/documentation/writing_good_docs.html)
+[quality markers](https://docs.gardenlinux.org/contributing/documentation/writing_good_docs.html)
 we use to verify the quality of contributed documentation.
 
 While browsing our docs, if you find something that you would like to correct or
@@ -46,7 +46,7 @@ https://lists.neonephos.org/g/gardenlinux-security-embargo
 We welcome your contributions to Gardenlinux or any supporting projects.
 
 To find out more, visit our
-[Contributor Documentation](https://gardenlinux-docs.netlify.app/contributing).
+[Contributor Documentation](https://docs.gardenlinux.org/contributing).
 
 ## Licensing
 

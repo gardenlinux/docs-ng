@@ -24,8 +24,8 @@ exclude = [
   "^https://github\\.com/gardenlinux/builder/blob/main/reference/features$",
   "^https://github\\.com/gardenlinux/gardenlinux/tree/main/tests/platformSetup/",
   "^https://github\\.com/gardenlinux/python-gardenlinux-lib/blob/main/_static/",
-  "^https://github\\.com/gardenlinux/docs-ng/blob/main/src/README\\.md$",
-  "^https://github\\.com/gardenlinux/docs-ng/blob/main/tests/README\\.md$",
+  "^https://github\\.com/gardenlinux/docs/blob/main/src/README\\.md$",
+  "^https://github\\.com/gardenlinux/docs/blob/main/tests/README\\.md$",
   "^http://packages\\.gardenlinux\\.io/gardenlinux$",
 ]
 

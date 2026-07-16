@@ -143,7 +143,7 @@ def build_sphinx_markdown(
 
         # Step 3: Copy hand-written Markdown files from the raw docs source
         # that carry a ``github_target_path`` frontmatter field.  These are
-        # manually authored docs-ng pages (how-to guides, overviews, etc.) that
+        # manually authored docs pages (how-to guides, overviews, etc.) that
         # live alongside the RST source in the repo.  The sphinx builder only
         # produces output from RST sources, so these files would be silently
         # dropped without this step.
@@ -172,7 +172,7 @@ def _copy_manual_markdown(
     ``github_target_path:`` frontmatter field and whose target path is
     **not** already covered by a sphinx-built file in *target_map*.
 
-    These files are manually authored docs-ng pages (how-to guides, overview
+    These files are manually authored docs pages (how-to guides, overview
     pages, etc.) that live alongside the RST sources in the repository.  The
     sphinx builder ignores them because they are not RST, so without this step
     they would be silently dropped when the sphinx builder takes over the full

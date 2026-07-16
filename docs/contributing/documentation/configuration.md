@@ -86,7 +86,7 @@ git operations.
 
 - **Type:** String
 - **Description:** Git reference to fetch (branch, tag, or commit)
-- **Examples:** `"main"`, `"docs-ng"`, `"v1.0.0"`
+- **Examples:** `"main"`, `"v1.0.0"`
 - **Notes:** Required for git URLs; ignored for `file://` URLs
 
 ### Optional Fields
@@ -137,20 +137,20 @@ git operations.
     {
       "name": "gardenlinux",
       "url": "https://github.com/gardenlinux/gardenlinux",
-      "ref": "docs-ng",
+      "ref": "main",
       "commit": "c4b1d8d7f878fcb3e779315d28e35fcb19ae4dfb",
       "root_files": ["CONTRIBUTING.md", "SECURITY.md"]
     },
     {
       "name": "builder",
       "url": "https://github.com/gardenlinux/builder",
-      "ref": "docs-ng",
+      "ref": "main",
       "commit": "b10476ad8c46130f310e36daa42c6e2c14fb51a9"
     },
     {
       "name": "python-gardenlinux-lib",
       "url": "https://github.com/gardenlinux/python-gardenlinux-lib",
-      "ref": "docs-ng",
+      "ref": "main",
       "commit": "9142fccc3d83ab51759db7d328fa19166bc1df63",
       "structure": "sphinx",
       "target_map": {
@@ -168,7 +168,7 @@ git operations.
 
 - Use HTTPS git URLs
 - Include `commit` locks for reproducibility
-- Use `docs-ng` or stable branches for `ref`
+- Use stable branches for `ref`
 
 ### Development (`repos-config.local.json`)
 
@@ -234,7 +234,7 @@ github_target_path: "docs/tutorials/my-tutorial.md"
 When using `github_target_path` for aggregated content, you can include additional metadata:
 
 - **`github_org`**: Organization name (e.g., `"gardenlinux"`)
-- **`github_repo`**: Repository name (e.g., `"docs-ng"`)
+- **`github_repo`**: Repository name (e.g., `"gardenlinux"`)
 - **`github_source_path`**: Original file path in source repo (e.g.,
   `"docs/tutorial.md"`)
 - **`github_branch`**: Branch name for edit links (default: `"main"`)

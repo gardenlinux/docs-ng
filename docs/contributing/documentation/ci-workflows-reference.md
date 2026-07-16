@@ -23,14 +23,14 @@ related_topics:
 | ------------ | ----------------------------------------------------------------------- |
 | **File**     | `.github/workflows/docs-check.yml`                                      |
 | **Lives in** | Each aggregated repository                                              |
-| **Type**     | Caller workflow — invokes the reusable `docs-checks.yml` from `docs-ng` |
+| **Type**     | Caller workflow — invokes the reusable `docs-checks.yml` from `docs` |
 
 ### Triggers
 
 ```yaml
 on:
   pull_request:
-    branches: [main, docs-ng]
+    branches: [main]
     types: [opened, synchronize, reopened, closed]
     paths:
       - "docs/**"
@@ -40,7 +40,7 @@ on:
       - "CONTRIBUTING.md"
       - "SECURITY.md"
   push:
-    branches: [main, docs-ng]
+    branches: [main]
     paths:
       # (same path list as above)
 ```
@@ -53,8 +53,8 @@ can detect merged PRs.
 
 | Job              | Condition                                                                         | Purpose                                                                     |
 | ---------------- | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| `docs-checks`    | Skipped when `action == 'closed'`                                                 | Calls the reusable quality-check workflow in `docs-ng` with override inputs |
-| `notify-docs-ng` | Runs after `docs-checks` succeeds **or** when a PR is merged (always-conditional) | Generates a GitHub App token and sends a `repository_dispatch` to `docs-ng` |
+| `docs-checks`    | Skipped when `action == 'closed'`                                                 | Calls the reusable quality-check workflow in `docs` with override inputs |
+| `notify-docs` | Runs after `docs-checks` succeeds **or** when a PR is merged (always-conditional) | Generates a GitHub App token and sends a `repository_dispatch` to `docs` |
 
 ### Inputs Passed to Reusable Workflow
 
@@ -64,7 +64,7 @@ can detect merged PRs.
 | `override-ref`    | `github.head_ref` (PR branch) or `github.ref_name` (push) |
 | `override-commit` | `pull_request.head.sha` or `github.sha`                   |
 
-### Dispatch Payload Sent to `docs-ng`
+### Dispatch Payload Sent to `docs`
 
 ```json
 {
@@ -86,7 +86,7 @@ can detect merged PRs.
 ### Outputs / Side-Effects
 
 - On open/synchronize PR: calls reusable workflow → on success dispatches
-  `docs-pr` event to `docs-ng`.
+  `docs-pr` event to `docs`.
 - On merged PR: skips quality checks, dispatches `docs-pr` event with
   `event: merged` and `ref` set to the base branch.
 
@@ -95,11 +95,11 @@ can detect merged PRs.
 ```mermaid
 flowchart TD
     A["PR event on docs paths"] --> B{action == closed?}
-    B -->|no| C["docs-checks job<br/>(calls docs-checks.yml @ docs-ng)"]
-    C -->|success| D["notify-docs-ng job"]
+    B -->|no| C["docs-checks job<br/>(calls docs-checks.yml @ docs)"]
+    C -->|success| D["notify-docs job"]
     B -->|yes, merged| D
     B -->|yes, not merged| E["workflow ends<br/>(no action)"]
-    D --> F["repository_dispatch → docs-ng<br/>event_type: docs-pr"]
+    D --> F["repository_dispatch → docs<br/>event_type: docs-pr"]
 
     class A input
     class C,D process
@@ -113,7 +113,7 @@ flowchart TD
 | Symptom                    | Likely cause                                                                                       |
 | -------------------------- | -------------------------------------------------------------------------------------------------- |
 | `docs-checks` job fails    | Broken links, spelling errors, or woke violations in the documentation change                      |
-| `notify-docs-ng` job fails | `DOCS_BOT_APP_ID` or `DOCS_BOT_PRIVATE_KEY` secret missing/invalid; App not installed on `docs-ng` |
+| `notify-docs` job fails | `DOCS_BOT_APP_ID` or `DOCS_BOT_PRIVATE_KEY` secret missing/invalid; App not installed on `docs` |
 | Workflow not triggered     | Changed files do not match the `paths:` filter                                                     |
 
 ## 2. `docs-checks.yml` — Reusable Quality Checks Workflow
@@ -121,7 +121,7 @@ flowchart TD
 |              |                                                           |
 | ------------ | --------------------------------------------------------- |
 | **File**     | `.github/workflows/docs-checks.yml`                       |
-| **Lives in** | `gardenlinux/docs-ng`                                     |
+| **Lives in** | `gardenlinux/docs`                                     |
 | **Type**     | Reusable workflow (`workflow_call`) + own PR/push trigger |
 
 ### Triggers
@@ -149,7 +149,7 @@ on:
 ```
 
 When called via `workflow_call`, it validates external repo documentation.
-When triggered directly by PR/push in `docs-ng`, it validates the aggregator's
+When triggered directly by PR/push in `docs`, it validates the aggregator's
 own documentation (with no overrides — all repos use their pinned commits).
 
 ### Inputs
@@ -222,7 +222,7 @@ flowchart TD
 |              |                                                               |
 | ------------ | ------------------------------------------------------------- |
 | **File**     | `.github/workflows/docs-pr.yml`                               |
-| **Lives in** | `gardenlinux/docs-ng`                                         |
+| **Lives in** | `gardenlinux/docs`                                         |
 | **Type**     | `repository_dispatch` consumer + `workflow_dispatch` (manual) |
 
 ### Triggers
@@ -265,8 +265,8 @@ The `client_payload` (or `inputs` for manual dispatch) must contain:
 ### Job Steps (in order)
 
 1. **Generate GitHub App token** — creates a token with write access to
-   `docs-ng` and the source repository.
-2. **Checkout docs-ng** — full fetch depth for branch operations.
+   `docs` and the source repository.
+2. **Checkout docs** — full fetch depth for branch operations.
 3. **Configure git** — sets bot identity for commits.
 4. **Extract payload** — normalizes `repository_dispatch` and
    `workflow_dispatch` inputs into step outputs.
@@ -278,24 +278,24 @@ The `client_payload` (or `inputs` for manual dispatch) must contain:
    `main`).
 8. **Create or update PR** — opens a draft PR (for `pr_success`) or marks
    an existing PR as ready-for-review (for `merged`).
-9. **Comment on source PR** — posts or updates a comment with the docs-ng
+9. **Comment on source PR** — posts or updates a comment with the docs
    PR link and Netlify deploy preview URL.
 
 ### Required Secrets
 
 | Secret                 | Purpose                                                      |
 | ---------------------- | ------------------------------------------------------------ |
-| `DOCS_BOT_APP_ID`      | GitHub App identifier (configured at org level in `docs-ng`) |
+| `DOCS_BOT_APP_ID`      | GitHub App identifier (configured at org level in `docs`) |
 | `DOCS_BOT_PRIVATE_KEY` | Private key for JWT token generation                         |
 
 ### Outputs / Side-Effects
 
 | Side-effect                         | Details                                                |
 | ----------------------------------- | ------------------------------------------------------ |
-| Branch `auto/<repo>/<pr_number>`    | Created or force-updated in `docs-ng`                  |
-| Draft PR in `docs-ng`               | Title: `docs(<repo>): Update commit lock from PR #<N>` |
+| Branch `auto/<repo>/<pr_number>`    | Created or force-updated in `docs`                  |
+| Draft PR in `docs`               | Title: `docs(<repo>): Update commit lock from PR #<N>` |
 | PR transitioned to ready-for-review | When `event == merged`                                 |
-| Comment on source PR                | Contains docs-ng PR URL and Netlify preview link       |
+| Comment on source PR                | Contains docs PR URL and Netlify preview link       |
 
 ### Branch Naming Convention
 
@@ -312,7 +312,7 @@ Examples: `auto/gardenlinux/4521`, `auto/builder/87`.
 ```mermaid
 flowchart TD
     A["repository_dispatch<br/>event_type: docs-pr"] --> B["Generate GitHub App token"]
-    B --> C["Checkout docs-ng<br/>(full history)"]
+    B --> C["Checkout docs<br/>(full history)"]
     C --> D["Extract payload fields"]
     D --> E["Create/update branch<br/>auto/<repo>/<pr_number>"]
     E --> F["Update repos-config.json<br/>(commit + ref)"]
@@ -332,9 +332,8 @@ flowchart TD
 
 | Symptom                                     | Likely cause                                                                                  |
 | ------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Job fails at "Generate GitHub App token"    | `DOCS_BOT_APP_ID` or `DOCS_BOT_PRIVATE_KEY` not set in `docs-ng` repository secrets           |
+| Job fails at "Generate GitHub App token"    | `DOCS_BOT_APP_ID` or `DOCS_BOT_PRIVATE_KEY` not set in `docs` repository secrets           |
 | "Repository not found in repos-config.json" | The dispatching repo's name does not match any `name` field in `repos-config.json`            |
-| Force-push fails                            | Branch protection rules on `docs-ng` blocking the bot (auto branches should not be protected) |
 | Comment not posted                          | App token lacks write access to the source repo's issues/PRs                                  |
 
 ## 4. `check-pr-main.yml` — `repos-config.json` Validator
@@ -342,7 +341,7 @@ flowchart TD
 |              |                                       |
 | ------------ | ------------------------------------- |
 | **File**     | `.github/workflows/check-pr-main.yml` |
-| **Lives in** | `gardenlinux/docs-ng`                 |
+| **Lives in** | `gardenlinux/docs`                 |
 | **Type**     | PR validator (status check)           |
 
 ### Triggers
@@ -353,13 +352,13 @@ on:
     branches: [main]
 ```
 
-Runs on every PR targeting `main` in `docs-ng`. There is no path filter — it
+Runs on every PR targeting `main` in `docs`. There is no path filter — it
 always runs because `repos-config.json` could be modified in any PR.
 
 ### Purpose
 
 Prevents merging a PR that contains non-production references in
-`repos-config.json`. This ensures that once a docs-ng PR is merged, the site
+`repos-config.json`. This ensures that once a docs PR is merged, the site
 builds against stable refs only.
 
 ### Validation Rules
@@ -368,7 +367,6 @@ The workflow checks every entry in `repos-config.json.repos[]` and fails if
 any `ref` value is **not** one of:
 
 - `main`
-- `docs-ng`
 - A semantic version string matching `^\d+\.\d+\.\d+$`
 
 If a ref points to a feature branch (e.g., `feature/my-docs-change`), the
@@ -398,7 +396,7 @@ None. The workflow only reads the repository contents using the default
 flowchart TD
     A["PR opened/updated<br/>targeting main"] --> B["Checkout PR branch"]
     B --> C["Read repos-config.json"]
-    C --> D{"For each repo:<br/>ref ∈ {main, docs-ng, semver}?"}
+    C --> D{"For each repo:<br/>ref ∈ {main, semver}?"}
     D -->|all valid| E["✓ Check passes"]
     D -->|invalid refs found| F["✗ Check fails<br/>lists non-compliant repos"]
 
@@ -415,7 +413,6 @@ flowchart TD
 | --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Check fails with "non-main branch references" | The automated PR was created from an open (not yet merged) source PR — the ref still points at the feature branch                                           |
 | Check fails after source PR was merged        | Race condition — the `docs-pr.yml` workflow has not yet run to update the ref. Wait for the "merged" dispatch to complete and force-push the updated branch |
-| False positive on `docs-ng` ref               | The `docs-ng` ref is in the allowed set — if validation fails, check the exact spelling in `repos-config.json`                                              |
 
 ## Related Topics
 
