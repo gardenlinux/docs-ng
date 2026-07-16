@@ -189,7 +189,7 @@ Here's a complete configuration:
   "name": "example-tool",
   "url": "https://github.com/gardenlinux/example-tool",
   "docs_path": "documentation",
-  "ref": "docs-ng",
+  "ref": "main",
   "commit": "1234567890abcdef",
   "root_files": ["README.md"],
   "structure": "flat",
@@ -204,7 +204,6 @@ The `docs_path` field defaults to `"docs"` and may be omitted when the documenta
 ### Files Not Appearing
 
 - Verify `docs_path` points to the correct directory
-- Check that the repository has a `docs-ng` branch or adjust `ref`
 - Ensure `github_target_path` front-matter is correct
 
 ### Media Not Copied

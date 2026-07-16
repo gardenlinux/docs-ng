@@ -18,7 +18,7 @@ related_topics:
 # Contributing to the Garden Linux Documentation
 
 Garden Linux documentation is published at
-**https://gardenlinux-docs.netlify.app/** and combines content from multiple
+**https://docs.gardenlinux.org/** and combines content from multiple
 repositories into a unified documentation site.
 
 ## Working with the Documentation System Locally
@@ -36,8 +36,8 @@ documentation system locally.
 ### Step 1: Clone the Repository
 
 ```bash
-git clone https://github.com/gardenlinux/docs-ng.git
-cd docs-ng
+git clone https://github.com/gardenlinux/docs.git
+cd docs
 ```
 
 ### Step 2: Install Dependencies

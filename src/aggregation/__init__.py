@@ -1,4 +1,4 @@
-"""Aggregation package for docs-ng documentation aggregation."""
+"""Aggregation package for docs documentation aggregation."""
 
 # Re-export commonly used functions for backward compatibility with tests
 from .config import load_config, save_config

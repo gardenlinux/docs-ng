@@ -36,7 +36,7 @@ class DocsFetcher:
         Initialize fetcher.
 
         Args:
-            project_root: Root directory of docs-ng project
+            project_root: Root directory of docs project
             update_locks: Whether we're in update-locks mode (allows commit mismatches)
         """
         self.project_root = project_root

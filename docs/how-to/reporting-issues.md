@@ -47,4 +47,4 @@ and analyze the issue._
 
 ## Documentation Issue?
 
-Did you find something to improve in this documentation? [Open a new issue](https://github.com/gardenlinux/docs-ng/issues/new/choose).
+Did you find something to improve in this documentation? [Open a new issue](https://github.com/gardenlinux/docs/issues/new/choose).

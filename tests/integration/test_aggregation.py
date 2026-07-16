@@ -120,7 +120,7 @@ class TestDocsFetcher:
     def test_fetch_local_resolves_relative_path(self, tmp_path):
         """Test that a relative file:// URL is resolved against project_root."""
         # Simulate a sibling-directory layout: project_root and mock-repo are siblings
-        project_root = tmp_path / "docs-ng"
+        project_root = tmp_path / "docs"
         project_root.mkdir()
 
         repo_path = tmp_path / "mock-repo"

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Unified documentation aggregation script for docs-ng
+Unified documentation aggregation script for docs
 
 This script orchestrates documentation aggregation from multiple repositories.
 All heavy lifting is done by the aggregation package modules.

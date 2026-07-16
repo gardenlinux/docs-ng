@@ -1,6 +1,6 @@
-"""GitHub API HTTP client for docs-ng aggregation.
+"""GitHub API HTTP client for docs aggregation.
 
-This module is the single entry point for all GitHub HTTP calls in docs-ng.
+This module is the single entry point for all GitHub HTTP calls in docs.
 Future callers should use :func:`get_json` or :func:`list_repo_releases` rather
 than writing ad-hoc HTTP requests.
 
@@ -51,7 +51,7 @@ def _build_request(url: str) -> urllib.request.Request:
     headers = {
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
-        "User-Agent": "gardenlinux-docs-ng",
+        "User-Agent": "gardenlinux-docs",
     }
 
     token = os.environ.get("GITHUB_TOKEN", "").strip()

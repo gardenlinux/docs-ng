@@ -18,7 +18,7 @@ jobs:
           script: |
             const fs = require('fs');
             const config = JSON.parse(fs.readFileSync('repos-config.json', 'utf8'));
-            const ALLOWED_REFS = new Set(['main', 'docs-ng']);
+            const ALLOWED_REFS = new Set(['main']);
 
             const errors = [];
             for (const repo of config.repos) {

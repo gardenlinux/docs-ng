@@ -39,9 +39,9 @@ jobs:
         with:
           client-id: ${{ secrets.DOCS_BOT_APP_ID }}
           private-key: ${{ secrets.DOCS_BOT_PRIVATE_KEY }}
-          repositories: docs-ng,${{ github.event.client_payload.repo || inputs.repo }}
+          repositories: docs,${{ github.event.client_payload.repo || inputs.repo }}
 
-      - name: Checkout docs-ng
+      - name: Checkout docs
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           token: ${{ steps.app-token.outputs.token }}
