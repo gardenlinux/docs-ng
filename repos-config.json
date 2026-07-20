@@ -16,8 +16,8 @@
     {
       "name": "builder",
       "url": "https://github.com/gardenlinux/builder",
-      "ref": "docs-ng",
-      "commit": "6326277fe220553b6ac8fcf87956a8fcc6639064"
+      "ref": "main",
+      "commit": "4bdc94bb29a8dcfcb7f3be50cd909a9af875b731"
     },
     {
       "name": "python-gardenlinux-lib",
