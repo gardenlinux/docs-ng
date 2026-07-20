@@ -4,7 +4,7 @@
       "name": "gardenlinux",
       "url": "https://github.com/gardenlinux/gardenlinux",
       "ref": "main",
-      "commit": "7310b68ed7a474380dc5c55229b84f5439cb26a8",
+      "commit": "f135908d017f8b306f89a36d2048f6fedad1e177",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
@@ -16,14 +16,14 @@
     {
       "name": "builder",
       "url": "https://github.com/gardenlinux/builder",
-      "ref": "docs/flavor_cname",
-      "commit": "c9a84891f05bd85872e58e5d77676774940eccb9"
+      "ref": "main",
+      "commit": "4bdc94bb29a8dcfcb7f3be50cd909a9af875b731"
     },
     {
       "name": "python-gardenlinux-lib",
       "url": "https://github.com/gardenlinux/python-gardenlinux-lib",
-      "ref": "docs-ng",
-      "commit": "61a370280ff6c726f91b3d65f7ed172448841858",
+      "ref": "main",
+      "commit": "c1dfb1390e5352476cbfcee8ad809a04d808903b",
       "structure": "sphinx",
       "target_map": {
         "cli.md": "reference/python-gardenlinux-lib-cli.md",
@@ -33,26 +33,26 @@
     {
       "name": "package-linux",
       "url": "https://github.com/gardenlinux/package-linux",
-      "ref": "docs-ng",
-      "commit": "45f0d1a62a723d0052bcfbf9eb40e26366595164"
+      "ref": "main",
+      "commit": "f69981886bced20b25c241f19863370e6cee6b3c"
     },
     {
       "name": "package-build",
       "url": "https://github.com/gardenlinux/package-build",
-      "ref": "docs-ng",
-      "commit": "2021e13e55a73d060450c295307c9a996f08ba91"
+      "ref": "main",
+      "commit": "faf09b767270aacd869fbf0b11154d3044e8ad58"
     },
     {
       "name": "repo",
       "url": "https://github.com/gardenlinux/repo",
-      "ref": "docs-ng",
-      "commit": "030acbd0d9c08da047e65f8becd28862aefecd17"
+      "ref": "main",
+      "commit": "cd9dba1588400e6ea44a5076a673c3587fe93c3c"
     },
     {
       "name": "glrd",
       "url": "https://github.com/gardenlinux/glrd",
-      "ref": "docs-ng",
-      "commit": "c51d0a8f902322848aa17bdee8ddd3a86bf86bf3"
+      "ref": "main",
+      "commit": "d24a4d63107fdba44531faf831668a26c7ca20a2"
     }
   ]
 }
