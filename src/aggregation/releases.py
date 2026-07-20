@@ -287,6 +287,19 @@ def generate_release_docs(docs_dir: Path, existing_gh_tags: set[str]) -> bool:
     release_file = "maintained-releases.md"
     release_path = releases_dir / release_file
 
+    # The static page (frontmatter, intro, headings) is aggregated from the
+    # gardenlinux repo via 'github_target_path'. If it was not aggregated (for
+    # example because the source 'docs/' tree is absent at the pinned commit),
+    # skip generation with a warning rather than crashing the whole build.
+    if not release_path.exists():
+        print(
+            f"Warning: {release_path} not found — skipping maintained-releases "
+            "generation. Ensure the source page is aggregated from the "
+            "gardenlinux repo (github_target_path frontmatter).",
+            file=sys.stderr,
+        )
+        return False
+
     # Read existing file and keep only frontmatter and static content
     # (everything before the generated tables)
     existing_content = release_path.read_text()
@@ -320,6 +333,18 @@ def generate_release_docs(docs_dir: Path, existing_gh_tags: set[str]) -> bool:
 
         release_file = "archived-releases.md"
         release_path = releases_dir / release_file
+
+        # As with maintained-releases, the static page is aggregated from the
+        # gardenlinux repo. Skip gracefully if it was not aggregated.
+        if not release_path.exists():
+            print(
+                f"Warning: {release_path} not found — skipping archived-releases "
+                "generation. Ensure the source page is aggregated from the "
+                "gardenlinux repo (github_target_path frontmatter).",
+                file=sys.stderr,
+            )
+            print("Release documentation generation complete.")
+            return True
 
         # Read existing file and keep only frontmatter and static content
         existing_content = release_path.read_text()
