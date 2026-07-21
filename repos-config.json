@@ -4,7 +4,7 @@
       "name": "gardenlinux",
       "url": "https://github.com/gardenlinux/gardenlinux",
       "ref": "main",
-      "commit": "f135908d017f8b306f89a36d2048f6fedad1e177",
+      "commit": "18e01e0eda948504abb3df5ced6b99232d989a89",
       "root_files": [
         "CONTRIBUTING.md",
         "SECURITY.md",
@@ -17,13 +17,13 @@
       "name": "builder",
       "url": "https://github.com/gardenlinux/builder",
       "ref": "main",
-      "commit": "4bdc94bb29a8dcfcb7f3be50cd909a9af875b731"
+      "commit": "2363bc8264729642b9b28a046e712a9c7744d7b3"
     },
     {
       "name": "python-gardenlinux-lib",
       "url": "https://github.com/gardenlinux/python-gardenlinux-lib",
       "ref": "main",
-      "commit": "c1dfb1390e5352476cbfcee8ad809a04d808903b",
+      "commit": "2a27700198bc91e0f9b8321960ebc4709d65c41a",
       "structure": "sphinx",
       "target_map": {
         "cli.md": "reference/python-gardenlinux-lib-cli.md",
@@ -34,19 +34,19 @@
       "name": "package-linux",
       "url": "https://github.com/gardenlinux/package-linux",
       "ref": "main",
-      "commit": "f69981886bced20b25c241f19863370e6cee6b3c"
+      "commit": "d5fb162f21a5b06eedfcefe2e78ee00736fd315b"
     },
     {
       "name": "package-build",
       "url": "https://github.com/gardenlinux/package-build",
       "ref": "main",
-      "commit": "faf09b767270aacd869fbf0b11154d3044e8ad58"
+      "commit": "c571525680671caeac7a1471cd7f2ca812f96474"
     },
     {
       "name": "repo",
       "url": "https://github.com/gardenlinux/repo",
       "ref": "main",
-      "commit": "cd9dba1588400e6ea44a5076a673c3587fe93c3c"
+      "commit": "e07c14a8a5ddac524d038c5c59687418d2e6492d"
     },
     {
       "name": "glrd",
