@@ -54,10 +54,6 @@ features:
     details: Learn how to report any issue you face with Garden Linux
     link: /how-to/reporting-issues
 
-migration_status: "done"
-migration_issue: https://github.com/gardenlinux/gardenlinux/issues/4622
-migration_stakeholder: "@tmang0ld, @yeoldegrove, @ByteOtter"
-migration_approved: false
 ---
 
 <script setup>
