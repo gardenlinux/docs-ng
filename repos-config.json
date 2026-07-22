@@ -51,8 +51,8 @@
     {
       "name": "glrd",
       "url": "https://github.com/gardenlinux/glrd",
-      "ref": "main",
-      "commit": "d24a4d63107fdba44531faf831668a26c7ca20a2"
+      "ref": "feat/bump_python_gardenlinux_lib",
+      "commit": "ec58af688e87138b2bc40efedf8ee96a71ee95ae"
     }
   ]
 }
