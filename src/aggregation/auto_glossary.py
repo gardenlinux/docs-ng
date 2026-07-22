@@ -252,14 +252,11 @@ class AutoGlossary:
 
         return unprotected
 
-    def link_terms(
-        self, content: str, file_path: str = "", auto_link: bool = False
-    ) -> str:
+    def link_terms(self, content: str, file_path: str = "") -> str:
         """Process markdown content and link glossary terms.
 
         :param content: Markdown content to process
         :param file_path: Relative path of the file for logging
-        :param auto_link: Whether to auto-link first occurrence of known terms
         :return: Content with glossary markers replaced by markdown links
         """
         if file_path == GLOSSARY_PATH or file_path.endswith("/glossary.md"):
@@ -318,76 +315,6 @@ class AutoGlossary:
         parts.append(content[pos:])
 
         result = "".join(parts)
-
-        # Auto-link first occurrence of each term
-        if auto_link:
-            result = self._auto_link_terms(result, file_path)
-
-        return result
-
-    def _auto_link_terms(self, content: str, file_path: str = "") -> str:
-        """Auto-link first occurrence of glossary terms.
-
-        :param content: Markdown content to process
-        :param file_path: Relative path for logging
-        :return: Content with first occurrences linked
-        """
-        # Build list of terms sorted by length (longest first) to handle overlapping terms
-        all_terms = []
-
-        # Add main terms
-        for term_key, (anchor, display_name) in self.terms.items():
-            all_terms.append((display_name, anchor))
-
-        # Add aliases (but use actual alias text for matching)
-        for alias_key, canonical_key in self.aliases.items():
-            anchor, _ = self.terms[canonical_key]
-            # Reconstruct proper case for alias
-            alias_words = alias_key.split()
-            alias_display = " ".join(word.capitalize() for word in alias_words)
-            all_terms.append((alias_display, anchor))
-
-        # Sort by length descending to match longer terms first
-        all_terms.sort(key=lambda x: len(x[0]), reverse=True)
-
-        # Find all matches first, then apply them
-        matches_to_link = []
-        linked_terms = set()
-
-        for term_text, anchor in all_terms:
-            term_lower = term_text.lower()
-            if term_lower in linked_terms:
-                continue
-
-            # Create pattern for whole word match
-            pattern = re.compile(r"\b(" + re.escape(term_text) + r")\b", re.IGNORECASE)
-
-            # Find first occurrence
-            match = pattern.search(content)
-            if match:
-                # Check if this overlaps with any existing match
-                overlaps = False
-                for existing_start, existing_end, _, _ in matches_to_link:
-                    if not (
-                        match.end() <= existing_start or match.start() >= existing_end
-                    ):
-                        overlaps = True
-                        break
-
-                if not overlaps:
-                    matches_to_link.append(
-                        (match.start(), match.end(), match.group(1), anchor)
-                    )
-                    linked_terms.add(term_lower)
-
-        # Sort matches by position (reverse order to maintain positions)
-        matches_to_link.sort(key=lambda x: x[0], reverse=True)
-
-        # Apply all links from end to start
-        result = content
-        for start, end, matched_text, anchor in matches_to_link:
-            link = f"[{matched_text}](/reference/glossary#{anchor})"
-            result = result[:start] + link + result[end:]
 
         return result
 
@@ -465,13 +392,10 @@ class AutoGlossary:
         return [c for c in candidates if c != term and not (c in seen or seen.add(c))]
 
 
-def process_glossary_links(
-    docs_dir: Path, auto_link: bool = False, entry_format: str | None = None
-) -> int:
+def process_glossary_links(docs_dir: Path, entry_format: str | None = None) -> int:
     """Process all markdown files in docs directory for glossary linking.
 
     :param docs_dir: Root documentation directory
-    :param auto_link: Whether to auto-link first occurrence of known terms
     :param entry_format: Format string for glossary markers
     :return: Number of files processed successfully
     """
@@ -495,7 +419,7 @@ def process_glossary_links(
         try:
             content: str = md_file.read_text(encoding="utf-8")
             linked_content: str = linker.link_terms(
-                content, str(md_file.relative_to(docs_dir)), auto_link=auto_link
+                content, str(md_file.relative_to(docs_dir))
             )
 
             if linked_content != content:
@@ -541,7 +465,6 @@ def main() -> int:
         epilog="""
         Examples:
             %(prog)s docs/
-            %(prog)s docs/ --auto-link
             %(prog)s docs/ --entry-format "[[*]]"
         """,
     )
@@ -552,12 +475,6 @@ def main() -> int:
         nargs="?",
         default=Path("docs"),
         help="Documentation directory to process (default: docs/)",
-    )
-
-    parser.add_argument(
-        "--auto-link",
-        action="store_true",
-        help="Automatically link first occurrence of known terms (experimental)",
     )
 
     parser.add_argument(
@@ -587,12 +504,11 @@ def main() -> int:
 
     if args.verbose:
         print(f"Processing directory: {args.docs_dir}")
-        print(f"Auto-link: {args.auto_link}")
         print(f"Entry format: {args.entry_format or GLOSSARY_ENTRY_FORMAT}")
 
     try:
         processed = process_glossary_links(
-            args.docs_dir, auto_link=args.auto_link, entry_format=args.entry_format
+            args.docs_dir, entry_format=args.entry_format
         )
     except Exception as e:
         print(f"[Error][auto-glossary] Failed to process glossary links: {e}")
