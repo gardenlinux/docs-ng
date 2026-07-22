@@ -10,3 +10,4 @@ sphinx-markdown-builder
 sphinx-rtd-theme
 sphinx-click
 sphinxcontrib-autoprogram
+nltk

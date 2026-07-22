@@ -5,8 +5,12 @@ import unicodedata
 from pathlib import Path
 from typing import Any, Dict, List, Match, Pattern, Tuple
 
+from nltk.corpus import wordnet
+from nltk.stem import WordNetLemmatizer
+
 # Default format for marking glossary entries in markdown
-GLOSSARY_ENTRY_FORMAT = "{glossary:*}"
+GLOSSARY_ENTRY_FORMAT: str = "{glossary:*}"
+GLOSSARY_PATH: str = "/reference/glossary"
 
 CODE_BLOCK_PATTERN: Pattern[str] = re.compile(
     r"^(`{3,}|~{3,})[^\n]*\n[\s\S]*?^\1\s*$", re.MULTILINE
@@ -235,7 +239,7 @@ class AutoGlossary:
         :param auto_link: Whether to auto-link first occurrence of known terms
         :return: Content with glossary markers replaced by markdown links
         """
-        if file_path == "reference/glossary.md" or file_path.endswith("/glossary.md"):
+        if file_path == GLOSSARY_PATH or file_path.endswith("/glossary.md"):
             return content
 
         # Find all protected regions and their inverse
@@ -249,34 +253,28 @@ class AutoGlossary:
             term = match.group("term").strip()
             term_lower = term.lower()
 
-            # Check if term exists in glossary
             if term_lower in self.terms:
-                anchor, display_name = self.terms[term_lower]
-                return f"[{term}](/reference/glossary#{anchor})"
+                anchor, _ = self.terms[term_lower]
+                return f"[{term}]({GLOSSARY_PATH}#{anchor})"
             elif term_lower in self.aliases:
                 canonical = self.aliases[term_lower]
-                anchor, display_name = self.terms[canonical]
-                return f"[{term}](/reference/glossary#{anchor})"
+                anchor, _ = self.terms[canonical]
+                return f"[{term}]({GLOSSARY_PATH}#{anchor})"
 
-            # Basic grammar handling
-            base_term: str = ""
-            for suffix in ("s", "es", "ed", "ing", "ly"):
-                if term_lower.endswith(suffix):
-                    candidate = term_lower[: -len(suffix)]
-                    if candidate in self.terms:
-                        anchor, display_name = self.terms[candidate]
-                        return f"[{term}](/reference/glossary#{anchor})"
-                    elif candidate in self.aliases:
-                        canonical = self.aliases[candidate]
-                        anchor, display_name = self.terms[canonical]
-                        return f"[{term}](/reference/glossary#{anchor})"
+            base_forms: List[str] = self._get_base_forms(term)
+            for base_form in base_forms:
+                if base_form in self.terms:
+                    anchor, _ = self.terms[base_form]
+                    return f"[{term}]({GLOSSARY_PATH}#{anchor})"
+                elif base_form in self.aliases:
+                    canonical = self.aliases[base_form]
+                    anchor, _ = self.terms[canonical]
+                    return f"[{term}]({GLOSSARY_PATH}#{anchor})"
 
-            # Not found
             print(
                 f"[Warning][auto-glossary] Term '{term}' not found in glossary! "
                 f"(referenced in file '{file_path}')"
             )
-            # Return original marker if term not found
             return match.group(0)
 
         # Build result by processing only unprotected regions
@@ -377,6 +375,40 @@ class AutoGlossary:
         :return: True if term exists in glossary or aliases
         """
         return term.lower() in self.terms or term.lower() in self.aliases
+
+    def _get_base_forms(self, term: str) -> List[str]:
+        """Get possible base forms of a given term.
+
+        :param term: The term to analyze
+        :returns: A list of possible base terms
+        """
+        term = term.lower()
+        candidates: List[str] = []
+
+        if term.endswith("'s"):
+            candidates.append(term[:-2])
+        elif term.endswith("'"):
+            candidates.append(term[:-1])
+
+        if not hasattr(self, "_lemmatizer"):
+            self._lemmatizer = WordNetLemmatizer()
+
+        words: List[str] = term.split()
+        if len(words) == 1:
+            # One word -> Try as noun, adjective or verb.
+            # nltk lemmatizer handles irregular forms.
+            candidates.append(self._lemmatizer.lemmatize(term, pos=wordnet.NOUN))
+            candidates.append(self._lemmatizer.lemmatize(term, pos=wordnet.VERB))
+            candidates.append(self._lemmatizer.lemmatize(term, pos=wordnet.ADJ))
+        else:
+            # Multi-word -> lemmatize last word only (e.g. "Kubernetes cluster" -> "Kubernetes cluster")
+            last_lemma = self._lemmatizer.lemmatize(words[-1], pos=wordnet.NOUN)
+            if last_lemma != words[-1]:
+                candidates.append(" ".join(words[:-1] + [last_lemma]))
+
+        # Remove duplicates
+        seen = set()
+        return [c for c in candidates if c != term and not (c in seen or seen.add(c))]
 
 
 def process_glossary_links(
