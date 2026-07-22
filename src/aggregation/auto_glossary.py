@@ -70,6 +70,29 @@ class AutoGlossary:
         # Compile and return
         return re.compile(pattern_str)
 
+    def _ensure_nltk_data(self) -> None:
+        """
+        Ensure nltk wordnet data is available.
+        """
+        try:
+            import nltk
+
+            nltk.data.find("corpora/wordnet")
+        except LookupError:
+            try:
+                import nltk
+
+                print("[INFO][auto-glossary] Downloading NLTK WordNet data...")
+                nltk.download("wordnet", quiet=True)
+                nltk.download("omw-1.4", quiet=True)
+            except Exception as e:
+                print(
+                    f"[Warning][auto-glossary] Could not download NLTK WordNet data: {e}"
+                )
+                print(
+                    f"[Warning][auto-glossary] Grammar Handling will use basic wordlist. This is unreliable any may lead to errors down the line."
+                )
+
     def get_entry_format_example(self, term: str = "example") -> str:
         """Get an example of how to mark a term with the current entry format.
 
@@ -390,21 +413,52 @@ class AutoGlossary:
         elif term.endswith("'"):
             candidates.append(term[:-1])
 
-        if not hasattr(self, "_lemmatizer"):
-            self._lemmatizer = WordNetLemmatizer()
+        try:
+            if not hasattr(self, "_lemmatizer"):
+                self._lemmatizer = WordNetLemmatizer()
 
-        words: List[str] = term.split()
-        if len(words) == 1:
-            # One word -> Try as noun, adjective or verb.
-            # nltk lemmatizer handles irregular forms.
-            candidates.append(self._lemmatizer.lemmatize(term, pos=wordnet.NOUN))
-            candidates.append(self._lemmatizer.lemmatize(term, pos=wordnet.VERB))
-            candidates.append(self._lemmatizer.lemmatize(term, pos=wordnet.ADJ))
-        else:
-            # Multi-word -> lemmatize last word only (e.g. "Kubernetes cluster" -> "Kubernetes cluster")
-            last_lemma = self._lemmatizer.lemmatize(words[-1], pos=wordnet.NOUN)
-            if last_lemma != words[-1]:
-                candidates.append(" ".join(words[:-1] + [last_lemma]))
+            words: List[str] = term.split()
+            if len(words) == 1:
+                # One word -> Try as noun, adjective or verb.
+                # nltk lemmatizer handles irregular forms.
+                candidates.append(self._lemmatizer.lemmatize(term, pos=wordnet.NOUN))
+                candidates.append(self._lemmatizer.lemmatize(term, pos=wordnet.VERB))
+                candidates.append(self._lemmatizer.lemmatize(term, pos=wordnet.ADJ))
+            else:
+                # Multi-word -> lemmatize last word only (e.g. "Kubernetes cluster" -> "Kubernetes cluster")
+                last_lemma = self._lemmatizer.lemmatize(words[-1], pos=wordnet.NOUN)
+                if last_lemma != words[-1]:
+                    candidates.append(" ".join(words[:-1] + [last_lemma]))
+        except LookupError:
+            print(
+                f"[Warning][auto-glossary] NLTK lookup error. Falling back to basic ruleset..."
+            )
+            # NLTK data not available -> fallback to basic ruleset.
+            suffix_rules: List[Tuple[str, str]] = [
+                ("ies", "y"),
+                ("sses", "ss"),
+                ("ses", "s"),
+                ("s", ""),
+                ("ed", ""),
+                ("ing", ""),
+                ("ly", ""),
+            ]
+
+            for suffix, replacement in suffix_rules:
+                if term.endswith(suffix):
+                    base = term[: -len(suffix)] + replacement
+                    # handle double consonants
+                    if (
+                        len(base) >= 2
+                        and base[-1] == base[-2]
+                        and base[-1] in "bcdfgklmnprstvwz"
+                    ):
+                        candidates.append(base[:-1])
+                    if base:
+                        candidates.append(base)
+
+        except Exception as e:
+            print(f"[Warning][auto-glossary] Unidentified NLTK Error: {e}")
 
         # Remove duplicates
         seen = set()
