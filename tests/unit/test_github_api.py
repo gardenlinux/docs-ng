@@ -12,10 +12,10 @@ import pytest
 
 from aggregation.github_api import GitHubAPIError, get_json, list_repo_releases
 
-
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def _make_response(body: bytes, status: int = 200) -> MagicMock:
     """Return a mock context-manager response that yields *body*."""
@@ -44,6 +44,7 @@ def _make_http_error(code: int, headers: dict | None = None) -> urllib.error.HTT
 # ---------------------------------------------------------------------------
 # get_json
 # ---------------------------------------------------------------------------
+
 
 class TestGetJson:
     """Tests for get_json."""
@@ -136,6 +137,7 @@ class TestGetJson:
 # ---------------------------------------------------------------------------
 # list_repo_releases
 # ---------------------------------------------------------------------------
+
 
 class TestListRepoReleases:
     """Tests for list_repo_releases."""

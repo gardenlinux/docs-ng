@@ -120,7 +120,10 @@ def generate_release_notes_docs(docs_dir: Path, releases: list[dict]) -> bool:
             print(f"  Removed: {md_file.relative_to(docs_dir)}")
 
     if not releases:
-        print("Warning: No releases provided to generate_release_notes_docs", file=sys.stderr)
+        print(
+            "Warning: No releases provided to generate_release_notes_docs",
+            file=sys.stderr,
+        )
         return False
 
     # Query GLRD to determine release status

@@ -90,14 +90,19 @@ def build_sphinx_markdown(
         env["NO_COLOR"] = "1"
         src_dir = repo_dir / "src"
         if src_dir.is_dir():
-            env["PYTHONPATH"] = (
-                str(src_dir) + os.pathsep + env.get("PYTHONPATH", "")
-            )
+            env["PYTHONPATH"] = str(src_dir) + os.pathsep + env.get("PYTHONPATH", "")
             print(f"  [sphinx] PYTHONPATH prepended with: {src_dir}")
 
         result = subprocess.run(
-            [sys.executable, "-m", "sphinx", "-M", "markdown",
-             str(docs_source), str(build_dir)],
+            [
+                sys.executable,
+                "-m",
+                "sphinx",
+                "-M",
+                "markdown",
+                str(docs_source),
+                str(build_dir),
+            ],
             capture_output=True,
             text=True,
             cwd=str(docs_source),
@@ -235,7 +240,9 @@ def _copy_manual_markdown(
         # Copy flat into output_dir root — placement is driven by github_target_path
         dest = output_dir / md_file.name
         shutil.copy2(md_file, dest)
-        print(f"  [sphinx] Carried over manual markdown: {md_file.relative_to(docs_source)}")
+        print(
+            f"  [sphinx] Carried over manual markdown: {md_file.relative_to(docs_source)}"
+        )
         copied += 1
 
     if copied:

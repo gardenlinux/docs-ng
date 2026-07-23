@@ -113,9 +113,7 @@ def get_json(url: str) -> Any:
         ) from exc
 
 
-def list_repo_releases(
-    owner: str, repo: str, per_page: int = 100
-) -> list[dict]:
+def list_repo_releases(owner: str, repo: str, per_page: int = 100) -> list[dict]:
     """Fetch every release for *owner*/*repo* from the GitHub Releases API.
 
     Paginates automatically until GitHub returns an empty page.  The full list

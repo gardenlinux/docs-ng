@@ -100,15 +100,28 @@ As you work on documentation in source repositories:
 2. Run `make aggregate-local` to update the aggregated docs
 3. The dev server will hot-reload automatically
 
-### Step 6: Build for Production
-
-When ready to deploy:
+### Step 6: Build for Testing 
 
 ```bash
-make build
+make build 
 ```
 
-This creates a production build in `docs/.vitepress/dist/`.
+This creates a build in `docs/.vitepress/dist/` for testing purposes.
+
+### Step 7: Build for Production
+
+Once ready to deploy:
+
+```bash
+make publish
+```
+
+This runs certain transformation steps such as the automatic glossary and creates a production build in `docs/.vitepress/dist/`.
+
+::: tip Note
+Transformation will leave your local work tree "dirty" (with unstaged changes) as the automatic glossary will
+replace all terms designates with shortcodes (e.g. `{glossary:*}`) with links to the respective glossary entry.
+:::
 
 ## Common Workflows
 

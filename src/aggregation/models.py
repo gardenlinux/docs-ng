@@ -3,7 +3,6 @@
 from dataclasses import dataclass, field
 from typing import Dict, List
 
-
 _DEFAULT_MEDIA_DIRECTORIES = [".media", "assets"]
 
 

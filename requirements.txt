@@ -1,4 +1,6 @@
 codespell==2.4.2
+black
+isort
 pytest
 pyyaml
 # glrd @ git+https://github.com/gardenlinux/glrd.git@v4.2.0
@@ -8,3 +10,4 @@ sphinx-markdown-builder
 sphinx-rtd-theme
 sphinx-click
 sphinxcontrib-autoprogram
+nltk

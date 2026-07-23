@@ -4,7 +4,7 @@ import json
 import sys
 from typing import List
 
-from .models import RepoConfig, _DEFAULT_MEDIA_DIRECTORIES
+from .models import _DEFAULT_MEDIA_DIRECTORIES, RepoConfig
 
 
 def load_config(config_path: str) -> List[RepoConfig]:

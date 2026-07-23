@@ -1,12 +1,14 @@
-.PHONY: help run build preview aggregate aggregate-repo aggregate-update-repo aggregate-repo-single aggregate-update-repo-single test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration check spelling linkcheck woke
+.PHONY: help run build preview publish transform aggregate aggregate-repo aggregate-update-repo aggregate-repo-single aggregate-update-repo-single test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration check spelling linkcheck woke glossary glossary-check format
 
 help:
 	@echo "Garden Linux Documentation Hub - Available targets:"
 	@echo ""
 	@echo "  Development:"
 	@echo "    run                    - Run docs development server"
-	@echo "    build                  - Build documentation for production"
+	@echo "    build                  - Build documentation for test purposes"
+	@echo "    transform              - Run transformation on aggregated docs (may leave work tree 'dirty')"
 	@echo "    preview                - Preview production build locally"
+	@echo "    publish                - Build documentation with transformation for publishing"
 	@echo ""
 	@echo "  Testing:"
 	@echo "    test                   - Run full test suite (unit + integration)"
@@ -18,6 +20,8 @@ help:
 	@echo "    spelling               - Check spelling with codespell"
 	@echo "    linkcheck              - Check links with lychee"
 	@echo "    woke                   - Check inclusive language with woke"
+	@echo "    glossary               - Process glossary links in documentation"
+	@echo "    glossary-check         - Validate glossary structure"
 	@echo ""
 	@echo "  Documentation Aggregation:"
 	@echo "    aggregate-local        - Aggregate from local repos (file:// URLs in repos-config.local.json)"
@@ -44,43 +48,6 @@ install:
 	# those deps and breaks the python-gardenlinux-lib-cli reference.
 	pip install git+https://github.com/gardenlinux/python-gardenlinux-lib.git@2a27700198bc91e0f9b8321960ebc4709d65c41a
 	pip install -r requirements.txt
-
-run:
-	pnpm run docs:dev
-
-build: install clean aggregate
-	pnpm run docs:build
-
-preview:
-	pnpm run docs:preview
-
-# Testing
-test: test-unit test-integration
-	@echo "All tests passed!"
-
-test-unit:
-	@echo "Running unit tests..."
-	python3 -m pytest tests/unit/ -v
-
-test-integration:
-	@echo "Running integration tests..."
-	python3 -m pytest tests/integration/ -v
-
-# Quality Checks
-check: spelling linkcheck woke
-	@echo "All quality checks passed!"
-
-spelling:
-	@echo "Running spelling checks..."
-	@pnpm run docs:spelling
-
-linkcheck:
-	@echo "Running link checks..."
-	@pnpm run docs:linkcheck
-
-woke:
-	@echo "Running inclusive language checks..."
-	@pnpm run docs:woke
 
 # Documentation Aggregation
 aggregate-local:
@@ -138,6 +105,61 @@ aggregate-update-repo-single:
 	python3 src/aggregate.py --repo $(REPO) --single --update-locks \
 		$(if $(REF),--override-ref $(REF)) \
 		$(if $(COMMIT),--override-commit $(COMMIT))
+
+run:
+	pnpm run docs:dev
+
+build: install clean aggregate
+	pnpm run docs:build
+
+transform: aggregate glossary
+	@echo "Transforming content. This may have lead to an unclean worktree and is completely normal."
+
+publish: install clean aggregate glossary
+	pnpm run docs:build
+
+preview:
+	pnpm run docs:preview
+
+format:
+	black src/ tests/
+	isort src/ tests/
+
+# Testing
+test: test-unit test-integration
+	@echo "All tests passed!"
+
+test-unit:
+	@echo "Running unit tests..."
+	python3 -m pytest tests/unit/ -v
+
+test-integration:
+	@echo "Running integration tests..."
+	python3 -m pytest tests/integration/ -v
+
+# Quality Checks
+check: spelling linkcheck woke
+	@echo "All quality checks passed!"
+
+spelling:
+	@echo "Running spelling checks..."
+	@pnpm run docs:spelling
+
+linkcheck:
+	@echo "Running link checks..."
+	@pnpm run docs:linkcheck
+
+woke:
+	@echo "Running inclusive language checks..."
+	@pnpm run docs:woke
+
+glossary:
+	@echo "Processing glossary links..."
+	@python3 src/aggregation/auto_glossary.py docs/
+
+glossary-check:
+	@echo "Validating glossary structure..."
+	@python3 src/aggregation/auto_glossary.py docs/ --check
 
 # Utilities
 clean:

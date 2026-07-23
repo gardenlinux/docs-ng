@@ -4,7 +4,7 @@ import shutil
 from pathlib import Path
 from typing import List
 
-from .transformer import (ensure_frontmatter, parse_frontmatter, rewrite_links)
+from .transformer import ensure_frontmatter, parse_frontmatter, rewrite_links
 
 
 def copy_targeted_docs(
@@ -135,9 +135,13 @@ def copy_targeted_docs(
             # Used to colocate nested media dirs with retargeted markdown files.
             source_to_target_parents: dict[Path, set[Path]] = {}
             for src_rel, target_rel in targeted_files:
-                src_parent = Path(src_rel).parent      # e.g. Path("overview")
-                target_parent = Path(target_rel).parent  # e.g. Path("reference/supporting_tools")
-                source_to_target_parents.setdefault(src_parent, set()).add(target_parent)
+                src_parent = Path(src_rel).parent  # e.g. Path("overview")
+                target_parent = Path(
+                    target_rel
+                ).parent  # e.g. Path("reference/supporting_tools")
+                source_to_target_parents.setdefault(src_parent, set()).add(
+                    target_parent
+                )
 
             for media_dir_name in media_dirs:
                 # Recursively find all instances of this media directory in the source
@@ -163,18 +167,32 @@ def copy_targeted_docs(
                         else:
                             # Nested media directory: look up source parent in mapping
                             # to colocate media with the retargeted markdown file(s).
-                            media_source_parent = rel_path.parent  # e.g. Path("overview")
+                            media_source_parent = (
+                                rel_path.parent
+                            )  # e.g. Path("overview")
                             if media_source_parent in source_to_target_parents:
-                                for target_parent in source_to_target_parents[media_source_parent]:
-                                    target_media = docs_path / target_parent / media_dir_name
-                                    target_media.parent.mkdir(parents=True, exist_ok=True)
-                                    shutil.copytree(media_dir, target_media, dirs_exist_ok=True)
-                                    print(f"    ✓ Copied media: {target_parent / media_dir_name}")
+                                for target_parent in source_to_target_parents[
+                                    media_source_parent
+                                ]:
+                                    target_media = (
+                                        docs_path / target_parent / media_dir_name
+                                    )
+                                    target_media.parent.mkdir(
+                                        parents=True, exist_ok=True
+                                    )
+                                    shutil.copytree(
+                                        media_dir, target_media, dirs_exist_ok=True
+                                    )
+                                    print(
+                                        f"    ✓ Copied media: {target_parent / media_dir_name}"
+                                    )
                             else:
                                 # No mapping found: fall back to source-relative placement
                                 target_media = docs_path / rel_path
                                 target_media.parent.mkdir(parents=True, exist_ok=True)
-                                shutil.copytree(media_dir, target_media, dirs_exist_ok=True)
+                                shutil.copytree(
+                                    media_dir, target_media, dirs_exist_ok=True
+                                )
                                 print(f"    ✓ Copied media: {rel_path}")
     else:
         print("  No files with 'github_target_path:' frontmatter found")
@@ -243,7 +261,12 @@ def verify_internal_links(
                 or link.startswith("https://")
                 or link.startswith("#")
                 or link.startswith("mailto:")
-                or (":" in link and not link.startswith("/") and not link.startswith("./") and not link.startswith("../"))
+                or (
+                    ":" in link
+                    and not link.startswith("/")
+                    and not link.startswith("./")
+                    and not link.startswith("../")
+                )
             ):
                 continue
 
