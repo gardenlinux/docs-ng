@@ -112,7 +112,7 @@ run:
 build: install clean aggregate
 	pnpm run docs:build
 
-transform: aggregate glossary
+transform: glossary
 	@echo "Transforming content. This may have lead to an unclean worktree and is completely normal."
 
 publish: install clean aggregate glossary
