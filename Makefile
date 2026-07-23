@@ -1,12 +1,14 @@
-.PHONY: help run build preview aggregate aggregate-repo aggregate-update-repo aggregate-repo-single aggregate-update-repo-single test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration check spelling linkcheck woke glossary glossary-check format
+.PHONY: help run build preview publish transform aggregate aggregate-repo aggregate-update-repo aggregate-repo-single aggregate-update-repo-single test-aggregate-local clean clean-projects clean-aggregated-git test test-unit test-integration check spelling linkcheck woke glossary glossary-check format
 
 help:
 	@echo "Garden Linux Documentation Hub - Available targets:"
 	@echo ""
 	@echo "  Development:"
 	@echo "    run                    - Run docs development server"
-	@echo "    build                  - Build documentation for production"
+	@echo "    build                  - Build documentation for test purposes"
+	@echo "    transform              - Run transformation on aggregated docs (may leave work tree 'dirty')"
 	@echo "    preview                - Preview production build locally"
+	@echo "    publish                - Build documentation with transformation for publishing"
 	@echo ""
 	@echo "  Testing:"
 	@echo "    test                   - Run full test suite (unit + integration)"
