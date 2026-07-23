@@ -1,0 +1,8 @@
+[build]
+command = "make publish"
+publish = "docs/.vitepress/dist"
+
+[build.environment]
+NODE_VERSION = "22"
+PYTHON_VERSION = "3.13"
+
