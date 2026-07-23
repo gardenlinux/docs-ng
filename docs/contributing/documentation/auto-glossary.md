@@ -35,13 +35,13 @@ Deploy [Gardenlinux](/reference/glossary#gardenlinux) on [AWS](/reference/glossa
 
 ## Function
 
-During aggregation (`make aggregate`), the system:
+After aggregation, `make transform` runs through these steps:
 
-1. Parses `docs/reference/glossary.md` to extract all level-3 headers as terms
-2. Extracts aliases from terms with parenthesized expansions (e.g., `ADR (Architecture Decision Record)`)
-3. Scans all markdown files for glossary markers
-4. Replaces markers with markdown links to glossary anchors
-5. Preserves code blocks, inline code, and existing links
+1. Parse `docs/reference/glossary.md` to extract all level-3 headers as terms
+2. Extract aliases from terms with parenthesized expansions (e.g., `ADR (Architecture Decision Record)`)
+3. Scan all markdown files for glossary markers
+4. Replace markers with markdown links to glossary anchors
+5. Preserve code blocks, inline code, and existing links
 
 ## Marking Terms
 

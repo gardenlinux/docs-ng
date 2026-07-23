@@ -12,7 +12,6 @@ import tempfile
 from pathlib import Path
 
 from aggregation import DocsFetcher, copy_targeted_docs, load_config, save_config
-from aggregation.auto_glossary import process_glossary_links
 from aggregation.flavor_matrix import generate_flavor_matrix_docs
 from aggregation.github_api import GitHubAPIError, list_repo_releases
 from aggregation.install_pins import sync_install_pins

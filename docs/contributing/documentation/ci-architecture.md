@@ -95,6 +95,7 @@ flowchart TD
 
     subgraph docsng["gardenlinux/docs"]
         C --> D["docs-checks.yml\nJob: aggregate\n(runs aggregate.py with overrides)"]
+        D --> D2["Job: transform\n(glossary linking)"]
         D --> E["Job: linkcheck\n(lychee)"]
         D --> F["Job: spelling\n(codespell via make spelling)"]
         D --> G["Job: woke\n(inclusive language)"]
@@ -152,6 +153,7 @@ sequenceDiagram
     SrcRepo->>SrcRepo: docs-check.yml triggered<br/>(PR opened / synchronize)
     SrcRepo->>DocsNG: workflow_call → docs-checks.yml<br/>override-repo, override-ref, override-commit
     DocsNG->>DocsNG: aggregate job<br/>(aggregate.py with overrides)
+    DocsNG->>DocsNG: transform job<br/>(glossary linking)
     DocsNG->>DocsNG: linkcheck job (lychee)
     DocsNG->>DocsNG: spelling job (codespell)
     DocsNG->>DocsNG: woke job (inclusive language)
